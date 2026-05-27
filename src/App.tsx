@@ -64,10 +64,10 @@ function App() {
                 className="h-7 md:h-9 w-auto object-contain"
               />
             </a>
-            <a href="#" className="hover:text-[#ff2e93] transition-colors duration-300">Inicio</a>
-            <a href="#" onClick={openJoinModal} className="hover:text-[#ff2e93] transition-colors duration-300">Sobre nosotros</a>
-            <a href="#" onClick={openJoinModal} className="hover:text-[#ff2e93] transition-colors duration-300">Servicios</a>
-            <a href="#" onClick={openJoinModal} className="hover:text-[#ff2e93] transition-colors duration-300">Clientes</a>
+            <a href="#" className="hover:text-[#f60566] transition-colors duration-300">Inicio</a>
+            <a href="#" onClick={openJoinModal} className="hover:text-[#f60566] transition-colors duration-300">Sobre nosotros</a>
+            <a href="#" onClick={openJoinModal} className="hover:text-[#f60566] transition-colors duration-300">Servicios</a>
+            <a href="#" onClick={openJoinModal} className="hover:text-[#f60566] transition-colors duration-300">Clientes</a>
           </div>
 
           {/* Dynamic Capsule Menu on the right side */}
@@ -101,7 +101,7 @@ function App() {
                 alt="Godínez Creativos"
                 className="w-full max-w-[350px] sm:max-w-[480px] md:max-w-[540px] lg:max-w-[480px] xl:max-w-[580px] h-auto object-contain mx-auto lg:mx-0 drop-shadow-[0_0_25px_rgba(255,0,104,0.35)]"
               />
-              <p className="text-sm md:text-base font-medium text-[#ff7bb5] tracking-[0.25em] uppercase letter-spacing-wide">
+              <p className="text-sm md:text-base font-medium text-[#f60566] tracking-[0.25em] uppercase letter-spacing-wide">
                 MARCAS QUE SE VEN DIFERENTES
                 VENDEN DIFERENTE.
               </p>
@@ -115,10 +115,10 @@ function App() {
               {/* Pill Button 1 */}
               <button
                 onClick={openJoinModal}
-                className="group relative flex items-center justify-between w-52 px-6 py-3.5 rounded-full glass-panel hover:border-[#ff2e93]/50 text-white font-semibold text-sm hover:scale-105 active:scale-95 transition-all duration-300"
+                className="group relative flex items-center justify-between w-52 px-6 py-3.5 rounded-full glass-panel hover:border-[#f60566]/50 text-white font-semibold text-sm hover:scale-105 active:scale-95 transition-all duration-300"
               >
                 <span>Descubrir</span>
-                <span className="w-6 h-6 rounded-full bg-white/10 flex items-center justify-center text-xs group-hover:bg-[#ff2e93]/20 group-hover:text-[#ff2e93] transition-colors">••</span>
+                <span className="w-6 h-6 rounded-full bg-white/10 flex items-center justify-center text-xs group-hover:bg-[#f60566]/20 group-hover:text-[#f60566] transition-colors">••</span>
               </button>
 
               {/* Pill Button 2 */}
@@ -126,10 +126,10 @@ function App() {
                 href="https://www.facebook.com/share/18omatXk9k/?mibextid=wwXIfr"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-full bg-[#1b0511]/85 border border-[#ff2e93]/35 hover:border-[#ff2e93] text-white font-semibold text-sm hover:scale-105 active:scale-95 transition-all duration-300 shadow-[0_0_20px_rgba(230,31,100,0.15)] hover:shadow-[0_0_30px_rgba(230,31,100,0.3)]"
+                className="group flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-full bg-[#1b0511]/85 border border-[#f60566]/35 hover:border-[#f60566] text-white font-semibold text-sm hover:scale-105 active:scale-95 transition-all duration-300 shadow-[0_0_20px_rgba(230,31,100,0.15)] hover:shadow-[0_0_30px_rgba(230,31,100,0.3)]"
               >
                 {/* Facebook styled icon */}
-                <svg className="w-4 h-4 text-[#ff2e93] group-hover:scale-110 transition-transform" fill="currentColor" viewBox="0 0 24 24">
+                <svg className="w-4 h-4 text-[#f60566] group-hover:scale-110 transition-transform" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5C10 7.57 11.57 6 13.5 6H16v3h-2c-.55 0-1 .45-1 1v2h3v3h-3v6.95c4.56-.93 8-4.96 8-9.75z" />
                 </svg>
                 <span>Conectemos</span>
@@ -148,7 +148,7 @@ function App() {
             </div>
 
             {/* Glowing Backdrop Circle behind mascot */}
-            <div className="absolute w-[350px] h-[350px] md:w-[600px] md:h-[600px] rounded-full bg-gradient-to-t from-[#ff2e93]/12 via-[#ff2e93]/4 to-transparent blur-3xl pointer-events-none"></div>
+            <div className="absolute w-[350px] h-[350px] md:w-[600px] md:h-[600px] rounded-full bg-gradient-to-t from-[#f60566]/12 via-[#f60566]/4 to-transparent blur-3xl pointer-events-none"></div>
 
             {/* Mascot Image Container with Cybernetic Visor - Giant & Borderless */}
             <div className="relative w-full h-[65vh] md:h-[75vh] lg:h-[85vh] max-h-[850px] flex items-end justify-center lg:justify-end transition-all duration-500 floating-subtle">
@@ -232,7 +232,7 @@ function App() {
           justifyContent: 'center',
           padding: '1rem'
         }}>
-          <div className="glass-panel p-8 rounded-[32px] w-full max-w-md relative animate-[float-y_6s_infinite_alternate_ease-in-out] border border-[#ff2e93]/30 shadow-[0_0_50px_rgba(230,31,100,0.25)]">
+          <div className="glass-panel p-8 rounded-[32px] w-full max-w-md relative animate-[float-y_6s_infinite_alternate_ease-in-out] border border-[#f60566]/30 shadow-[0_0_50px_rgba(230,31,100,0.25)]">
             <button
               onClick={closeJoinModal}
               style={{
@@ -250,7 +250,7 @@ function App() {
                 color: '#ffffff',
                 cursor: 'pointer'
               }}
-              className="hover:border-[#ff2e93] hover:text-[#ff2e93] transition-colors"
+              className="hover:border-[#f60566] hover:text-[#f60566] transition-colors"
             >
               ✕
             </button>
@@ -276,7 +276,7 @@ function App() {
                       padding: '0.65rem 0.9rem',
                       borderRadius: '16px'
                     }}
-                    className="focus:border-[#ff2e93] focus:outline-none transition-colors text-sm"
+                    className="focus:border-[#f60566] focus:outline-none transition-colors text-sm"
                     placeholder="Ej. Carlos - Pizzería La Toscana"
                   />
                 </div>
@@ -295,7 +295,7 @@ function App() {
                       padding: '0.65rem 0.9rem',
                       borderRadius: '16px'
                     }}
-                    className="focus:border-[#ff2e93] focus:outline-none transition-colors text-sm"
+                    className="focus:border-[#f60566] focus:outline-none transition-colors text-sm"
                     placeholder="Ej. +52 55 1234 5678"
                   />
                 </div>
@@ -313,14 +313,14 @@ function App() {
                       padding: '0.65rem 0.9rem',
                       borderRadius: '16px'
                     }}
-                    className="focus:border-[#ff2e93] focus:outline-none transition-colors text-sm"
+                    className="focus:border-[#f60566] focus:outline-none transition-colors text-sm"
                     placeholder="Ej. Agendar citas de consultoría"
                   />
                 </div>
 
                 <button
                   type="submit"
-                  className="bg-[#e61f64] hover:bg-[#ff2e93] text-white font-bold py-3 rounded-full hover:scale-102 active:scale-98 transition-all shadow-[0_0_20px_rgba(230,31,100,0.3)] text-sm"
+                  className="bg-[#e61f64] hover:bg-[#f60566] text-white font-bold py-3 rounded-full hover:scale-102 active:scale-98 transition-all shadow-[0_0_20px_rgba(230,31,100,0.3)] text-sm"
                 >
                   Enviar Información 🚀
                 </button>
@@ -345,7 +345,7 @@ function App() {
                 <p className="text-white/60 text-xs leading-relaxed">
                   Estamos analizando tu presencia digital. Te contactaremos en menos de 24 horas para tu llamada estratégica inicial.
                 </p>
-                <div className="w-6 h-6 border-2 border-[#ff2e93] border-t-transparent rounded-full animate-spin"></div>
+                <div className="w-6 h-6 border-2 border-[#f60566] border-t-transparent rounded-full animate-spin"></div>
               </div>
             )}
           </div>
