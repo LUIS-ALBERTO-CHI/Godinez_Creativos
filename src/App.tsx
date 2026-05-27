@@ -7,6 +7,7 @@ function App() {
   const [salesHurdle, setSalesHurdle] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   // Sound chime synthesizer for micro-interactions (disabled)
   const playChime = (_type: 'success' | 'click' | 'close') => {
@@ -53,10 +54,10 @@ function App() {
       <div className="ambient-orb orb-cherry-main"></div>
 
       {/* Navigation Header */}
-      <nav className="absolute top-0 left-0 w-full z-40 px-6 md:px-16 py-6 md:py-8">
+      <nav className="absolute top-0 left-0 w-full z-45 px-6 md:px-16 py-6 md:py-8">
         <div className="flex justify-between items-center max-w-7xl mx-auto">
-          {/* Menu links and Logo on the left side */}
-          <div className="flex items-center gap-6 md:gap-10 text-sm md:text-base font-semibold tracking-wide text-white/90">
+          {/* Logo brand anchor (always visible) */}
+          <div className="flex items-center text-sm md:text-base font-semibold tracking-wide text-white/90">
             <a href="#" className="flex items-center transition-transform hover:scale-105 active:scale-95 pr-2">
               <img
                 src="/icon.jpeg"
@@ -64,14 +65,18 @@ function App() {
                 className="h-7 md:h-9 w-auto object-contain"
               />
             </a>
+          </div>
+
+          {/* Menu links on the left side - Desktop Only */}
+          <div className="hidden lg:flex items-center gap-6 md:gap-10 text-sm md:text-base font-semibold tracking-wide text-white/90">
             <a href="#" className="hover:text-[#f60566] transition-colors duration-300">Inicio</a>
             <a href="#" onClick={openJoinModal} className="hover:text-[#f60566] transition-colors duration-300">Sobre nosotros</a>
             <a href="#" onClick={openJoinModal} className="hover:text-[#f60566] transition-colors duration-300">Servicios</a>
             <a href="#" onClick={openJoinModal} className="hover:text-[#f60566] transition-colors duration-300">Clientes</a>
           </div>
 
-          {/* Dynamic Capsule Menu on the right side */}
-          <div className="flex items-center gap-3">
+          {/* Dynamic Capsule Menu on the right side - Desktop Only */}
+          <div className="hidden lg:flex items-center gap-3">
             <button
               onClick={openJoinModal}
               className="glass-panel glass-panel-hover flex items-center justify-center gap-2 px-6 py-2.5 rounded-full text-sm font-bold tracking-wide text-white border border-white/15"
@@ -85,8 +90,75 @@ function App() {
               ••
             </button>
           </div>
+
+          {/* Mobile Hamburger Trigger Button (Visible on screens < 1024px) */}
+          <button
+            onClick={() => { playChime('click'); setIsMobileMenuOpen(!isMobileMenuOpen); }}
+            className="lg:hidden flex items-center justify-center w-10 h-10 rounded-full glass-panel border border-white/15 text-white active:scale-95 transition-all duration-300 z-50 relative"
+            aria-label="Toggle Menu"
+          >
+            {isMobileMenuOpen ? (
+              <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            ) : (
+              <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16m-7 6h7" />
+              </svg>
+            )}
+          </button>
         </div>
       </nav>
+
+      {/* Mobile Full-Screen Hamburger Menu Drawer Overlay */}
+      <div className={`mobile-menu-overlay ${isMobileMenuOpen ? 'menu-active' : ''}`}>
+        {/* Cherry ambient glow inside mobile drawer */}
+        <div className="absolute w-[350px] h-[350px] rounded-full bg-[#f60566]/10 blur-3xl pointer-events-none"></div>
+        
+        <div className="flex flex-col items-center gap-8 text-xl md:text-2xl font-bold tracking-widest text-white/95">
+          <a
+            href="#"
+            onClick={() => setIsMobileMenuOpen(false)}
+            className="mobile-menu-item hover:text-[#f60566] transition-colors duration-300"
+            style={{ animationDelay: '0.15s' }}
+          >
+            INICIO
+          </a>
+          <a
+            href="#"
+            onClick={() => { setIsMobileMenuOpen(false); openJoinModal(); }}
+            className="mobile-menu-item hover:text-[#f60566] transition-colors duration-300"
+            style={{ animationDelay: '0.28s' }}
+          >
+            SOBRE NOSOTROS
+          </a>
+          <a
+            href="#"
+            onClick={() => { setIsMobileMenuOpen(false); openJoinModal(); }}
+            className="mobile-menu-item hover:text-[#f60566] transition-colors duration-300"
+            style={{ animationDelay: '0.41s' }}
+          >
+            SERVICIOS
+          </a>
+          <a
+            href="#"
+            onClick={() => { setIsMobileMenuOpen(false); openJoinModal(); }}
+            className="mobile-menu-item hover:text-[#f60566] transition-colors duration-300"
+            style={{ animationDelay: '0.54s' }}
+          >
+            CLIENTES
+          </a>
+
+          {/* Staggered CTA within mobile drawer */}
+          <button
+            onClick={() => { setIsMobileMenuOpen(false); openJoinModal(); }}
+            className="mobile-menu-item mt-6 px-8 py-3.5 rounded-full bg-[#f60566] hover:bg-[#ff0068] text-white font-bold text-xs tracking-widest uppercase transition-all duration-300 shadow-[0_0_20px_rgba(246,5,102,0.3)] active:scale-95"
+            style={{ animationDelay: '0.67s' }}
+          >
+            Comenzar Proyecto 🚀
+          </button>
+        </div>
+      </div>
 
       {/* Main Core Hero Content */}
       <main className="relative z-10 flex flex-col justify-between min-h-screen pt-28 pb-6 md:pt-36">
