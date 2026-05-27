@@ -5,14 +5,14 @@
 :root {
   --bg-color: #0d0308;
   --bg-gradient: radial-gradient(circle at 50% 50%, #2f0417 0%, #15020a 50%, #060003 100%);
-  --primary-cherry: #e61f64;
-  --primary-cherry-glow: rgba(230, 31, 100, 0.4);
+  --primary-cherry: #ff0068;
+  --primary-cherry-glow: rgba(255, 0, 104, 0.4);
   --secondary-crimson: #a80c43;
-  --neon-pink: #ff2e93;
+  --neon-pink: #ff0068;
   --neon-blue: #00f0ff;
   --glass-bg: rgba(25, 6, 15, 0.4);
-  --glass-border: rgba(255, 46, 147, 0.15);
-  --glass-border-hover: rgba(255, 46, 147, 0.4);
+  --glass-border: rgba(255, 0, 104, 0.15);
+  --glass-border-hover: rgba(255, 0, 104, 0.4);
   --text-primary: #ffffff;
   --text-muted: #a68b98;
 }
@@ -32,7 +32,7 @@ body {
 .mesh-grid {
   position: absolute;
   inset: 0;
-  background-image: 
+  background-image:
     linear-gradient(rgba(230, 31, 100, 0.03) 1px, transparent 1px),
     linear-gradient(90deg, rgba(230, 31, 100, 0.03) 1px, transparent 1px);
   background-size: 60px 60px;
@@ -163,8 +163,8 @@ body {
   -webkit-backdrop-filter: blur(8px);
   border-radius: 120px 120px 100px 100px;
   transform: rotate(-10deg) skewX(-5deg);
-  box-shadow: 
-    0 10px 30px rgba(255, 46, 147, 0.2), 
+  box-shadow:
+    0 10px 30px rgba(255, 46, 147, 0.2),
     inset 0 0 15px rgba(255, 255, 255, 0.2),
     0 0 20px rgba(0, 240, 255, 0.1);
   z-index: 10;
@@ -174,18 +174,33 @@ body {
 
 /* Animations */
 @keyframes spin-3d {
-  0% { transform: rotateX(65deg) rotateY(-15deg) rotateZ(0deg); }
-  100% { transform: rotateX(65deg) rotateY(-15deg) rotateZ(360deg); }
+  0% {
+    transform: rotateX(65deg) rotateY(-15deg) rotateZ(0deg);
+  }
+
+  100% {
+    transform: rotateX(65deg) rotateY(-15deg) rotateZ(360deg);
+  }
 }
 
 @keyframes spin-3d-reverse {
-  0% { transform: rotateX(60deg) rotateY(15deg) rotateZ(360deg); }
-  100% { transform: rotateX(60deg) rotateY(15deg) rotateZ(0deg); }
+  0% {
+    transform: rotateX(60deg) rotateY(15deg) rotateZ(360deg);
+  }
+
+  100% {
+    transform: rotateX(60deg) rotateY(15deg) rotateZ(0deg);
+  }
 }
 
 @keyframes float-slow {
-  0% { transform: translate(0, 0) scale(1); }
-  100% { transform: translate(40px, -30px) scale(1.08); }
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+
+  100% {
+    transform: translate(40px, -30px) scale(1.08);
+  }
 }
 
 @keyframes visor-glow {
@@ -193,6 +208,7 @@ body {
     box-shadow: 0 10px 30px rgba(255, 46, 147, 0.2), inset 0 0 15px rgba(255, 255, 255, 0.2);
     border-color: rgba(255, 255, 255, 0.35);
   }
+
   100% {
     box-shadow: 0 15px 40px rgba(255, 46, 147, 0.4), inset 0 0 25px rgba(255, 46, 147, 0.3), 0 0 25px rgba(0, 240, 255, 0.3);
     border-color: rgba(255, 46, 147, 0.6);
@@ -204,8 +220,13 @@ body {
 }
 
 @keyframes float-y {
-  0% { transform: translateY(0px); }
-  100% { transform: translateY(-12px); }
+  0% {
+    transform: translateY(0px);
+  }
+
+  100% {
+    transform: translateY(-12px);
+  }
 }
 
 /* Custom Scrollbars */
@@ -234,4 +255,3 @@ body {
 .letter-spacing-ultra {
   letter-spacing: 0.3em;
 }
-

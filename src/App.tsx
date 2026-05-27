@@ -59,7 +59,7 @@ function App() {
           <div className="flex items-center gap-6 md:gap-10 text-sm md:text-base font-semibold tracking-wide text-white/90">
             <a href="#" className="flex items-center transition-transform hover:scale-105 active:scale-95 pr-2">
               <img
-                src="/logo.png"
+                src="/icon.jpeg"
                 alt="Godínez Creativos"
                 className="h-7 md:h-9 w-auto object-contain"
               />
@@ -96,11 +96,14 @@ function App() {
           <div className="w-full lg:w-1/2 space-y-6 md:space-y-8 text-center lg:text-left z-10 relative">
             <div className="space-y-4">
               {/* Massive branding text with futuristic typography */}
-              <h1 className="text-7xl md:text-8xl lg:text-[100px] font-black tracking-tight text-white leading-none neon-glow uppercase">
-                GODÍNEZ
-              </h1>
+              <img
+                src="/titulo.png"
+                alt="Godínez Creativos"
+                className="w-full max-w-[350px] sm:max-w-[480px] md:max-w-[540px] lg:max-w-[480px] xl:max-w-[580px] h-auto object-contain mx-auto lg:mx-0 drop-shadow-[0_0_25px_rgba(255,0,104,0.35)]"
+              />
               <p className="text-sm md:text-base font-medium text-[#ff7bb5] tracking-[0.25em] uppercase letter-spacing-wide">
-                Innovamos. Creamos. Transformamos.
+                MARCAS QUE SE VEN DIFERENTES
+                VENDEN DIFERENTE.
               </p>
             </div>
 
