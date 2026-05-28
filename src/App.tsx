@@ -116,7 +116,7 @@ function App() {
   };
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-black select-none">
+    <div className="relative min-h-screen overflow-x-hidden bg-black select-none">
       {/* Grid Overlay & Ambient Lights */}
       <div className="mesh-grid"></div>
       <div className="ambient-orb orb-cherry-left"></div>
