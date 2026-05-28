@@ -473,131 +473,127 @@ function App() {
 
       {/* Dynamic Interaction Overlay: Lead Capture Modal Form */}
       {isModalOpen && (
-        <div style={{
-          position: 'fixed',
-          inset: 0,
-          background: 'rgba(0, 0, 0, 0.85)',
-          backdropFilter: 'blur(16px)',
-          zIndex: 100,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          padding: '1rem'
-        }}>
-          <div className="glass-panel p-8 rounded-[32px] w-full max-w-md relative animate-[float-y_6s_infinite_alternate_ease-in-out] border border-[#f60566]/30 shadow-[0_0_50px_rgba(230,31,100,0.25)]">
+        <div className="fixed inset-0 bg-black/85 backdrop-blur-[16px] z-50 flex items-center justify-center p-4">
+          <div className="glass-panel p-6 sm:p-8 rounded-[32px] w-full max-w-md relative border border-[#f60566]/30 shadow-[0_0_50px_rgba(230,31,100,0.25)] overflow-hidden">
+            {/* Close Button */}
             <button
               onClick={closeJoinModal}
-              style={{
-                position: 'absolute',
-                top: '1.25rem',
-                right: '1.25rem',
-                background: 'rgba(255, 255, 255, 0.05)',
-                border: '1px solid rgba(255, 46, 147, 0.2)',
-                borderRadius: '50%',
-                width: '32px',
-                height: '32px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                color: '#ffffff',
-                cursor: 'pointer'
-              }}
-              className="hover:border-[#f60566] hover:text-[#f60566] transition-colors"
+              className="absolute top-5 right-5 w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white/60 hover:text-[#f60566] hover:border-[#f60566]/40 hover:bg-[#f60566]/10 active:scale-90 transition-all duration-300 z-10"
+              aria-label="Cerrar"
             >
-              ✕
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
             </button>
 
             {!isSubmitted ? (
-              <form onSubmit={handleModalSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.15rem' }}>
-                <h3 className="text-2xl font-bold text-white text-center tracking-tight neon-glow">Inicia tu Proyecto 🚀</h3>
-                <p className="text-white/60 text-xs text-center leading-relaxed">
-                  Consigue una cotización a la medida y una propuesta estratégica personalizada en menos de 24 horas.
-                </p>
-
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.3rem' }}>
-                  <label className="text-[10px] text-white/50 tracking-wider font-mono uppercase font-bold">Tu Nombre o Empresa</label>
-                  <input
-                    type="text"
-                    required
-                    value={clientName}
-                    onChange={(e) => setClientName(e.target.value)}
-                    style={{
-                      background: 'rgba(20, 5, 12, 0.9)',
-                      border: '1px solid rgba(255, 46, 147, 0.25)',
-                      color: '#ffffff',
-                      padding: '0.65rem 0.9rem',
-                      borderRadius: '16px'
-                    }}
-                    className="focus:border-[#f60566] focus:outline-none transition-colors text-sm"
-                    placeholder="Ej. Carlos - Pizzería La Toscana"
-                  />
+              <form onSubmit={handleModalSubmit} className="flex flex-col gap-5 pt-2">
+                {/* Form Header */}
+                <div className="text-center space-y-2">
+                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#f60566]/10 border border-[#f60566]/20 text-[9px] font-mono tracking-widest text-[#f60566] uppercase animate-pulse">
+                    🚀 HACKEA TU OFICINA
+                  </div>
+                  <h3 className="text-2xl font-bold text-white tracking-tight leading-none uppercase font-outfit">
+                    Inicia tu <span className="text-[#f60566]">Proyecto</span>
+                  </h3>
+                  <p className="text-white/60 text-xs leading-relaxed max-w-sm mx-auto font-light">
+                    Consigue una propuesta estratégica a la medida y sin costo en menos de 24 horas.
+                  </p>
                 </div>
 
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.3rem' }}>
-                  <label className="text-[10px] text-white/50 tracking-wider font-mono uppercase font-bold">WhatsApp o Correo</label>
-                  <input
-                    type="text"
-                    required
-                    value={contactInfo}
-                    onChange={(e) => setContactInfo(e.target.value)}
-                    style={{
-                      background: 'rgba(20, 5, 12, 0.9)',
-                      border: '1px solid rgba(255, 46, 147, 0.25)',
-                      color: '#ffffff',
-                      padding: '0.65rem 0.9rem',
-                      borderRadius: '16px'
-                    }}
-                    className="focus:border-[#f60566] focus:outline-none transition-colors text-sm"
-                    placeholder="Ej. +52 55 1234 5678"
-                  />
+                {/* Field: Name */}
+                <div className="group flex flex-col gap-1.5 w-full">
+                  <label className="text-[10px] text-white/40 tracking-wider font-mono uppercase font-bold group-focus-within:text-[#00f0ff] transition-colors">
+                    Tu Nombre o Empresa
+                  </label>
+                  <div className="relative flex items-center w-full">
+                    <span className="absolute left-4 z-10 flex items-center justify-center pointer-events-none">
+                      <svg className="w-4 h-4 text-[#f60566] group-focus-within:text-[#00f0ff] group-focus-within:scale-110 transition-all duration-300" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+                      </svg>
+                    </span>
+                    <input
+                      type="text"
+                      required
+                      value={clientName}
+                      onChange={(e) => setClientName(e.target.value)}
+                      className="w-full pl-11 pr-4 py-3 bg-[#11020a]/80 border border-white/10 group-focus-within:border-[#f60566] focus:border-[#f60566] focus:outline-none focus:ring-1 focus:ring-[#f60566]/30 text-white rounded-2xl text-sm transition-all placeholder:text-white/20"
+                      placeholder="Ej. Carlos - Pizzería La Toscana"
+                    />
+                  </div>
                 </div>
 
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.3rem' }}>
-                  <label className="text-[10px] text-white/50 tracking-wider font-mono uppercase font-bold">¿Qué te gustaría vender más?</label>
-                  <input
-                    type="text"
-                    value={salesHurdle}
-                    onChange={(e) => setSalesHurdle(e.target.value)}
-                    style={{
-                      background: 'rgba(20, 5, 12, 0.9)',
-                      border: '1px solid rgba(255, 46, 147, 0.25)',
-                      color: '#ffffff',
-                      padding: '0.65rem 0.9rem',
-                      borderRadius: '16px'
-                    }}
-                    className="focus:border-[#f60566] focus:outline-none transition-colors text-sm"
-                    placeholder="Ej. Agendar citas de consultoría"
-                  />
+                {/* Field: Contact */}
+                <div className="group flex flex-col gap-1.5 w-full">
+                  <label className="text-[10px] text-white/40 tracking-wider font-mono uppercase font-bold group-focus-within:text-[#00f0ff] transition-colors">
+                    WhatsApp o Correo
+                  </label>
+                  <div className="relative flex items-center w-full">
+                    <span className="absolute left-4 z-10 flex items-center justify-center pointer-events-none">
+                      <svg className="w-4 h-4 text-[#f60566] group-focus-within:text-[#00f0ff] group-focus-within:scale-110 transition-all duration-300" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                      </svg>
+                    </span>
+                    <input
+                      type="text"
+                      required
+                      value={contactInfo}
+                      onChange={(e) => setContactInfo(e.target.value)}
+                      className="w-full pl-11 pr-4 py-3 bg-[#11020a]/80 border border-white/10 group-focus-within:border-[#f60566] focus:border-[#f60566] focus:outline-none focus:ring-1 focus:ring-[#f60566]/30 text-white rounded-2xl text-sm transition-all placeholder:text-white/20"
+                      placeholder="Ej. hola@empresa.com o +52 ..."
+                    />
+                  </div>
                 </div>
 
+                {/* Field: Sales Hurdle */}
+                <div className="group flex flex-col gap-1.5 w-full">
+                  <label className="text-[10px] text-white/40 tracking-wider font-mono uppercase font-bold group-focus-within:text-[#00f0ff] transition-colors">
+                    ¿Qué te gustaría lograr o vender más?
+                  </label>
+                  <div className="relative flex items-center w-full">
+                    <span className="absolute left-4 z-10 flex items-center justify-center pointer-events-none">
+                      <svg className="w-4 h-4 text-[#f60566] group-focus-within:text-[#00f0ff] group-focus-within:scale-110 transition-all duration-300" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.94" />
+                      </svg>
+                    </span>
+                    <input
+                      type="text"
+                      value={salesHurdle}
+                      onChange={(e) => setSalesHurdle(e.target.value)}
+                      className="w-full pl-11 pr-4 py-3 bg-[#11020a]/80 border border-white/10 group-focus-within:border-[#f60566] focus:border-[#f60566] focus:outline-none focus:ring-1 focus:ring-[#f60566]/30 text-white rounded-2xl text-sm transition-all placeholder:text-white/20"
+                      placeholder="Ej. Atraer clientes calificados por redes sociales"
+                    />
+                  </div>
+                </div>
+
+                {/* Submit button */}
                 <button
                   type="submit"
-                  className="bg-[#e61f64] hover:bg-[#f60566] text-white font-bold py-3 rounded-full hover:scale-102 active:scale-98 transition-all shadow-[0_0_20px_rgba(230,31,100,0.3)] text-sm"
+                  className="mt-2 group/submit flex items-center justify-center gap-2.5 w-full py-4 rounded-full bg-gradient-to-r from-[#f60566] to-[#ff0068] text-white font-bold text-sm tracking-widest uppercase hover:scale-102 active:scale-97 transition-all duration-300 shadow-[0_0_20px_rgba(246,5,102,0.3)] hover:shadow-[0_0_35px_rgba(246,5,102,0.5)] border border-white/10"
                 >
-                  Enviar Información 🚀
+                  <span>Enviar Información</span>
+                  <svg className="w-4 h-4 text-white group-hover/submit:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
+                  </svg>
                 </button>
               </form>
             ) : (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', alignItems: 'center', textAlign: 'center', padding: '1.5rem 0' }}>
-                <div style={{
-                  width: '60px',
-                  height: '60px',
-                  borderRadius: '50%',
-                  background: 'rgba(16, 185, 129, 0.15)',
-                  border: '2px solid #10b981',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  color: '#10b981',
-                  fontSize: '2rem'
-                }}>
-                  ✓
+              /* Success State */
+              <div className="flex flex-col gap-5 items-center text-center py-6">
+                <div className="w-16 h-16 rounded-full bg-[#10b981]/10 border-2 border-[#10b981] flex items-center justify-center text-white text-2xl shadow-[0_0_30px_rgba(16,185,129,0.3)] animate-bounce">
+                  <svg className="w-8 h-8 text-[#10b981]" fill="none" stroke="currentColor" strokeWidth="3" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                  </svg>
                 </div>
-                <h3 className="text-xl font-bold text-white neon-glow">¡Solicitud Enviada!</h3>
-                <p className="text-white/60 text-xs leading-relaxed">
-                  Estamos analizando tu presencia digital. Te contactaremos en menos de 24 horas para tu llamada estratégica inicial.
-                </p>
-                <div className="w-6 h-6 border-2 border-[#f60566] border-t-transparent rounded-full animate-spin"></div>
+                <div className="space-y-1">
+                  <h3 className="text-2xl font-bold text-white neon-glow font-outfit uppercase">
+                    ¡Solicitud <span className="text-[#10b981]">Enviada</span>!
+                  </h3>
+                  <p className="text-white/60 text-xs leading-relaxed max-w-xs font-light">
+                    Estamos analizando tu presencia digital. Te contactaremos en menos de 24 horas para agendar tu sesión inicial.
+                  </p>
+                </div>
+                <div className="w-6 h-6 border-2 border-[#f60566] border-t-transparent rounded-full animate-spin mt-2"></div>
               </div>
             )}
           </div>
