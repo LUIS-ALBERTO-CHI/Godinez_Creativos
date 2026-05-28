@@ -131,7 +131,7 @@ function App() {
               <img
                 src="/icon.jpeg"
                 alt="Godínez Creativos"
-                className="h-7 md:h-9 w-auto object-contain"
+                className="h-7 w-7 md:h-9 md:w-9 rounded-full object-cover border border-white/10"
               />
             </a>
           </div>
@@ -174,7 +174,7 @@ function App() {
             <img
               src="/icon.jpeg"
               alt="Godínez Creativos"
-              className="h-8 w-auto object-contain"
+              className="h-8 w-8 rounded-full object-cover border border-white/10"
             />
           </div>
           <button
