@@ -148,42 +148,57 @@ function App() {
       <div className="ambient-orb orb-cherry-main"></div>
 
       {/* Navigation Header */}
-      <nav className="absolute top-0 left-0 w-full z-45 px-6 md:px-16 py-6 md:py-8">
+      <nav className="fixed top-0 left-0 w-full z-50 bg-black/75 backdrop-blur-lg border-b border-white/5 px-6 md:px-16 py-4 transition-all duration-300">
         <div className="flex justify-between items-center max-w-7xl mx-auto">
-          {/* Logo brand anchor (always visible) */}
-          <div className="flex items-center text-sm md:text-base font-semibold tracking-wide text-white/90">
-            <a href="#" className="flex items-center transition-transform hover:scale-105 active:scale-95 pr-2">
+          {/* LEFT: Logo brand anchor */}
+          <div className="flex-1 flex items-center justify-start">
+            <a href="#" className="flex items-center gap-3 transition-transform hover:scale-105 active:scale-95">
               <img
                 src="/icon.jpeg"
                 alt="Godínez Creativos"
-                className="h-7 w-7 md:h-9 md:w-9 rounded-full object-cover border border-white/10"
+                className="h-8 w-8 rounded-full object-cover border border-white/20 shadow-[0_0_10px_rgba(246,5,102,0.2)]"
               />
+              <span className="text-white font-extrabold tracking-wider uppercase font-outfit text-sm hidden sm:inline-block">
+                Godínez <span className="text-[#f60566]">Creativos</span>
+              </span>
             </a>
           </div>
 
-          {/* Menu links on the left side - Desktop Only */}
-          <div className="hidden lg:flex items-center gap-6 md:gap-10 text-sm md:text-base font-semibold tracking-wide text-white/90">
-            <a href="#" className="hover:text-[#f60566] transition-colors duration-300">Inicio</a>
-            <a href="#servicios" className="hover:text-[#f60566] transition-colors duration-300">Servicios</a>
-            <a href="#" onClick={openJoinModal} className="hover:text-[#f60566] transition-colors duration-300">Clientes</a>
+          {/* CENTER: Navigation Links (Desktop Only) */}
+          <div className="hidden lg:flex items-center justify-center gap-10 text-xs sm:text-sm font-semibold tracking-widest uppercase font-outfit">
+            <a href="#" className="text-white/80 hover:text-[#f60566] transition-colors duration-300">Inicio</a>
+            <a href="#servicios" className="text-white/80 hover:text-[#f60566] transition-colors duration-300">¿Qué hacemos?</a>
+            <a href="#diferencia" className="text-white/80 hover:text-[#f60566] transition-colors duration-300">¿Por qué nosotros?</a>
+            <a href="#" onClick={(e) => { e.preventDefault(); openJoinModal(); }} className="text-white/80 hover:text-[#f60566] transition-colors duration-300">Contacto</a>
           </div>
 
-          {/* Mobile hamburger menu toggle (Visible on screens < 1024px) */}
-          <button
-            onClick={() => { playChime('click'); setIsMobileMenuOpen(!isMobileMenuOpen); }}
-            className="lg:hidden flex items-center justify-center w-10 h-10 rounded-full glass-panel border border-white/15 text-white active:scale-95 transition-all duration-300 z-50 relative animate-pulse"
-            aria-label="Toggle Menu"
-          >
-            {isMobileMenuOpen ? (
-              <svg className="w-5 h-5 text-white animate-[spin_0.3s_ease-out]" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            ) : (
-              <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16m-7 6h7" />
-              </svg>
-            )}
-          </button>
+          {/* RIGHT: CTA Button / Mobile Menu Toggle */}
+          <div className="flex-1 flex items-center justify-end gap-4">
+            {/* Desktop premium mini-CTA */}
+            <button
+              onClick={() => openJoinModal()}
+              className="hidden lg:flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-[#f60566] to-[#ff0068] hover:scale-105 active:scale-95 text-white font-bold text-xs tracking-wider uppercase transition-all duration-300 border border-white/10 shadow-[0_0_15px_rgba(246,5,102,0.35)]"
+            >
+              Comenzar
+            </button>
+
+            {/* Mobile hamburger menu toggle (Visible on screens < 1024px) */}
+            <button
+              onClick={() => { playChime('click'); setIsMobileMenuOpen(!isMobileMenuOpen); }}
+              className="lg:hidden flex items-center justify-center w-10 h-10 rounded-full glass-panel border border-white/15 text-white active:scale-95 transition-all duration-300 z-50 relative"
+              aria-label="Toggle Menu"
+            >
+              {isMobileMenuOpen ? (
+                <svg className="w-5 h-5 text-white animate-[spin_0.3s_ease-out]" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              ) : (
+                <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16m-7 6h7" />
+                </svg>
+              )}
+            </button>
+          </div>
         </div>
       </nav>
 
@@ -217,8 +232,9 @@ function App() {
         <div className="flex flex-col w-full max-w-md px-6 gap-4 z-10 relative">
           {[
             { name: 'Inicio', desc: 'Página central / Home', href: '#' },
-            { name: 'Servicios', desc: 'Estrategia, diseño y desarrollo', href: '#servicios' },
-            { name: 'Clientes', desc: 'Empresas que confían en nosotros', href: '#', action: openJoinModal }
+            { name: '¿Qué hacemos?', desc: 'Nuestros superpoderes creativos', href: '#servicios' },
+            { name: '¿Por qué nosotros?', desc: 'Nuestro valor diferencial', href: '#diferencia' },
+            { name: 'Contacto', desc: 'Hablemos de tu proyecto', href: '#', action: openJoinModal }
           ].map((item, index) => (
             <a
               key={item.name}
