@@ -371,9 +371,16 @@ body {
 .marquee-content {
   display: inline-flex;
   align-items: center;
-  gap: 5rem;
-  padding-left: 2.5rem;
+  gap: 2rem;
+  padding-left: 1rem;
   animation: marquee-scroll 24s linear infinite;
+}
+
+@media (min-width: 768px) {
+  .marquee-content {
+    gap: 5rem;
+    padding-left: 2.5rem;
+  }
 }
 
 @keyframes marquee-scroll {

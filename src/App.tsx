@@ -299,13 +299,13 @@ function App() {
           </div>
 
           {/* RIGHT COLUMN: Holographic Mascot Frame - Giant & Backdrop positioned like the mockup */}
-          <div className="w-full lg:w-[55vw] flex items-end justify-center relative min-h-[300px] sm:min-h-[400px] md:min-h-[550px] lg:absolute lg:right-0 lg:bottom-[92px] lg:top-0 lg:z-0 lg:pointer-events-none">
+          <div className="w-full lg:w-[55vw] flex items-end justify-center relative min-h-[220px] sm:min-h-[300px] md:min-h-[500px] lg:absolute lg:right-0 lg:bottom-[92px] lg:top-0 lg:z-0 lg:pointer-events-none mt-4 lg:mt-0">
 
             {/* Glowing Backdrop Circle behind mascot */}
-            <div className="absolute w-[260px] h-[260px] sm:w-[350px] sm:h-[350px] md:w-[600px] md:h-[600px] rounded-full bg-gradient-to-t from-[#f60566]/12 via-[#f60566]/4 to-transparent blur-3xl pointer-events-none"></div>
+            <div className="absolute w-[200px] h-[200px] sm:w-[350px] sm:h-[350px] md:w-[600px] md:h-[600px] rounded-full bg-gradient-to-t from-[#f60566]/12 via-[#f60566]/4 to-transparent blur-3xl pointer-events-none"></div>
 
             {/* Mascot Image Container with Cybernetic Visor - Giant & Borderless */}
-            <div className="relative w-full h-[45vh] sm:h-[55vh] md:h-[65vh] lg:h-[85vh] max-h-[850px] flex items-end justify-center lg:justify-end transition-all duration-500 floating-subtle">
+            <div className="relative w-full h-[25vh] sm:h-[35vh] md:h-[50vh] lg:h-[85vh] max-h-[220px] sm:max-h-[300px] md:max-h-[500px] lg:max-h-[850px] flex items-end justify-center lg:justify-end transition-all duration-500 floating-subtle">
               <img
                 src="mascota.png"
                 alt="Cyber Godínez Mascot"
@@ -316,7 +316,7 @@ function App() {
         </div>
 
         {/* BOTTOM SECTION: Full-Width Logo Ribbon (Infinite scrolling marquee for premium mobile/desktop experience) */}
-        <div className="w-full border-t border-white/10 bg-black/40 backdrop-blur-md relative z-25 mt-8 py-6 px-0 overflow-hidden">
+        <div className="w-full border-t border-white/10 bg-black/40 backdrop-blur-md relative z-25 mt-8 py-4 md:py-6 px-0 overflow-hidden">
           <div className="marquee-container max-w-7xl mx-auto">
             {/* The double content creates the infinite looping effect */}
             <div className="marquee-content animate-marquee">
@@ -327,13 +327,13 @@ function App() {
                 { name: 'Meta Ads', src: '/meta-icon-new-facebook-2021-seeklogo.svg', alt: 'Meta Ads' },
                 { name: 'CapCut', src: '/capcut-seeklogo-2.svg', alt: 'CapCut' }
               ].map((logo, idx) => (
-                <div key={`${logo.name}-1-${idx}`} className="group flex items-center gap-2.5 select-none cursor-default hover:scale-[1.03] transition-transform duration-300 shrink-0">
+                <div key={`${logo.name}-1-${idx}`} className="group flex items-center gap-1.5 md:gap-2.5 select-none cursor-default hover:scale-[1.03] transition-transform duration-300 shrink-0">
                   <img
                     src={logo.src}
                     alt={logo.alt}
-                    className="h-7 md:h-8 w-auto grayscale brightness-[2.5] opacity-40 group-hover:grayscale-0 group-hover:brightness-100 group-hover:opacity-100 transition-all duration-300"
+                    className="h-5 md:h-8 w-auto grayscale brightness-[2.5] opacity-40 group-hover:grayscale-0 group-hover:brightness-100 group-hover:opacity-100 transition-all duration-300"
                   />
-                  <span className="text-sm font-medium tracking-wide text-white/40 group-hover:text-white transition-colors duration-300">{logo.name}</span>
+                  <span className="text-xs md:text-sm font-medium tracking-wide text-white/40 group-hover:text-white transition-colors duration-300">{logo.name}</span>
                 </div>
               ))}
               {/* Duplicate the array to allow infinite seamless marquee scroll */}
@@ -344,13 +344,13 @@ function App() {
                 { name: 'Meta Ads', src: '/meta-icon-new-facebook-2021-seeklogo.svg', alt: 'Meta Ads' },
                 { name: 'CapCut', src: '/capcut-seeklogo-2.svg', alt: 'CapCut' }
               ].map((logo, idx) => (
-                <div key={`${logo.name}-2-${idx}`} className="group flex items-center gap-2.5 select-none cursor-default hover:scale-[1.03] transition-transform duration-300 shrink-0">
+                <div key={`${logo.name}-2-${idx}`} className="group flex items-center gap-1.5 md:gap-2.5 select-none cursor-default hover:scale-[1.03] transition-transform duration-300 shrink-0">
                   <img
                     src={logo.src}
                     alt={logo.alt}
-                    className="h-7 md:h-8 w-auto grayscale brightness-[2.5] opacity-40 group-hover:grayscale-0 group-hover:brightness-100 group-hover:opacity-100 transition-all duration-300"
+                    className="h-5 md:h-8 w-auto grayscale brightness-[2.5] opacity-40 group-hover:grayscale-0 group-hover:brightness-100 group-hover:opacity-100 transition-all duration-300"
                   />
-                  <span className="text-sm font-medium tracking-wide text-white/40 group-hover:text-white transition-colors duration-300">{logo.name}</span>
+                  <span className="text-xs md:text-sm font-medium tracking-wide text-white/40 group-hover:text-white transition-colors duration-300">{logo.name}</span>
                 </div>
               ))}
             </div>
