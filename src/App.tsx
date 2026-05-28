@@ -359,8 +359,8 @@ function App() {
       </main>
 
       {/* SECTION: ¿Qué hacemos? */}
-      <section 
-        id="servicios" 
+      <section
+        id="servicios"
         className="relative z-10 py-20 md:py-32 px-6 md:px-16 border-t border-white/5 bg-black/35 backdrop-blur-sm overflow-hidden"
       >
         {/* Ambient background light orbs for orbital neon depth */}
@@ -368,34 +368,34 @@ function App() {
         <div className="absolute top-1/3 right-0 w-[350px] h-[350px] rounded-full bg-[#00f0ff]/5 blur-3xl pointer-events-none"></div>
 
         <div className="max-w-7xl mx-auto relative z-10">
-          
+
           {/* Section Header */}
           <div className="flex flex-col items-center text-center mb-16 md:mb-24 space-y-4">
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-[#f60566]/40 bg-[#f60566]/15 text-[10px] font-mono tracking-[0.25em] text-white font-semibold uppercase animate-pulse shadow-[0_0_15px_rgba(246,5,102,0.25)]">
               <span className="w-1.5 h-1.5 rounded-full bg-[#f60566] inline-block shadow-[0_0_8px_#f60566]"></span>
               Nuestros Superpoderes
             </div>
-            
+
             <h2 className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-white font-outfit uppercase">
               ¿Qué <span className="text-[#f60566]">hacemos</span>?
             </h2>
-            
+
             <p className="text-xs sm:text-sm md:text-base text-white/70 leading-relaxed font-light max-w-2xl">
-              Fórmula única: unimos la chispa y dinamismo del <strong className="text-[#f60566] font-semibold">Community Manager</strong>, la disrupción estética del <strong className="text-white font-semibold">Diseñador</strong> y la agilidad de vanguardia del <strong className="text-[#00f0ff] font-semibold">Programador Web</strong> para hackear las ventas de tu marca.
+              Fórmula única: unimos la chispa y dinamismo de la <strong className="text-[#f60566] font-semibold">Community Manager</strong>, la disrupción estética del <strong className="text-white font-semibold">Diseñador</strong> y la agilidad de vanguardia del <strong className="text-[#00f0ff] font-semibold">Programador Web</strong> para hackear las ventas de tu marca.
             </p>
           </div>
 
           {/* Services Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
             {services.map((svc, idx) => (
-              <div 
+              <div
                 key={idx}
                 onClick={() => openJoinModal(svc.title)}
                 className="glass-panel group flex flex-col justify-between p-8 rounded-[32px] border border-white/5 hover:border-[#f60566]/35 hover:bg-[#f60566]/5 active:scale-[0.99] transition-all duration-500 relative overflow-hidden min-h-[320px] h-auto cursor-pointer"
               >
                 {/* Radial gradient glow in background revealed on hover */}
                 <div className="absolute inset-0 bg-gradient-to-br from-transparent via-[#f60566]/2 to-[#00f0ff]/2 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
-                
+
                 <div className="space-y-5 relative z-10">
                   {/* Icon & Badge row */}
                   <div className="flex items-center justify-between">
