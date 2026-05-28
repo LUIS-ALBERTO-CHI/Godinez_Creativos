@@ -256,15 +256,126 @@ body {
   letter-spacing: 0.3em;
 }
 
+/* Thin Wireframe Solar System Rings */
+.orbit-container {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.planetary-ring-system {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.planetary-ring-thin {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  border: 0.5px solid rgba(246, 5, 102, 0.06);
+  box-sizing: border-box;
+}
+
+/* Faint concentric perfect circles matching example image */
+.planetary-ring-thin.ring-1 {
+  width: 320px;
+  height: 320px;
+  border-color: rgba(246, 5, 102, 0.08);
+}
+
+.planetary-ring-thin.ring-2 {
+  width: 600px;
+  height: 600px;
+  border-color: rgba(246, 5, 102, 0.06);
+}
+
+.planetary-ring-thin.ring-3 {
+  width: 900px;
+  height: 900px;
+  border-color: rgba(246, 5, 102, 0.04);
+}
+
+.planetary-ring-thin.ring-4 {
+  width: 1200px;
+  height: 1200px;
+  border-color: rgba(246, 5, 102, 0.025);
+}
+
+.planetary-ring-thin.ring-5 {
+  width: 1500px;
+  height: 1500px;
+  border-color: rgba(246, 5, 102, 0.012);
+}
+
+/* Infinite Marquee Logo Ticker */
+.marquee-container {
+  overflow: hidden;
+  white-space: nowrap;
+  display: flex;
+  position: relative;
+  width: 100%;
+}
+
+/* Fade mask to make edges smooth */
+.marquee-container::before,
+.marquee-container::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  width: 60px;
+  height: 100%;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.marquee-container::before {
+  left: 0;
+  background: linear-gradient(to right, #000 0%, transparent 100%);
+}
+
+.marquee-container::after {
+  right: 0;
+  background: linear-gradient(to left, #000 0%, transparent 100%);
+}
+
+.marquee-content {
+  display: inline-flex;
+  align-items: center;
+  gap: 5rem;
+  padding-left: 2.5rem;
+  animation: marquee-scroll 24s linear infinite;
+}
+
+@keyframes marquee-scroll {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
 /* Mobile Full-Screen Hamburger Menu Drawer */
 .mobile-menu-overlay {
   position: fixed;
   inset: 0;
-  background-color: rgba(13, 3, 8, 0.97);
-  background-image: radial-gradient(circle at 50% 50%, #2f0417 0%, #060003 100%);
+  background-color: rgba(8, 2, 5, 0.98);
+  background-image: 
+    linear-gradient(rgba(230, 31, 100, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(230, 31, 100, 0.02) 1px, transparent 1px),
+    radial-gradient(circle at 50% 50%, #20020f 0%, #060003 100%);
+  background-size: 50px 50px, 50px 50px, 100% 100%;
   backdrop-filter: blur(28px);
   -webkit-backdrop-filter: blur(28px);
-  z-index: 45;
+  z-index: 95;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -281,18 +392,18 @@ body {
 
 .mobile-menu-item {
   opacity: 0;
-  transform: translateY(40px);
+  transform: translateY(30px);
   will-change: transform, opacity;
 }
 
 .mobile-menu-overlay.menu-active .mobile-menu-item {
-  animation: mobileItemFadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: mobileItemFadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 @keyframes mobileItemFadeInUp {
   0% {
     opacity: 0;
-    transform: translateY(40px);
+    transform: translateY(30px);
   }
   100% {
     opacity: 1;
