@@ -371,8 +371,8 @@ function App() {
           
           {/* Section Header */}
           <div className="flex flex-col items-center text-center mb-16 md:mb-24 space-y-4">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-[#f60566]/20 bg-[#f60566]/5 text-[10px] font-mono tracking-[0.25em] text-[#f60566] uppercase animate-pulse">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#f60566] inline-block"></span>
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-[#f60566]/40 bg-[#f60566]/15 text-[10px] font-mono tracking-[0.25em] text-white font-semibold uppercase animate-pulse shadow-[0_0_15px_rgba(246,5,102,0.25)]">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#f60566] inline-block shadow-[0_0_8px_#f60566]"></span>
               Nuestros Superpoderes
             </div>
             
@@ -489,7 +489,7 @@ function App() {
               <form onSubmit={handleModalSubmit} className="flex flex-col gap-5 pt-2">
                 {/* Form Header */}
                 <div className="text-center space-y-2">
-                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#f60566]/10 border border-[#f60566]/20 text-[9px] font-mono tracking-widest text-[#f60566] uppercase animate-pulse">
+                  <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#f60566]/15 border border-[#f60566]/40 text-[9px] font-mono tracking-widest text-white font-semibold uppercase animate-pulse shadow-[0_0_15px_rgba(246,5,102,0.25)]">
                     🚀 HACKEA TU OFICINA
                   </div>
                   <h3 className="text-2xl font-bold text-white tracking-tight leading-none uppercase font-outfit">
