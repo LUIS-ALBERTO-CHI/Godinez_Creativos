@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -13,6 +13,31 @@ function App() {
   const playChime = (type: 'success' | 'click' | 'close') => {
     void type;
   };
+
+  useEffect(() => {
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px -5% -5% 0px',
+      threshold: 0.1,
+    };
+
+    const handleIntersect = (entries: IntersectionObserverEntry[], observer: IntersectionObserver) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('revealed');
+          observer.unobserve(entry.target);
+        }
+      });
+    };
+
+    const observer = new IntersectionObserver(handleIntersect, observerOptions);
+    const elements = document.querySelectorAll('.reveal-on-scroll');
+    elements.forEach((el) => observer.observe(el));
+
+    return () => {
+      elements.forEach((el) => observer.unobserve(el));
+    };
+  }, []);
 
   const openJoinModal = (initialService?: string | React.MouseEvent) => {
     if (initialService && typeof initialService === 'string') {
@@ -466,6 +491,345 @@ function App() {
                 </svg>
               </div>
             </button>
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION: No somos una agencia tradicional */}
+      <section
+        id="diferencia"
+        className="relative z-10 py-20 md:py-32 px-6 md:px-16 border-t border-white/5 bg-black/25 backdrop-blur-sm overflow-hidden"
+      >
+        {/* Ambient background light orbs for depth */}
+        <div className="absolute top-1/4 right-0 w-[400px] h-[400px] rounded-full bg-[#00f0ff]/5 blur-3xl pointer-events-none"></div>
+        <div className="absolute bottom-1/4 left-0 w-[350px] h-[350px] rounded-full bg-[#f60566]/5 blur-3xl pointer-events-none"></div>
+
+        <div className="max-w-7xl mx-auto relative z-10">
+          
+          {/* Section Header */}
+          <div className="flex flex-col items-center text-center mb-16 md:mb-24 space-y-5 reveal-on-scroll">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-[#00f0ff]/40 bg-[#00f0ff]/15 text-[10px] font-mono tracking-[0.25em] text-white font-semibold uppercase animate-pulse shadow-[0_0_15px_rgba(0,240,255,0.25)]">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#00f0ff] inline-block shadow-[0_0_8px_#00f0ff]"></span>
+              Por Qué Somos Diferentes
+            </div>
+
+            <h2 className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-white font-outfit uppercase">
+              No somos una <span className="text-[#f60566]">agencia</span> tradicional.
+            </h2>
+
+            <p className="text-xs sm:text-sm md:text-base text-white/70 leading-relaxed font-light max-w-2xl">
+              Creamos diseño, contenido y experiencias digitales que hacen que las marcas se vean más grandes, modernas y profesionales.
+            </p>
+          </div>
+
+          {/* Bento Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+            
+            {/* CARD 1: Atención directa (col-span-1) */}
+            <div className="bento-card group p-8 flex flex-col justify-between min-h-[320px] reveal-on-scroll reveal-delay-100">
+              <div className="bento-card-glow-pink -top-10 -left-10 group-hover:scale-125"></div>
+              
+              <div className="space-y-6 relative z-10">
+                {/* Upper row: icon and status indicator */}
+                <div className="flex justify-between items-start">
+                  <div className="w-12 h-12 rounded-2xl bg-[#f60566]/10 border border-[#f60566]/20 flex items-center justify-center group-hover:bg-[#f60566] group-hover:scale-110 transition-all duration-500">
+                    <svg className="w-6 h-6 text-[#f60566] group-hover:text-white transition-colors" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M15.182 15.182a4.5 4.5 0 01-6.364 0M21 12a9 9 0 11-18 0 9 9 0 0118 0zM9.75 9.75c0 .414-.168.75-.375.75S9 10.164 9 9.75 9.168 9 9.375 9s.375.336.375.75zm-.375 0h.008v.015h-.008V9.75zm5.625 0c0 .414-.168.75-.375.75s-.375-.336-.375-.75.168-.75.375-.75.375.336.375.75zm-.375 0h.008v.015h-.008V9.75z" />
+                    </svg>
+                  </div>
+                  <div className="flex items-center gap-2 bg-white/5 border border-white/10 rounded-full px-3 py-1">
+                    <span className="w-2 h-2 rounded-full bg-[#00f0ff] animate-ping"></span>
+                    <span className="text-[9px] font-mono tracking-widest text-white/50 uppercase">CANAL DIRECTO</span>
+                  </div>
+                </div>
+
+                {/* Text Content */}
+                <div className="space-y-2">
+                  <h3 className="text-xl font-bold text-white tracking-wide group-hover:text-[#f60566] transition-colors duration-300">
+                    Atención directa
+                  </h3>
+                  <p className="text-xs sm:text-sm text-white/60 font-light leading-relaxed group-hover:text-white/80 transition-colors duration-300">
+                    Hablas directamente con quienes crean tu proyecto.
+                  </p>
+                </div>
+              </div>
+
+              {/* Graphical Visual Element in Card */}
+              <div className="relative h-20 w-full flex items-center justify-center bg-black/35 rounded-2xl border border-white/5 overflow-hidden group-hover:border-[#f60566]/20 transition-colors duration-500">
+                <div className="absolute inset-0 bg-gradient-to-r from-[#f60566]/5 via-transparent to-[#00f0ff]/5"></div>
+                <div className="flex items-center gap-6 z-10">
+                  <div className="flex flex-col items-center">
+                    <span className="text-[10px] font-mono text-[#f60566] font-bold">TÚ</span>
+                    <div className="w-8 h-8 rounded-full bg-[#f60566]/20 border border-[#f60566]/30 flex items-center justify-center text-xs text-white font-bold">U</div>
+                  </div>
+                  <div className="flex items-center relative w-16">
+                    <div className="w-full h-[1px] bg-gradient-to-r from-[#f60566] to-[#00f0ff] relative">
+                      <div className="absolute -top-1 w-2 h-2 rounded-full bg-[#00f0ff] animate-[marquee-scroll_3s_linear_infinite] left-0"></div>
+                    </div>
+                  </div>
+                  <div className="flex flex-col items-center">
+                    <span className="text-[10px] font-mono text-[#00f0ff] font-bold">EQUIPO</span>
+                    <div className="w-8 h-8 rounded-full bg-[#00f0ff]/20 border border-[#00f0ff]/30 flex items-center justify-center text-xs text-white font-bold">GC</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* CARD 2: Diseño con intención (col-span-1 lg:col-span-2) */}
+            <div className="bento-card group p-8 flex flex-col justify-between min-h-[320px] lg:col-span-2 reveal-on-scroll reveal-delay-200">
+              <div className="bento-card-glow-pink top-10 right-10 group-hover:scale-125"></div>
+              
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center flex-grow">
+                {/* Text Content */}
+                <div className="space-y-4 lg:col-span-7 z-10">
+                  <div className="inline-block px-2.5 py-1 rounded-full bg-[#f60566]/10 border border-[#f60566]/20 text-[9px] font-mono tracking-widest text-[#f60566] uppercase">
+                    100% PERSONALIZADO
+                  </div>
+                  <div className="space-y-2">
+                    <h3 className="text-2xl font-bold text-white tracking-wide group-hover:text-[#f60566] transition-colors duration-300">
+                      Diseño con intención
+                    </h3>
+                    <p className="text-xs sm:text-sm text-white/60 font-light leading-relaxed group-hover:text-white/80 transition-colors duration-300">
+                      No hacemos contenido genérico ni plantillas aburridas.
+                    </p>
+                  </div>
+                </div>
+
+                {/* High-Impact Visual Graphic Element */}
+                <div className="lg:col-span-5 relative w-full h-[180px] bg-black/40 rounded-[24px] border border-white/5 overflow-hidden flex items-center justify-center group-hover:border-[#f60566]/35 transition-all duration-500">
+                  {/* Subtle Grid behind layouts */}
+                  <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:14px_24px]"></div>
+                  
+                  {/* Visual card stack representation */}
+                  <div className="relative w-full max-w-[200px] h-[120px] flex items-center justify-center">
+                    {/* Fake Generic Template Card - Behind, dull, crossed out */}
+                    <div className="absolute w-[130px] h-[80px] rounded-xl bg-[#1a1115]/90 border border-white/10 opacity-30 -translate-x-8 -translate-y-4 -rotate-6 flex flex-col justify-between p-2 select-none pointer-events-none">
+                      <div className="w-8 h-2 bg-white/20 rounded"></div>
+                      <div className="space-y-1">
+                        <div className="w-16 h-1.5 bg-white/10 rounded"></div>
+                        <div className="w-12 h-1.5 bg-white/10 rounded"></div>
+                      </div>
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <span className="text-2xl text-red-500 font-bold opacity-80">✕</span>
+                      </div>
+                    </div>
+
+                    {/* Godinez Premium Card - Foreground, vibrant, floating */}
+                    <div className="absolute w-[150px] h-[95px] rounded-xl bg-gradient-to-br from-[#2f0417] to-[#12020a] border border-[#f60566]/50 shadow-[0_10px_25px_rgba(246,5,102,0.25)] translate-x-4 translate-y-2 rotate-3 flex flex-col justify-between p-3 transition-transform duration-500 group-hover:translate-y-0 group-hover:scale-105 floating-gentle z-10">
+                      <div className="flex justify-between items-center">
+                        <div className="w-10 h-2 bg-[#f60566]/40 rounded"></div>
+                        <div className="w-3 h-3 rounded-full bg-[#00f0ff]/80 shadow-[0_0_8px_#00f0ff]"></div>
+                      </div>
+                      <div className="space-y-1.5">
+                        <div className="w-20 h-2 bg-white/60 rounded"></div>
+                        <div className="w-16 h-1.5 bg-white/30 rounded"></div>
+                      </div>
+                      <div className="flex justify-between items-center text-[8px] font-mono text-white/40">
+                        <span>ESTÉTICA PRO</span>
+                        <svg className="w-4 h-4 text-[#f60566] animate-pulse" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M11.48 3.499c-.191-.397-.736-.397-.927 0l-2.184 4.545-5.008.083c-.442.007-.62.556-.292.848l3.61 3.197-1.12 4.963c-.098.435.374.777.756.54l4.475-2.793 4.475 2.793c.382.237.854-.105.756-.54l-1.12-4.963 3.61-3.197c.328-.292.15-.841-.292-.848l-5.008-.083L11.48 3.5z" />
+                        </svg>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* CARD 3: Desarrollo moderno (col-span-1 lg:col-span-2) */}
+            <div className="bento-card group p-8 flex flex-col justify-between min-h-[320px] lg:col-span-2 reveal-on-scroll reveal-delay-300">
+              <div className="bento-card-glow-cyan top-10 left-10 group-hover:scale-125"></div>
+              
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center flex-grow">
+                {/* High-Impact Visual Graphic Element */}
+                <div className="lg:col-span-5 relative w-full h-[180px] bg-[#070104]/80 rounded-[24px] border border-[#00f0ff]/15 overflow-hidden flex flex-col p-4 justify-between group-hover:border-[#00f0ff]/35 transition-all duration-500 order-last lg:order-first">
+                  {/* Console Header */}
+                  <div className="flex items-center justify-between border-b border-white/5 pb-2">
+                    <div className="flex items-center gap-1.5">
+                      <span className="w-2.5 h-2.5 rounded-full bg-red-500/80"></span>
+                      <span className="w-2.5 h-2.5 rounded-full bg-yellow-500/80"></span>
+                      <span className="w-2.5 h-2.5 rounded-full bg-green-500/80"></span>
+                    </div>
+                    <span className="text-[8px] font-mono text-white/30 uppercase tracking-widest">VITE TERMINAL</span>
+                  </div>
+
+                  {/* Highlights code visualization */}
+                  <div className="console-code select-none pointer-events-none mt-2">
+                    <span className="comment">// Optimizando carga web</span><br />
+                    <span className="keyword">import</span> &#123; speed &#125; <span className="keyword">from</span> <span className="string">"godinez"</span>;<br />
+                    <span className="keyword">const</span> performance = <span className="function">load</span>(); <br />
+                    <span className="keyword">if</span> (performance === <span className="string">"slow"</span>) &#123; <span className="function">destroy</span>(); &#125;
+                  </div>
+
+                  {/* Metrics Row */}
+                  <div className="flex justify-between items-center pt-2 border-t border-white/5 mt-2">
+                    <span className="text-[10px] font-mono text-[#00f0ff] font-bold">SPEED: 99/100</span>
+                    <span className="text-[10px] font-mono text-[#10b981] font-bold">SEO ACTIVE</span>
+                  </div>
+                </div>
+
+                {/* Text Content */}
+                <div className="space-y-4 lg:col-span-7 z-10">
+                  <div className="inline-block px-2.5 py-1 rounded-full bg-[#00f0ff]/10 border border-[#00f0ff]/20 text-[9px] font-mono tracking-widest text-[#00f0ff] uppercase">
+                    RENDIMIENTO Y SEO
+                  </div>
+                  <div className="space-y-2">
+                    <h3 className="text-2xl font-bold text-white tracking-wide group-hover:text-[#00f0ff] transition-colors duration-300">
+                      Desarrollo moderno
+                    </h3>
+                    <p className="text-xs sm:text-sm text-white/60 font-light leading-relaxed group-hover:text-white/80 transition-colors duration-300">
+                      Sitios rápidos, visuales y diseñados para convertir.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* CARD 4: Ideas frescas (col-span-1) */}
+            <div className="bento-card group p-8 flex flex-col justify-between min-h-[320px] reveal-on-scroll reveal-delay-400">
+              <div className="bento-card-glow-pink -top-10 -right-10 group-hover:scale-125"></div>
+              
+              <div className="space-y-6 relative z-10">
+                {/* Upper row: icon and date badge */}
+                <div className="flex justify-between items-start">
+                  <div className="w-12 h-12 rounded-2xl bg-[#f60566]/10 border border-[#f60566]/20 flex items-center justify-center group-hover:bg-[#f60566] group-hover:scale-110 transition-all duration-500">
+                    <svg className="w-6 h-6 text-[#f60566] group-hover:text-white transition-colors" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
+                    </svg>
+                  </div>
+                  <div className="inline-block px-2.5 py-1 rounded-full bg-white/5 border border-white/10 text-[9px] font-mono tracking-widest text-white/50 uppercase">
+                    MINDSET ACTIVO
+                  </div>
+                </div>
+
+                {/* Text Content */}
+                <div className="space-y-2">
+                  <h3 className="text-xl font-bold text-white tracking-wide group-hover:text-[#f60566] transition-colors duration-300">
+                    Ideas frescas
+                  </h3>
+                  <p className="text-xs sm:text-sm text-white/60 font-light leading-relaxed group-hover:text-white/80 transition-colors duration-300">
+                    Somos una agencia nueva con mentalidad actual.
+                  </p>
+                </div>
+              </div>
+
+              {/* Graphic element representing freshness */}
+              <div className="relative h-20 w-full flex items-center justify-center bg-black/35 rounded-2xl border border-white/5 overflow-hidden group-hover:border-[#f60566]/20 transition-all duration-500">
+                <div className="absolute inset-0 bg-gradient-to-t from-[#f60566]/10 to-transparent"></div>
+                <span className="text-3xl font-extrabold tracking-wider text-white/10 select-none group-hover:text-[#f60566]/20 group-hover:scale-105 transition-all duration-500 font-mono">EST. 2026</span>
+                <div className="absolute bottom-2 flex items-center gap-1.5 text-[8px] font-mono text-white/40">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#f60566]"></span>
+                  <span>CONEXIÓN CON TENDENCIAS ACTUALES</span>
+                </div>
+              </div>
+            </div>
+
+            {/* CARD 5: Estrategia + creatividad (col-span-1) */}
+            <div className="bento-card group p-8 flex flex-col justify-between min-h-[320px] reveal-on-scroll reveal-delay-100">
+              <div className="bento-card-glow-pink -bottom-10 -right-10 group-hover:scale-125"></div>
+              
+              <div className="space-y-6 relative z-10">
+                {/* Upper row: icon and status indicator */}
+                <div className="flex justify-between items-start">
+                  <div className="w-12 h-12 rounded-2xl bg-[#f60566]/10 border border-[#f60566]/20 flex items-center justify-center group-hover:bg-[#f60566] group-hover:scale-110 transition-all duration-500">
+                    <svg className="w-6 h-6 text-[#f60566] group-hover:text-white transition-colors" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 6a7.5 7.5 0 107.5 7.5h-7.5V6z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 10.5H21A7.5 7.5 0 0013.5 3v7.5z" />
+                    </svg>
+                  </div>
+                  <div className="inline-block px-2.5 py-1 rounded-full bg-white/5 border border-white/10 text-[9px] font-mono tracking-widest text-white/50 uppercase">
+                    DISEÑO CON PROPÓSITO
+                  </div>
+                </div>
+
+                {/* Text Content */}
+                <div className="space-y-2">
+                  <h3 className="text-xl font-bold text-white tracking-wide group-hover:text-[#f60566] transition-colors duration-300">
+                    Estrategia + creatividad
+                  </h3>
+                  <p className="text-xs sm:text-sm text-white/60 font-light leading-relaxed group-hover:text-white/80 transition-colors duration-300">
+                    No solo hacemos que se vea bien; hacemos que funcione.
+                  </p>
+                </div>
+              </div>
+
+              {/* Graphic element representing integration of strategy and creativity */}
+              <div className="relative h-20 w-full flex items-center justify-around bg-black/35 rounded-2xl border border-white/5 overflow-hidden group-hover:border-[#f60566]/20 transition-all duration-500 px-4">
+                <div className="flex flex-col items-center gap-1">
+                  <span className="text-[8px] font-mono text-white/40">ESTRATEGIA</span>
+                  <div className="w-8 h-8 rounded-lg bg-white/5 border border-white/15 flex items-center justify-center text-[#00f0ff] group-hover:rotate-90 transition-transform duration-700">
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.43l-1.003.828c-.293.241-.438.613-.43.992a7.723 7.723 0 010 .255c-.008.378.137.75.43.99l1.004.831a1.125 1.125 0 01.26 1.43l-1.297 2.247a1.125 1.125 0 01-1.37.491l-1.216-.456c-.356-.133-.751-.072-1.076.124a6.57 6.57 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.94-1.11.94h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.43l1.004-.83c.292-.24.437-.613.43-.992a6.932 6.932 0 010-.255c.007-.378-.138-.75-.43-.99l-1.004-.831a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.645-.869l.214-1.28z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                  </div>
+                </div>
+                <div className="h-[1px] bg-gradient-to-r from-[#00f0ff] to-[#f60566] w-12 relative">
+                  <div className="absolute -top-1 left-5 w-2.5 h-2.5 rounded-full bg-white shadow-[0_0_8px_#ffffff] animate-ping"></div>
+                </div>
+                <div className="flex flex-col items-center gap-1">
+                  <span className="text-[8px] font-mono text-white/40">CREATIVIDAD</span>
+                  <div className="w-8 h-8 rounded-lg bg-white/5 border border-white/15 flex items-center justify-center text-[#f60566] group-hover:scale-110 transition-transform duration-500">
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 21l5.096-.813a2 2 0 001.414-.586l6.096-6.096a2 2 0 00-.707-3.414l-5.096-.813a2 2 0 00-1.414.586L9.227 15.904a2 2 0 00-.586 1.414z" />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* CARD 6: Equipo multidisciplinario (col-span-1 lg:col-span-2) */}
+            <div className="bento-card group p-8 flex flex-col justify-between min-h-[320px] lg:col-span-2 reveal-on-scroll reveal-delay-200">
+              <div className="bento-card-glow-cyan top-10 right-10 group-hover:scale-125"></div>
+              
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center flex-grow">
+                {/* Text Content */}
+                <div className="space-y-4 lg:col-span-7 z-10">
+                  <div className="inline-block px-2.5 py-1 rounded-full bg-[#00f0ff]/10 border border-[#00f0ff]/20 text-[9px] font-mono tracking-widest text-[#00f0ff] uppercase">
+                    3 ESPECIALIDADES
+                  </div>
+                  <div className="space-y-2">
+                    <h3 className="text-2xl font-bold text-white tracking-wide group-hover:text-[#f60566] transition-colors duration-300">
+                      Equipo multidisciplinario
+                    </h3>
+                    <p className="text-xs sm:text-sm text-white/60 font-light leading-relaxed group-hover:text-white/80 transition-colors duration-300">
+                      Diseño, contenido y desarrollo trabajando juntos.
+                    </p>
+                  </div>
+                </div>
+
+                {/* High-Impact Visual Graphic Element showing three intersecting disciplines */}
+                <div className="lg:col-span-5 relative w-full h-[180px] bg-black/40 rounded-[24px] border border-white/5 overflow-hidden flex items-center justify-center group-hover:border-[#00f0ff]/35 transition-all duration-500">
+                  <div className="relative w-[150px] h-[150px] flex items-center justify-center">
+                    
+                    {/* Ring Path Overlay */}
+                    <div className="absolute w-[110px] h-[110px] rounded-full border border-white/5 animate-spin-3d opacity-25"></div>
+
+                    {/* Circle 1: CM (Cherry) */}
+                    <div className="absolute w-[50px] h-[50px] rounded-full bg-[#f60566]/15 border border-[#f60566]/40 flex flex-col items-center justify-center -translate-y-6 transition-all duration-500 group-hover:-translate-y-8 z-10">
+                      <span className="text-[8px] font-bold text-white font-mono">CM</span>
+                      <span className="text-[6px] text-white/60">CONTENIDO</span>
+                    </div>
+
+                    {/* Circle 2: Diseñador (White) */}
+                    <div className="absolute w-[50px] h-[50px] rounded-full bg-white/5 border border-white/20 flex flex-col items-center justify-center -translate-x-6 translate-y-4 transition-all duration-500 group-hover:-translate-x-8 group-hover:translate-y-6">
+                      <span className="text-[8px] font-bold text-white font-mono">ART</span>
+                      <span className="text-[6px] text-white/60">DISEÑO</span>
+                    </div>
+
+                    {/* Circle 3: Programador (Cyan) */}
+                    <div className="absolute w-[50px] h-[50px] rounded-full bg-[#00f0ff]/10 border border-[#00f0ff]/30 flex flex-col items-center justify-center translate-x-6 translate-y-4 transition-all duration-500 group-hover:translate-x-8 group-hover:translate-y-6">
+                      <span className="text-[8px] font-bold text-white font-mono">DEV</span>
+                      <span className="text-[6px] text-white/60">CÓDIGO</span>
+                    </div>
+
+                    {/* Connection indicators */}
+                    <div className="absolute w-2 h-2 rounded-full bg-white shadow-[0_0_8px_#ffffff] z-20 animate-pulse"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
           </div>
         </div>
       </section>
