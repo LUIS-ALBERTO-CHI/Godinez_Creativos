@@ -17,6 +17,10 @@
   --text-muted: #a68b98;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   background-color: var(--bg-color);
   background-image: var(--bg-gradient);
@@ -49,6 +53,24 @@ body {
   border: 1px solid var(--glass-border);
   box-shadow: 0 10px 40px 0 rgba(0, 0, 0, 0.5);
   transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.ios-glass {
+  background: rgba(13, 2, 8, 0.42) !important;
+  backdrop-filter: blur(36px) saturate(210%) !important;
+  -webkit-backdrop-filter: blur(36px) saturate(210%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  box-shadow: 
+    0 10px 40px rgba(0, 0, 0, 0.45),
+    inset 0 1px 1px rgba(255, 255, 255, 0.15) !important;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.ios-glass:hover {
+  border-color: rgba(246, 5, 102, 0.3) !important;
+  box-shadow: 
+    0 15px 45px rgba(246, 5, 102, 0.12),
+    inset 0 1px 1px rgba(255, 255, 255, 0.22) !important;
 }
 
 .glass-panel-hover:hover {
