@@ -470,12 +470,16 @@ body {
 /* Bento Grid Glowing Card System */
 .bento-card {
   position: relative;
-  background: rgba(18, 4, 11, 0.5);
-  border: 1px solid rgba(255, 0, 104, 0.1);
+  background: rgba(30, 6, 17, 0.72);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  border: 1.5px solid rgba(255, 0, 104, 0.22);
   border-radius: 28px;
   overflow: hidden;
   transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
+  box-shadow: 
+    0 12px 40px rgba(0, 0, 0, 0.75), 
+    inset 0 1px 1px rgba(255, 255, 255, 0.08);
 }
 
 .bento-card::before {
@@ -483,22 +487,24 @@ body {
   position: absolute;
   inset: 0;
   border-radius: inherit;
-  padding: 1px;
-  background: linear-gradient(135deg, rgba(255, 0, 104, 0.3), transparent 40%, rgba(0, 240, 255, 0.15));
+  padding: 1.5px;
+  background: linear-gradient(135deg, rgba(255, 0, 104, 0.45), transparent 45%, rgba(0, 240, 255, 0.3));
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
   pointer-events: none;
-  opacity: 0.5;
+  opacity: 0.55;
   transition: opacity 0.5s ease;
 }
 
 .bento-card:hover {
-  transform: translateY(-4px) scale(1.01);
-  border-color: rgba(255, 0, 104, 0.35);
+  transform: translateY(-5px) scale(1.012);
+  border-color: rgba(255, 0, 104, 0.55);
+  background: rgba(40, 8, 22, 0.85);
   box-shadow: 
-    0 20px 40px rgba(255, 0, 104, 0.08),
-    0 0 30px rgba(0, 240, 255, 0.04);
+    0 25px 50px rgba(255, 0, 104, 0.18),
+    0 0 35px rgba(0, 240, 255, 0.08),
+    inset 0 1px 1px rgba(255, 255, 255, 0.18);
 }
 
 .bento-card:hover::before {
@@ -507,23 +513,23 @@ body {
 
 .bento-card-glow-pink {
   position: absolute;
-  width: 150px;
-  height: 150px;
+  width: 250px;
+  height: 250px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(246, 5, 102, 0.15) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(246, 5, 102, 0.3) 0%, transparent 70%);
   pointer-events: none;
-  filter: blur(20px);
+  filter: blur(35px);
   transition: all 0.6s ease;
 }
 
 .bento-card-glow-cyan {
   position: absolute;
-  width: 180px;
-  height: 180px;
+  width: 280px;
+  height: 280px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(0, 240, 255, 0.12) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(0, 240, 255, 0.22) 0%, transparent 70%);
   pointer-events: none;
-  filter: blur(20px);
+  filter: blur(35px);
   transition: all 0.6s ease;
 }
 
