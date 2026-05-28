@@ -467,7 +467,6 @@ function App() {
               </div>
             </button>
           </div>
-
         </div>
       </section>
 
@@ -496,14 +495,14 @@ function App() {
                   <h3 className="text-2xl font-bold text-white tracking-tight leading-none uppercase font-outfit">
                     Inicia tu <span className="text-[#f60566]">Proyecto</span>
                   </h3>
-                  <p className="text-white/60 text-xs leading-relaxed max-w-sm mx-auto font-light">
+                  <p className="text-white/80 text-xs leading-relaxed max-w-sm mx-auto font-light">
                     Consigue una propuesta estratégica a la medida y sin costo en menos de 24 horas.
                   </p>
                 </div>
 
                 {/* Field: Name */}
                 <div className="group flex flex-col gap-1.5 w-full">
-                  <label className="text-[10px] text-white/40 tracking-wider font-mono uppercase font-bold group-focus-within:text-[#00f0ff] transition-colors">
+                  <label className="text-[10px] text-white/70 tracking-wider font-mono uppercase font-bold group-focus-within:text-[#00f0ff] transition-colors">
                     Tu Nombre o Empresa
                   </label>
                   <div className="relative flex items-center w-full">
@@ -517,7 +516,7 @@ function App() {
                       required
                       value={clientName}
                       onChange={(e) => setClientName(e.target.value)}
-                      className="w-full pl-11 pr-4 py-3 bg-[#11020a]/80 border border-white/10 group-focus-within:border-[#f60566] focus:border-[#f60566] focus:outline-none focus:ring-1 focus:ring-[#f60566]/30 text-white rounded-2xl text-sm transition-all placeholder:text-white/20"
+                      className="w-full pl-11 pr-4 py-3 bg-[#11020a]/80 border border-white/10 group-focus-within:border-[#f60566] focus:border-[#f60566] focus:outline-none focus:ring-1 focus:ring-[#f60566]/30 text-white rounded-2xl text-sm transition-all placeholder:text-white/40"
                       placeholder="Ej. Carlos - Pizzería La Toscana"
                     />
                   </div>
@@ -525,7 +524,7 @@ function App() {
 
                 {/* Field: Contact */}
                 <div className="group flex flex-col gap-1.5 w-full">
-                  <label className="text-[10px] text-white/40 tracking-wider font-mono uppercase font-bold group-focus-within:text-[#00f0ff] transition-colors">
+                  <label className="text-[10px] text-white/70 tracking-wider font-mono uppercase font-bold group-focus-within:text-[#00f0ff] transition-colors">
                     WhatsApp o Correo
                   </label>
                   <div className="relative flex items-center w-full">
@@ -539,7 +538,7 @@ function App() {
                       required
                       value={contactInfo}
                       onChange={(e) => setContactInfo(e.target.value)}
-                      className="w-full pl-11 pr-4 py-3 bg-[#11020a]/80 border border-white/10 group-focus-within:border-[#f60566] focus:border-[#f60566] focus:outline-none focus:ring-1 focus:ring-[#f60566]/30 text-white rounded-2xl text-sm transition-all placeholder:text-white/20"
+                      className="w-full pl-11 pr-4 py-3 bg-[#11020a]/80 border border-white/10 group-focus-within:border-[#f60566] focus:border-[#f60566] focus:outline-none focus:ring-1 focus:ring-[#f60566]/30 text-white rounded-2xl text-sm transition-all placeholder:text-white/40"
                       placeholder="Ej. hola@empresa.com o +52 ..."
                     />
                   </div>
@@ -547,7 +546,7 @@ function App() {
 
                 {/* Field: Sales Hurdle */}
                 <div className="group flex flex-col gap-1.5 w-full">
-                  <label className="text-[10px] text-white/40 tracking-wider font-mono uppercase font-bold group-focus-within:text-[#00f0ff] transition-colors">
+                  <label className="text-[10px] text-white/70 tracking-wider font-mono uppercase font-bold group-focus-within:text-[#00f0ff] transition-colors">
                     ¿Qué te gustaría lograr o vender más?
                   </label>
                   <div className="relative flex items-center w-full">
@@ -560,7 +559,7 @@ function App() {
                       type="text"
                       value={salesHurdle}
                       onChange={(e) => setSalesHurdle(e.target.value)}
-                      className="w-full pl-11 pr-4 py-3 bg-[#11020a]/80 border border-white/10 group-focus-within:border-[#f60566] focus:border-[#f60566] focus:outline-none focus:ring-1 focus:ring-[#f60566]/30 text-white rounded-2xl text-sm transition-all placeholder:text-white/20"
+                      className="w-full pl-11 pr-4 py-3 bg-[#11020a]/80 border border-white/10 group-focus-within:border-[#f60566] focus:border-[#f60566] focus:outline-none focus:ring-1 focus:ring-[#f60566]/30 text-white rounded-2xl text-sm transition-all placeholder:text-white/40"
                       placeholder="Ej. Atraer clientes calificados por redes sociales"
                     />
                   </div>
@@ -589,7 +588,7 @@ function App() {
                   <h3 className="text-2xl font-bold text-white neon-glow font-outfit uppercase">
                     ¡Solicitud <span className="text-[#10b981]">Enviada</span>!
                   </h3>
-                  <p className="text-white/60 text-xs leading-relaxed max-w-xs font-light">
+                  <p className="text-white/80 text-xs leading-relaxed max-w-xs font-light">
                     Estamos analizando tu presencia digital. Te contactaremos en menos de 24 horas para agendar tu sesión inicial.
                   </p>
                 </div>
