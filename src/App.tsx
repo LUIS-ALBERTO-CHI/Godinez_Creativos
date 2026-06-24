@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Share2, Sparkles, PenTool, Code2, Clapperboard, Target } from 'lucide-react';
 
 function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -8,6 +9,8 @@ function App() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [activeCategory, setActiveCategory] = useState('Todos');
+  const [activeSection, setActiveSection] = useState('inicio');
 
   // Sound chime synthesizer for micro-interactions (disabled)
   const playChime = (type: 'success' | 'click' | 'close') => {
@@ -15,27 +18,39 @@ function App() {
   };
 
   useEffect(() => {
-    const observerOptions = {
-      root: null,
-      rootMargin: '0px -5% -5% 0px',
-      threshold: 0.1,
-    };
-
-    const handleIntersect = (entries: IntersectionObserverEntry[], observer: IntersectionObserver) => {
+    // Scroll-reveal observer
+    const revealOptions = { root: null, rootMargin: '0px -5% -5% 0px', threshold: 0.1 };
+    const revealObserver = new IntersectionObserver((entries, obs) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
           entry.target.classList.add('revealed');
-          observer.unobserve(entry.target);
+          obs.unobserve(entry.target);
         }
       });
-    };
+    }, revealOptions);
+    const revealEls = document.querySelectorAll('.reveal-on-scroll');
+    revealEls.forEach((el) => revealObserver.observe(el));
 
-    const observer = new IntersectionObserver(handleIntersect, observerOptions);
-    const elements = document.querySelectorAll('.reveal-on-scroll');
-    elements.forEach((el) => observer.observe(el));
+    // Active section observer — tracks which section is in viewport
+    const sectionIds = ['inicio', 'servicios', 'diferencia', 'portafolio'];
+    const sectionObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveSection(entry.target.id);
+          }
+        });
+      },
+      { root: null, rootMargin: '-40% 0px -40% 0px', threshold: 0 }
+    );
+    sectionIds.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) sectionObserver.observe(el);
+    });
 
     return () => {
-      elements.forEach((el) => observer.unobserve(el));
+      revealEls.forEach((el) => revealObserver.unobserve(el));
+      sectionObserver.disconnect();
     };
   }, []);
 
@@ -52,64 +67,206 @@ function App() {
     {
       title: "Social Media",
       desc: "Hacemos que la gente hable de ti. Llenamos tus redes de contenido que engancha de verdad y convierte a simples seguidores en fans y clientes leales.",
-      icon: (
-        <svg className="w-8 h-8 text-[#f60566] group-hover:text-[#00f0ff] transition-all duration-500 ease-out" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
-        </svg>
-      ),
+      icon: <Share2 strokeWidth={1.5} />,
       badge: "MÁS SEGUIDORES Y CLIENTES"
     },
     {
       title: "Branding",
       desc: "Le damos una cara bonita y una personalidad única a tu negocio. Logotipos, colores y diseños memorables para que no te parezcas a nadie más.",
-      icon: (
-        <svg className="w-8 h-8 text-[#f60566] group-hover:text-[#00f0ff] transition-all duration-500 ease-out" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z" />
-        </svg>
-      ),
+      icon: <Sparkles strokeWidth={1.5} />,
       badge: "DISEÑO DE MARCA ÚNICA"
     },
     {
       title: "Diseño Gráfico",
       desc: "Creamos imágenes y publicaciones tan llamativas que tus clientes no podrán evitar detenerse a verlas mientras deslizan su pantalla.",
-      icon: (
-        <svg className="w-8 h-8 text-[#f60566] group-hover:text-[#00f0ff] transition-all duration-500 ease-out" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 21l5.096-.813a2 2 0 001.414-.586l6.096-6.096a2 2 0 00-.707-3.414l-5.096-.813a2 2 0 00-1.414.586L9.227 15.904a2 2 0 00-.586 1.414z" />
-          <path strokeLinecap="round" strokeLinejoin="round" d="M17.5 7.5l3 3M3 13.5h7.5M3 16.5h4.5M3 10.5h10.5" />
-        </svg>
-      ),
+      icon: <PenTool strokeWidth={1.5} />,
       badge: "IMÁGENES QUE ATRAEN"
     },
     {
       title: "Desarrollo Web",
       desc: "Creamos páginas web rápidas, sencillas de usar y muy atractivas que funcionan perfecto en celulares y están listas para vender tus servicios.",
-      icon: (
-        <svg className="w-8 h-8 text-[#f60566] group-hover:text-[#00f0ff] transition-all duration-500 ease-out" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M17.25 6.75L22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3l-4.5 16.5" />
-        </svg>
-      ),
+      icon: <Code2 strokeWidth={1.5} />,
       badge: "TU SITIO WEB PERFECTO"
     },
     {
       title: "Contenido Creativo",
       desc: "Hacemos videos entretenidos en TikTok y Reels que se vuelven populares y textos ingeniosos que convencen a cualquiera de comprarte.",
-      icon: (
-        <svg className="w-8 h-8 text-[#f60566] group-hover:text-[#00f0ff] transition-all duration-500 ease-out" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M15.362 5.214A8.252 8.252 0 0112 21 8.25 8.25 0 016.038 7.048 8.287 8.287 0 009 9.6a8.983 8.983 0 013.361-6.867 8.21 8.21 0 003 2.48z" />
-          <path strokeLinecap="round" strokeLinejoin="round" d="M12 18a3.75 3.75 0 00.495-7.467 5.99 5.99 0 00-1.925 3.546 5.974 5.974 0 01-2.133-1A3.75 3.75 0 0012 18z" />
-        </svg>
-      ),
+      icon: <Clapperboard strokeWidth={1.5} />,
       badge: "VIDEOS Y TEXTOS DIVERTIDOS"
     },
     {
       title: "Estrategia Digital",
       desc: "Ponemos tus anuncios frente a las personas indicadas para que cada centavo que inviertas se traduzca en nuevas llamadas, mensajes y ventas.",
-      icon: (
-        <svg className="w-8 h-8 text-[#f60566] group-hover:text-[#00f0ff] transition-all duration-500 ease-out" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v5.75c0 .621-.504 1.125-1.125 1.125h-2.25A1.125 1.125 0 013 18.875v-5.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v10.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v14.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" />
-        </svg>
-      ),
+      icon: <Target strokeWidth={1.5} />,
       badge: "ANUNCIOS EFECTIVOS"
+    }
+  ];
+
+  const projects = [
+    {
+      title: "Nova Coffee",
+      category: "Branding",
+      desc: "Identidad visual y empaques minimalistas para café de especialidad.",
+      mockup: (
+        <div className="w-full h-full bg-gradient-to-br from-[#2a0c1a] to-[#0e0208] flex flex-col items-center justify-center p-6 relative">
+          {/* Subtle circle mesh */}
+          <div className="absolute w-36 h-36 rounded-full border border-[#f60566]/20 pulse-ring-slow"></div>
+          {/* Abstract coffee bag silhouette built of modern vector rectangles */}
+          <div className="w-20 h-32 bg-gradient-to-t from-[#f60566]/25 to-white/5 border border-[#f60566]/40 rounded-xl flex flex-col justify-between p-3.5 z-10 shadow-lg group-hover:scale-105 transition-transform duration-500">
+            <div className="w-6 h-1.5 bg-[#f60566]/60 rounded-full"></div>
+            <div className="flex flex-col items-center gap-1.5">
+              <span className="w-4 h-4 rounded-full bg-[#f60566] inline-block shadow-[0_0_8px_#f60566]"></span>
+              <span className="text-[6px] font-mono tracking-widest text-white/50">NOVA</span>
+            </div>
+            <div className="w-full h-1 bg-[#00f0ff]/30 rounded-full"></div>
+          </div>
+          {/* Floating vector beans */}
+          <div className="absolute top-1/4 right-1/4 w-3 h-3 rounded-full bg-[#f60566]/30 border border-[#f60566]/50 floating-gentle"></div>
+          <div className="absolute bottom-1/4 left-1/4 w-2.5 h-2.5 rounded-full bg-[#00f0ff]/20 border border-[#00f0ff]/40 floating-gentle-reverse"></div>
+        </div>
+      )
+    },
+    {
+      title: "Vanta Studio",
+      category: "Web Design",
+      desc: "Portafolio digital e interfaz de diseño arquitectónico 3D.",
+      mockup: (
+        <div className="w-full h-full bg-gradient-to-br from-[#0c0f18] to-[#04060b] flex items-center justify-center p-6 relative">
+          <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.01)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.01)_1px,transparent_1px)] bg-[size:10px_10px]"></div>
+          {/* Wireframe box layout */}
+          <div className="w-40 h-24 rounded-lg border border-[#00f0ff]/40 bg-black/75 p-2 flex flex-col justify-between relative shadow-lg group-hover:rotate-1 transition-transform duration-500 z-10">
+            <div className="flex justify-between items-center border-b border-white/10 pb-1.5">
+              <div className="flex gap-1">
+                <span className="w-1.5 h-1.5 rounded-full bg-red-500/80"></span>
+                <span className="w-1.5 h-1.5 rounded-full bg-yellow-500/80"></span>
+                <span className="w-1.5 h-1.5 rounded-full bg-green-500/80"></span>
+              </div>
+              <span className="text-[5px] font-mono text-white/30 uppercase tracking-widest">vanta.studio</span>
+            </div>
+            {/* 3D wireframe mesh simulation */}
+            <div className="flex-grow flex items-center justify-center py-1">
+              <svg className="w-12 h-12 text-[#00f0ff]/40" fill="none" stroke="currentColor" strokeWidth="1" viewBox="0 0 24 24">
+                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+              </svg>
+            </div>
+            <div className="flex justify-between items-center text-[5px] font-mono text-white/40">
+              <span>ACTIVE LAYOUT</span>
+              <span className="text-[#00f0ff]">3D CORE</span>
+            </div>
+          </div>
+        </div>
+      )
+    },
+    {
+      title: "Lunar Fit",
+      category: "Social Media",
+      desc: "Estrategia visual y feed dinámico para marca de bienestar.",
+      mockup: (
+        <div className="w-full h-full bg-gradient-to-br from-[#1e072b] to-[#0c0214] flex items-center justify-center p-6 relative">
+          <div className="absolute top-1/2 left-1/2 w-44 h-44 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#f60566]/5 blur-2xl"></div>
+          {/* Vertical phone screen representing dynamic feed */}
+          <div className="w-24 h-40 bg-[#0f0418] border border-[#f60566]/40 rounded-[20px] p-2 flex flex-col gap-2 relative shadow-lg group-hover:-translate-y-1 transition-transform duration-500 z-10 overflow-hidden">
+            <div className="flex items-center gap-1">
+              <div className="w-3 h-3 rounded-full bg-white/20"></div>
+              <div className="w-8 h-1 bg-white/35 rounded-full"></div>
+            </div>
+            {/* Circular fitness rings */}
+            <div className="flex-grow flex items-center justify-center relative">
+              <div className="w-14 h-14 rounded-full border border-dashed border-[#f60566]/30 flex items-center justify-center">
+                <div className="w-10 h-10 rounded-full border-2 border-[#f60566] flex items-center justify-center shadow-[0_0_10px_rgba(246,5,102,0.3)]">
+                  <div className="w-6 h-6 rounded-full border border-[#00f0ff] animate-pulse"></div>
+                </div>
+              </div>
+            </div>
+            <div className="space-y-1">
+              <div className="w-full h-1 bg-white/20 rounded-full"></div>
+              <div className="w-2/3 h-1 bg-white/20 rounded-full"></div>
+            </div>
+          </div>
+        </div>
+      )
+    },
+    {
+      title: "Zento",
+      category: "Desarrollo Web",
+      desc: "Plataforma e-commerce optimizada para conversiones.",
+      mockup: (
+        <div className="w-full h-full bg-gradient-to-br from-[#021815] to-[#010908] flex items-center justify-center p-6 relative">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_right,rgba(0,240,255,0.06),transparent_60%)]"></div>
+          {/* E-commerce transaction dashboard representation */}
+          <div className="w-36 h-28 rounded-lg border border-[#00f0ff]/30 bg-black/60 p-3 flex flex-col justify-between shadow-lg group-hover:scale-[1.03] transition-transform duration-500 z-10">
+            <div className="flex justify-between items-center">
+              <div className="flex items-center gap-1.5">
+                <div className="w-1.5 h-1.5 rounded-full bg-[#00f0ff] shadow-[0_0_5px_#00f0ff]"></div>
+                <span className="text-[5px] font-mono text-[#00f0ff] uppercase tracking-wider font-bold">ZENTO CHECKOUT</span>
+              </div>
+              <span className="text-[6px] font-mono text-white/30">99.8% UP</span>
+            </div>
+            {/* Sales visual chart bar outline */}
+            <div className="space-y-1.5 py-1">
+              <div className="flex items-end gap-1 h-8 justify-around">
+                <div className="w-2 h-3 bg-white/10 rounded-sm"></div>
+                <div className="w-2 h-5 bg-white/20 rounded-sm"></div>
+                <div className="w-2 h-4 bg-white/15 rounded-sm"></div>
+                <div className="w-2 h-7 bg-[#00f0ff]/70 rounded-sm shadow-[0_0_8px_#00f0ff]"></div>
+              </div>
+            </div>
+            <div className="flex justify-between items-center text-[5px] font-mono text-white/40">
+              <span>LOAD TIME: 0.12s</span>
+              <span className="text-[#10b981] font-bold">SEO RATED A</span>
+            </div>
+          </div>
+        </div>
+      )
+    },
+    {
+      title: "Aurea Skin",
+      category: "Contenido Creativo",
+      desc: "Dirección de arte y campaña digital de cosmética de lujo.",
+      mockup: (
+        <div className="w-full h-full bg-gradient-to-br from-[#260f1b] to-[#0f030a] flex items-center justify-center p-6 relative">
+          {/* Decorative fluid neon spots for beauty theme */}
+          <div className="absolute top-1/4 left-1/4 w-28 h-28 rounded-full bg-[#f60566]/10 blur-xl pointer-events-none"></div>
+          {/* Overlapping aesthetic shapes representing cosmetic layout */}
+          <div className="relative w-32 h-32 flex items-center justify-center">
+            <div className="absolute w-20 h-28 rounded-full border border-[#f60566]/30 rotate-12 flex items-center justify-center">
+              <div className="w-16 h-24 rounded-full border-2 border-[#f60566]/50 shadow-[0_0_15px_rgba(246,5,102,0.2)]"></div>
+            </div>
+            <div className="absolute w-12 h-12 rounded-full bg-[#00f0ff]/20 border border-[#00f0ff]/40 flex items-center justify-center shadow-md floating-gentle">
+              <span className="text-[6px] font-mono font-bold text-white tracking-widest">AUREA</span>
+            </div>
+          </div>
+        </div>
+      )
+    },
+    {
+      title: "Flux Media",
+      category: "Concept Projects",
+      desc: "Rediseño conceptual y dirección de arte para reproductor musical.",
+      mockup: (
+        <div className="w-full h-full bg-gradient-to-br from-[#071329] to-[#020712] flex items-center justify-center p-6 relative">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.015)_0%,transparent_80%)]"></div>
+          {/* Audio interface visualization mockup */}
+          <div className="w-36 h-26 rounded-xl border border-white/10 bg-black/75 p-3 flex flex-col justify-between shadow-lg group-hover:scale-105 transition-transform duration-500 z-10">
+            <div className="flex justify-between items-center">
+              <span className="text-[5px] font-mono text-white/40 uppercase font-bold tracking-widest">FLUX MUSIC PLAYER</span>
+              <span className="w-1.5 h-1.5 rounded-full bg-red-500 shadow-[0_0_4px_#ef4444]"></span>
+            </div>
+            {/* Waveform lines */}
+            <div className="flex items-center gap-1 justify-center py-2">
+              <div className="w-1 h-3 bg-[#f60566] rounded-full shadow-[0_0_5px_#f60566]"></div>
+              <div className="w-1 h-5 bg-[#00f0ff] rounded-full shadow-[0_0_5px_#00f0ff] animate-pulse"></div>
+              <div className="w-1 h-7 bg-white rounded-full"></div>
+              <div className="w-1 h-4 bg-[#f60566] rounded-full shadow-[0_0_5px_#f60566]"></div>
+              <div className="w-1 h-2 bg-[#00f0ff] rounded-full shadow-[0_0_5px_#00f0ff]"></div>
+            </div>
+            <div className="flex justify-between items-center text-[5px] font-mono text-white/40">
+              <span>CONCEPT OS</span>
+              <span>128BPM</span>
+            </div>
+          </div>
+        </div>
+      )
     }
   ];
 
@@ -147,53 +304,75 @@ function App() {
       <div className="ambient-orb orb-cherry-left"></div>
       <div className="ambient-orb orb-cherry-main"></div>
 
-      {/* Navigation Header */}
-      <nav className="fixed top-0 left-0 w-full z-50 bg-black/75 backdrop-blur-lg border-b border-white/5 px-6 md:px-16 py-4 transition-all duration-300">
-        <div className="flex justify-between items-center max-w-7xl mx-auto">
-          {/* LEFT: Logo brand anchor */}
-          <div className="flex-1 flex items-center justify-start">
-            <a href="#" className="flex items-center gap-3 transition-transform hover:scale-105 active:scale-95">
-              <img
-                src="/icon.jpeg"
-                alt="Godínez Creativos"
-                className="h-8 w-8 rounded-full object-cover border border-white/20 shadow-[0_0_10px_rgba(246,5,102,0.2)]"
-              />
-              <span className="text-white font-extrabold tracking-wider uppercase font-outfit text-sm hidden sm:inline-block">
-                Godínez <span className="text-[#f60566]">Creativos</span>
-              </span>
-            </a>
+      {/* Navigation Header — Floating Pill (exact reference match) */}
+      <nav className="fixed top-4 left-0 right-0 z-50 flex justify-center px-6 pointer-events-none">
+        <div className="pointer-events-auto w-full max-w-5xl flex items-center justify-between px-5 py-2 rounded-full bg-[#111] border border-white/15 shadow-[0_4px_24px_rgba(0,0,0,0.6)]">
+
+          {/* LEFT: Logo */}
+          <a href="#" className="flex items-center gap-2.5 shrink-0">
+            <img
+              src="/icon.jpeg"
+              alt="Godínez Creativos"
+              className="h-7 w-7 rounded-full object-cover border border-white/20"
+            />
+            <span className="text-white font-extrabold tracking-wider uppercase font-outfit text-xs hidden sm:inline-block">
+              Godínez <span className="text-[#f60566]">Creativos</span>
+            </span>
+          </a>
+
+          {/* CENTER: Nav links — active section gets white pill */}
+          <div className="hidden lg:flex items-center gap-1">
+            {([
+              { label: 'Inicio',           href: '#inicio',     id: 'inicio' },
+              { label: '¿Qué hacemos?',    href: '#servicios',  id: 'servicios' },
+              { label: '¿Por qué nosotros?', href: '#diferencia', id: 'diferencia' },
+              { label: 'Portafolio',       href: '#portafolio', id: 'portafolio' },
+            ] as const).map(({ label, href, id }) => (
+              <a
+                key={id}
+                href={href}
+                className={`px-4 py-1.5 rounded-full text-xs font-medium transition-all duration-200 ${
+                  activeSection === id
+                    ? 'bg-white text-black font-bold'
+                    : 'text-white/65 hover:text-white'
+                }`}
+              >
+                {label}
+              </a>
+            ))}
+            <button
+              onClick={(e) => { e.preventDefault(); openJoinModal(); }}
+              className={`px-4 py-1.5 rounded-full text-xs font-medium transition-all duration-200 ${
+                activeSection === 'contacto'
+                  ? 'bg-white text-black font-bold'
+                  : 'text-white/65 hover:text-white'
+              }`}
+            >
+              Contacto
+            </button>
           </div>
 
-          {/* CENTER: Navigation Links (Desktop Only) */}
-          <div className="hidden lg:flex items-center justify-center gap-10 text-xs sm:text-sm font-semibold tracking-widest uppercase font-outfit">
-            <a href="#" className="text-white/80 hover:text-[#f60566] transition-colors duration-300">Inicio</a>
-            <a href="#servicios" className="text-white/80 hover:text-[#f60566] transition-colors duration-300">¿Qué hacemos?</a>
-            <a href="#diferencia" className="text-white/80 hover:text-[#f60566] transition-colors duration-300">¿Por qué nosotros?</a>
-            <a href="#" onClick={(e) => { e.preventDefault(); openJoinModal(); }} className="text-white/80 hover:text-[#f60566] transition-colors duration-300">Contacto</a>
-          </div>
-
-          {/* RIGHT: CTA Button / Mobile Menu Toggle */}
-          <div className="flex-1 flex items-center justify-end gap-4">
-            {/* Desktop premium mini-CTA */}
+          {/* RIGHT: Contact pill button + mobile hamburger */}
+          <div className="flex items-center gap-2 shrink-0">
             <button
               onClick={() => openJoinModal()}
-              className="hidden lg:flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-[#f60566] to-[#ff0068] hover:scale-105 active:scale-95 text-white font-bold text-xs tracking-wider uppercase transition-all duration-300 border border-white/10 shadow-[0_0_15px_rgba(246,5,102,0.35)]"
+              className="hidden lg:block px-5 py-1.5 rounded-full bg-white text-black text-xs font-bold hover:bg-white/90 transition-colors duration-150 active:scale-95"
             >
               Comenzar
             </button>
 
-            {/* Mobile hamburger menu toggle (Visible on screens < 1024px) */}
+            {/* Mobile hamburger */}
             <button
               onClick={() => { playChime('click'); setIsMobileMenuOpen(!isMobileMenuOpen); }}
-              className="lg:hidden flex items-center justify-center w-10 h-10 rounded-full glass-panel border border-white/15 text-white active:scale-95 transition-all duration-300 z-50 relative"
+              className="lg:hidden flex items-center justify-center w-8 h-8 rounded-full border border-white/15 text-white active:scale-95 transition-all duration-150"
               aria-label="Toggle Menu"
             >
               {isMobileMenuOpen ? (
-                <svg className="w-5 h-5 text-white animate-[spin_0.3s_ease-out]" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                 </svg>
               ) : (
-                <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16m-7 6h7" />
                 </svg>
               )}
@@ -234,6 +413,7 @@ function App() {
             { name: 'Inicio', desc: 'Página central / Home', href: '#' },
             { name: '¿Qué hacemos?', desc: 'Nuestros superpoderes creativos', href: '#servicios' },
             { name: '¿Por qué nosotros?', desc: 'Nuestro valor diferencial', href: '#diferencia' },
+            { name: 'Portafolio', desc: 'Explora nuestros proyectos', href: '#portafolio' },
             { name: 'Contacto', desc: 'Hablemos de tu proyecto', href: '#', action: openJoinModal }
           ].map((item, index) => (
             <a
@@ -293,7 +473,7 @@ function App() {
       </div>
 
       {/* Main Core Hero Content */}
-      <main className="relative z-10 flex flex-col justify-between min-h-screen pt-28 pb-6 md:pt-36">
+      <main id="inicio" className="relative z-10 flex flex-col justify-between min-h-screen pt-28 pb-6 md:pt-36">
         <div className="flex flex-col lg:flex-row items-center justify-between px-6 md:px-16 max-w-7xl w-full mx-auto gap-12 lg:gap-6 flex-grow">
 
           {/* LEFT COLUMN: Texts & CTAs */}
@@ -426,54 +606,51 @@ function App() {
             </p>
           </div>
 
-          {/* Services Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+          {/* Services — Clean card grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {services.map((svc, idx) => (
               <div
                 key={idx}
-                onClick={() => openJoinModal(svc.title)}
-                className="glass-panel group flex flex-col justify-between p-8 rounded-[32px] border border-white/5 hover:border-[#f60566]/35 hover:bg-[#f60566]/5 active:scale-[0.99] transition-all duration-500 relative overflow-hidden min-h-[320px] h-auto cursor-pointer"
+                className={`group relative flex flex-col gap-4 p-7 rounded-2xl border transition-all duration-300 hover:-translate-y-1 ${
+                  idx === 0
+                    ? 'bg-[#f60566] border-[#f60566] shadow-[0_0_40px_rgba(246,5,102,0.3)]'
+                    : 'bg-white/[0.04] border-white/10 hover:border-white/20 hover:bg-white/[0.07]'
+                }`}
               >
-                {/* Radial gradient glow in background revealed on hover */}
-                <div className="absolute inset-0 bg-gradient-to-br from-transparent via-[#f60566]/2 to-[#00f0ff]/2 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
-
-                <div className="space-y-5 relative z-10">
-                  {/* Icon & Badge row */}
-                  <div className="flex items-center justify-between">
-                    <div className="w-14 h-14 rounded-2xl bg-[#f60566]/10 border border-[#f60566]/20 flex items-center justify-center group-hover:bg-[#f60566] group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 ease-out shadow-[0_0_20px_rgba(246,5,102,0.1)] group-hover:shadow-[0_0_35px_rgba(246,5,102,0.4)]">
-                      {svc.icon}
-                    </div>
-                    <span className="text-[9px] font-mono tracking-widest text-white/30 uppercase group-hover:text-[#00f0ff] transition-colors duration-300 bg-white/5 group-hover:bg-[#00f0ff]/10 px-2.5 py-1 rounded-full border border-white/5 group-hover:border-[#00f0ff]/20">
-                      {svc.badge}
-                    </span>
-                  </div>
-
-                  {/* Title & Description */}
-                  <div className="space-y-2">
-                    <h3 className="text-xl font-bold text-white tracking-wide group-hover:text-[#f60566] transition-colors duration-300">
-                      {svc.title}
-                    </h3>
-                    <p className="text-xs sm:text-sm text-white/60 font-light leading-relaxed group-hover:text-white/80 transition-colors duration-300">
-                      {svc.desc}
-                    </p>
-                  </div>
+                {/* Icon */}
+                <div className={`w-10 h-10 rounded-xl flex items-center justify-center [&>svg]:w-5 [&>svg]:h-5 ${
+                  idx === 0
+                    ? 'bg-white/20 [&>svg]:text-white'
+                    : 'bg-[#f60566]/10 border border-[#f60566]/20 [&>svg]:text-[#f60566]'
+                }`}>
+                  {svc.icon}
                 </div>
 
-                {/* Cybernetic Arrow Button Link */}
-                <div className="flex items-center justify-end relative z-10 pt-4">
-                  <span className="text-xs font-mono font-bold tracking-wider text-white/30 group-hover:text-[#00f0ff] opacity-0 group-hover:opacity-100 transition-all duration-500 translate-x-2 group-hover:translate-x-0 pr-2">
-                    EXPLORAR
-                  </span>
-                  <div className="w-8 h-8 rounded-full bg-white/5 group-hover:bg-[#00f0ff]/20 flex items-center justify-center border border-white/5 group-hover:border-[#00f0ff]/40 text-white/70 group-hover:text-[#00f0ff] transition-all duration-500 group-hover:rotate-45">
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
-                    </svg>
-                  </div>
-                </div>
+                {/* Title */}
+                <h3 className={`text-lg font-bold leading-tight tracking-tight ${
+                  idx === 0 ? 'text-white' : 'text-white'
+                }`}>
+                  {svc.title}
+                </h3>
 
-                {/* Subtle corner tech border lines */}
-                <div className="absolute top-0 right-0 w-2.5 h-2.5 border-t border-r border-[#f60566]/20 group-hover:border-[#f60566]/80 transition-colors"></div>
-                <div className="absolute bottom-0 left-0 w-2.5 h-2.5 border-b border-l border-[#f60566]/20 group-hover:border-[#f60566]/80 transition-colors"></div>
+                {/* Description */}
+                <p className={`text-sm leading-relaxed flex-1 ${
+                  idx === 0 ? 'text-white/80' : 'text-white/60'
+                }`}>
+                  {svc.desc}
+                </p>
+
+                {/* Link */}
+                <div className={`flex items-center gap-1.5 text-xs font-semibold tracking-wide transition-colors duration-200 ${
+                  idx === 0
+                    ? 'text-white/90 group-hover:text-white'
+                    : 'text-white/35 group-hover:text-[#f60566]'
+                }`}>
+                  <span>Comenzar</span>
+                  <svg className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform duration-200" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                  </svg>
+                </div>
               </div>
             ))}
           </div>
@@ -847,6 +1024,97 @@ function App() {
             </div>
 
           </div>
+        </div>
+      </section>
+
+      {/* SECTION: Portafolio / Proyectos */}
+      <section
+        id="portafolio"
+        className="relative z-10 py-20 md:py-32 px-6 md:px-16 border-t border-white/5 bg-black/35 backdrop-blur-sm overflow-hidden"
+      >
+        {/* Ambient background light orbs for aesthetic glow depth */}
+        <div className="absolute top-1/3 left-0 w-[450px] h-[450px] rounded-full bg-[#f60566]/5 blur-3xl pointer-events-none"></div>
+        <div className="absolute bottom-1/3 right-0 w-[400px] h-[400px] rounded-full bg-[#00f0ff]/5 blur-3xl pointer-events-none"></div>
+
+        <div className="max-w-7xl mx-auto relative z-10">
+          
+          {/* Section Header */}
+          <div className="flex flex-col items-center text-center mb-16 md:mb-20 space-y-5 reveal-on-scroll">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-[#f60566]/40 bg-[#f60566]/15 text-[10px] font-mono tracking-[0.25em] text-white font-semibold uppercase animate-pulse shadow-[0_0_15px_rgba(246,5,102,0.25)]">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#f60566] inline-block shadow-[0_0_8px_#f60566]"></span>
+              Casos de Estudio
+            </div>
+
+            <h2 className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-white font-outfit uppercase">
+              Ideas convertidas en <span className="text-[#f60566]">experiencias</span>.
+            </h2>
+
+            <p className="text-xs sm:text-sm md:text-base text-white/70 leading-relaxed font-light max-w-2xl">
+              Una selección de proyectos reales, conceptos creativos y exploraciones visuales que redefinen la presencia digital de las marcas.
+            </p>
+          </div>
+
+          {/* Category Filter Tabs */}
+          <div className="flex flex-wrap justify-center gap-3 mb-16 reveal-on-scroll reveal-delay-100">
+            {['Todos', 'Branding', 'Social Media', 'Web Design', 'Desarrollo Web', 'Contenido Creativo', 'Concept Projects'].map((cat) => (
+              <button
+                key={cat}
+                onClick={() => { playChime('click'); setActiveCategory(cat); }}
+                className={`category-filter-btn ${activeCategory === cat ? 'active-category' : ''}`}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
+
+          {/* Dynamic Grid Layout (2-column editorial grid for large screens, 1-column on mobile) */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
+            {projects
+              .filter(p => activeCategory === 'Todos' || p.category === activeCategory)
+              .map((proj, idx) => (
+                <div
+                  key={proj.title}
+                  onClick={() => openJoinModal(`Interés en portafolio: ${proj.title} (${proj.category})`)}
+                  className="portfolio-card group flex flex-col justify-between cursor-pointer reveal-on-scroll"
+                  style={{ animationDelay: `${0.1 + (idx % 3) * 0.08}s` }}
+                >
+                  {/* Mockup visual wrapper */}
+                  <div className="portfolio-image-wrapper border-b border-white/5">
+                    <div className="portfolio-vector-content w-full h-full">
+                      {proj.mockup}
+                    </div>
+                    {/* Hover Overlay Button */}
+                    <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-400 flex items-center justify-center gap-2">
+                      <span className="text-[10px] font-mono tracking-widest text-[#00f0ff] uppercase font-bold translate-y-2 group-hover:translate-y-0 transition-transform duration-500">VER DETALLES</span>
+                      <div className="w-8 h-8 rounded-full bg-[#00f0ff]/20 border border-[#00f0ff]/40 text-[#00f0ff] flex items-center justify-center group-hover:rotate-45 transition-transform duration-500">
+                        <svg className="w-4.5 h-4.5" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
+                        </svg>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Description / Content row */}
+                  <div className="p-6 space-y-3 relative z-10 bg-black/10">
+                    <div className="flex justify-between items-center">
+                      <span className="text-[9px] font-mono tracking-widest text-[#f60566] uppercase font-bold px-2 py-0.5 rounded-full bg-[#f60566]/10 border border-[#f60566]/20">
+                        {proj.category}
+                      </span>
+                      <span className="text-[9px] font-mono text-white/40 tracking-wider">MOCKUP CONCEPT</span>
+                    </div>
+                    <div className="space-y-1">
+                      <h3 className="text-xl font-bold text-white tracking-wide group-hover:text-[#f60566] transition-colors duration-300">
+                        {proj.title}
+                      </h3>
+                      <p className="text-xs text-white/80 font-medium leading-relaxed">
+                        {proj.desc}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+          </div>
+
         </div>
       </section>
 

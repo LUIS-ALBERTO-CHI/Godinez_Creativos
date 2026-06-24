@@ -578,3 +578,214 @@ body {
 .console-code .string { color: #00f0ff; }
 .console-code .function { color: #ffeb3b; }
 .console-code .comment { color: rgba(255, 255, 255, 0.35); }
+
+/* Portfolio Card & Filtering Styles */
+.portfolio-card {
+  position: relative;
+  background: rgba(30, 6, 17, 0.65);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 0, 104, 0.15);
+  border-radius: 28px;
+  overflow: hidden;
+  transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.7);
+}
+
+.portfolio-card:hover {
+  transform: translateY(-8px);
+  border-color: rgba(255, 0, 104, 0.5);
+  box-shadow: 
+    0 25px 50px rgba(255, 0, 104, 0.15),
+    0 0 30px rgba(0, 240, 255, 0.05);
+}
+
+.portfolio-image-wrapper {
+  position: relative;
+  width: 100%;
+  height: 240px;
+  overflow: hidden;
+  background: #080104;
+}
+
+.portfolio-vector-content {
+  width: 100%;
+  height: 100%;
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
+}
+
+.portfolio-card:hover .portfolio-vector-content {
+  transform: scale(1.06);
+}
+
+.category-filter-btn {
+  position: relative;
+  padding: 10px 22px;
+  font-size: 11px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 9999px;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.category-filter-btn:hover {
+  color: #ffffff;
+  border-color: rgba(255, 0, 104, 0.4);
+  background: rgba(255, 0, 104, 0.05);
+  box-shadow: 0 0 15px rgba(255, 0, 104, 0.15);
+}
+
+.category-filter-btn.active-category {
+  color: #ffffff;
+  background: rgba(246, 5, 102, 0.15);
+  border-color: #f60566;
+  box-shadow: 
+    0 0 20px rgba(246, 5, 102, 0.3),
+    inset 0 1px 1px rgba(255, 255, 255, 0.15);
+}
+
+/* Abstract design details inside visual mockups */
+@keyframes pulse-ring-slow {
+  0% { transform: scale(0.95); opacity: 0.2; }
+  50% { transform: scale(1.05); opacity: 0.4; }
+  100% { transform: scale(0.95); opacity: 0.2; }
+}
+
+.pulse-ring-slow {
+  animation: pulse-ring-slow 8s infinite ease-in-out;
+}
+
+/* ============================================================
+   SERVICE CARDS — PREMIUM REDESIGN
+   ============================================================ */
+
+.svc-card {
+  position: relative;
+  border-radius: 24px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  background:
+    linear-gradient(160deg,
+      rgba(28, 5, 15, 0.95) 0%,
+      rgba(14, 2, 8, 0.98) 60%,
+      rgba(20, 4, 12, 0.96) 100%
+    );
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.05) inset,
+    0 -1px 0 rgba(0, 0, 0, 0.4) inset,
+    0 8px 32px rgba(0, 0, 0, 0.5),
+    0 2px 8px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(32px) saturate(140%);
+  -webkit-backdrop-filter: blur(32px) saturate(140%);
+  transition:
+    transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.4s ease;
+}
+
+.svc-card:hover {
+  transform: translateY(-10px);
+  border-color: rgba(246, 5, 102, 0.35);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.08) inset,
+    0 -1px 0 rgba(0, 0, 0, 0.4) inset,
+    0 40px 80px rgba(0, 0, 0, 0.6),
+    0 0 0 1px rgba(246, 5, 102, 0.25),
+    0 0 60px rgba(246, 5, 102, 0.15),
+    0 0 120px rgba(246, 5, 102, 0.06);
+}
+
+.svc-card:active {
+  transform: translateY(-5px) scale(0.99);
+}
+
+/* Animated top accent bar */
+.svc-card-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(246, 5, 102, 0.7) 30%,
+    rgba(255, 46, 147, 1) 50%,
+    rgba(0, 240, 255, 0.6) 70%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  animation: none;
+  z-index: 20;
+}
+
+.svc-card:hover .svc-card-bar {
+  opacity: 1;
+  animation: bar-slide 2.5s linear infinite;
+}
+
+@keyframes bar-slide {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Shimmer sweep diagonal */
+.svc-shimmer {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    125deg,
+    transparent 30%,
+    rgba(246, 5, 102, 0.04) 50%,
+    rgba(0, 240, 255, 0.03) 60%,
+    transparent 70%
+  );
+  opacity: 0;
+  transform: translateX(-100%);
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.svc-card:hover .svc-shimmer {
+  opacity: 1;
+  animation: shimmer-sweep 1.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes shimmer-sweep {
+  0%   { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+/* Oversized watermark number */
+.svc-watermark {
+  position: absolute;
+  bottom: -12px;
+  right: -4px;
+  font-size: 130px;
+  font-weight: 900;
+  font-family: 'Montserrat', sans-serif;
+  line-height: 1;
+  letter-spacing: -0.05em;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(246, 5, 102, 0.06);
+  text-stroke: 1px rgba(246, 5, 102, 0.06);
+  pointer-events: none;
+  user-select: none;
+  z-index: 0;
+  transition: -webkit-text-stroke-color 0.5s ease, opacity 0.5s ease;
+}
+
+.svc-card:hover .svc-watermark {
+  -webkit-text-stroke-color: rgba(246, 5, 102, 0.12);
+}
