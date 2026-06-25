@@ -11,6 +11,8 @@ function App() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState('Todos');
   const [activeSection, setActiveSection] = useState('inicio');
+  const [behanceModal, setBehanceModal] = useState<{ title: string; embed: string } | null>(null);
+  const [imageModal, setImageModal] = useState<{ project: string; images: string[]; index: number } | null>(null);
 
   // Sound chime synthesizer for micro-interactions (disabled)
   const playChime = (type: 'success' | 'click' | 'close') => {
@@ -31,7 +33,7 @@ function App() {
     const revealEls = document.querySelectorAll('.reveal-on-scroll');
     revealEls.forEach((el) => revealObserver.observe(el));
 
-    // Active section observer — tracks which section is in viewport
+    // Active section observer Á¢â‚¬â€ tracks which section is in viewport
     const sectionIds = ['inicio', 'servicios', 'diferencia', 'portafolio'];
     const sectionObserver = new IntersectionObserver(
       (entries) => {
@@ -104,170 +106,12 @@ function App() {
 
   const projects = [
     {
-      title: "Nova Coffee",
+      title: "MVZ. Joaquín Fernández Vera",
       category: "Branding",
-      desc: "Identidad visual y empaques minimalistas para café de especialidad.",
-      mockup: (
-        <div className="w-full h-full bg-gradient-to-br from-[#2a0c1a] to-[#0e0208] flex flex-col items-center justify-center p-6 relative">
-          {/* Subtle circle mesh */}
-          <div className="absolute w-36 h-36 rounded-full border border-[#f60566]/20 pulse-ring-slow"></div>
-          {/* Abstract coffee bag silhouette built of modern vector rectangles */}
-          <div className="w-20 h-32 bg-gradient-to-t from-[#f60566]/25 to-white/5 border border-[#f60566]/40 rounded-xl flex flex-col justify-between p-3.5 z-10 shadow-lg group-hover:scale-105 transition-transform duration-500">
-            <div className="w-6 h-1.5 bg-[#f60566]/60 rounded-full"></div>
-            <div className="flex flex-col items-center gap-1.5">
-              <span className="w-4 h-4 rounded-full bg-[#f60566] inline-block shadow-[0_0_8px_#f60566]"></span>
-              <span className="text-[6px] font-mono tracking-widest text-white/50">NOVA</span>
-            </div>
-            <div className="w-full h-1 bg-[#00f0ff]/30 rounded-full"></div>
-          </div>
-          {/* Floating vector beans */}
-          <div className="absolute top-1/4 right-1/4 w-3 h-3 rounded-full bg-[#f60566]/30 border border-[#f60566]/50 floating-gentle"></div>
-          <div className="absolute bottom-1/4 left-1/4 w-2.5 h-2.5 rounded-full bg-[#00f0ff]/20 border border-[#00f0ff]/40 floating-gentle-reverse"></div>
-        </div>
-      )
+      desc: "Diseño de tarjetas de presentación para clínica veterinaria. Identidad visual oscura con personalidad y estilo.",
+      preview: "/mockup-veterinaria.jpeg",
+      images: ["/mockup-veterinaria.jpeg", "/mockup-veterinaria-2.jpeg"],
     },
-    {
-      title: "Vanta Studio",
-      category: "Web Design",
-      desc: "Portafolio digital e interfaz de diseño arquitectónico 3D.",
-      mockup: (
-        <div className="w-full h-full bg-gradient-to-br from-[#0c0f18] to-[#04060b] flex items-center justify-center p-6 relative">
-          <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.01)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.01)_1px,transparent_1px)] bg-[size:10px_10px]"></div>
-          {/* Wireframe box layout */}
-          <div className="w-40 h-24 rounded-lg border border-[#00f0ff]/40 bg-black/75 p-2 flex flex-col justify-between relative shadow-lg group-hover:rotate-1 transition-transform duration-500 z-10">
-            <div className="flex justify-between items-center border-b border-white/10 pb-1.5">
-              <div className="flex gap-1">
-                <span className="w-1.5 h-1.5 rounded-full bg-red-500/80"></span>
-                <span className="w-1.5 h-1.5 rounded-full bg-yellow-500/80"></span>
-                <span className="w-1.5 h-1.5 rounded-full bg-green-500/80"></span>
-              </div>
-              <span className="text-[5px] font-mono text-white/30 uppercase tracking-widest">vanta.studio</span>
-            </div>
-            {/* 3D wireframe mesh simulation */}
-            <div className="flex-grow flex items-center justify-center py-1">
-              <svg className="w-12 h-12 text-[#00f0ff]/40" fill="none" stroke="currentColor" strokeWidth="1" viewBox="0 0 24 24">
-                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
-              </svg>
-            </div>
-            <div className="flex justify-between items-center text-[5px] font-mono text-white/40">
-              <span>ACTIVE LAYOUT</span>
-              <span className="text-[#00f0ff]">3D CORE</span>
-            </div>
-          </div>
-        </div>
-      )
-    },
-    {
-      title: "Lunar Fit",
-      category: "Social Media",
-      desc: "Estrategia visual y feed dinámico para marca de bienestar.",
-      mockup: (
-        <div className="w-full h-full bg-gradient-to-br from-[#1e072b] to-[#0c0214] flex items-center justify-center p-6 relative">
-          <div className="absolute top-1/2 left-1/2 w-44 h-44 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#f60566]/5 blur-2xl"></div>
-          {/* Vertical phone screen representing dynamic feed */}
-          <div className="w-24 h-40 bg-[#0f0418] border border-[#f60566]/40 rounded-[20px] p-2 flex flex-col gap-2 relative shadow-lg group-hover:-translate-y-1 transition-transform duration-500 z-10 overflow-hidden">
-            <div className="flex items-center gap-1">
-              <div className="w-3 h-3 rounded-full bg-white/20"></div>
-              <div className="w-8 h-1 bg-white/35 rounded-full"></div>
-            </div>
-            {/* Circular fitness rings */}
-            <div className="flex-grow flex items-center justify-center relative">
-              <div className="w-14 h-14 rounded-full border border-dashed border-[#f60566]/30 flex items-center justify-center">
-                <div className="w-10 h-10 rounded-full border-2 border-[#f60566] flex items-center justify-center shadow-[0_0_10px_rgba(246,5,102,0.3)]">
-                  <div className="w-6 h-6 rounded-full border border-[#00f0ff] animate-pulse"></div>
-                </div>
-              </div>
-            </div>
-            <div className="space-y-1">
-              <div className="w-full h-1 bg-white/20 rounded-full"></div>
-              <div className="w-2/3 h-1 bg-white/20 rounded-full"></div>
-            </div>
-          </div>
-        </div>
-      )
-    },
-    {
-      title: "Zento",
-      category: "Desarrollo Web",
-      desc: "Plataforma e-commerce optimizada para conversiones.",
-      mockup: (
-        <div className="w-full h-full bg-gradient-to-br from-[#021815] to-[#010908] flex items-center justify-center p-6 relative">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_right,rgba(0,240,255,0.06),transparent_60%)]"></div>
-          {/* E-commerce transaction dashboard representation */}
-          <div className="w-36 h-28 rounded-lg border border-[#00f0ff]/30 bg-black/60 p-3 flex flex-col justify-between shadow-lg group-hover:scale-[1.03] transition-transform duration-500 z-10">
-            <div className="flex justify-between items-center">
-              <div className="flex items-center gap-1.5">
-                <div className="w-1.5 h-1.5 rounded-full bg-[#00f0ff] shadow-[0_0_5px_#00f0ff]"></div>
-                <span className="text-[5px] font-mono text-[#00f0ff] uppercase tracking-wider font-bold">ZENTO CHECKOUT</span>
-              </div>
-              <span className="text-[6px] font-mono text-white/30">99.8% UP</span>
-            </div>
-            {/* Sales visual chart bar outline */}
-            <div className="space-y-1.5 py-1">
-              <div className="flex items-end gap-1 h-8 justify-around">
-                <div className="w-2 h-3 bg-white/10 rounded-sm"></div>
-                <div className="w-2 h-5 bg-white/20 rounded-sm"></div>
-                <div className="w-2 h-4 bg-white/15 rounded-sm"></div>
-                <div className="w-2 h-7 bg-[#00f0ff]/70 rounded-sm shadow-[0_0_8px_#00f0ff]"></div>
-              </div>
-            </div>
-            <div className="flex justify-between items-center text-[5px] font-mono text-white/40">
-              <span>LOAD TIME: 0.12s</span>
-              <span className="text-[#10b981] font-bold">SEO RATED A</span>
-            </div>
-          </div>
-        </div>
-      )
-    },
-    {
-      title: "Aurea Skin",
-      category: "Contenido Creativo",
-      desc: "Dirección de arte y campaña digital de cosmética de lujo.",
-      mockup: (
-        <div className="w-full h-full bg-gradient-to-br from-[#260f1b] to-[#0f030a] flex items-center justify-center p-6 relative">
-          {/* Decorative fluid neon spots for beauty theme */}
-          <div className="absolute top-1/4 left-1/4 w-28 h-28 rounded-full bg-[#f60566]/10 blur-xl pointer-events-none"></div>
-          {/* Overlapping aesthetic shapes representing cosmetic layout */}
-          <div className="relative w-32 h-32 flex items-center justify-center">
-            <div className="absolute w-20 h-28 rounded-full border border-[#f60566]/30 rotate-12 flex items-center justify-center">
-              <div className="w-16 h-24 rounded-full border-2 border-[#f60566]/50 shadow-[0_0_15px_rgba(246,5,102,0.2)]"></div>
-            </div>
-            <div className="absolute w-12 h-12 rounded-full bg-[#00f0ff]/20 border border-[#00f0ff]/40 flex items-center justify-center shadow-md floating-gentle">
-              <span className="text-[6px] font-mono font-bold text-white tracking-widest">AUREA</span>
-            </div>
-          </div>
-        </div>
-      )
-    },
-    {
-      title: "Flux Media",
-      category: "Concept Projects",
-      desc: "Rediseño conceptual y dirección de arte para reproductor musical.",
-      mockup: (
-        <div className="w-full h-full bg-gradient-to-br from-[#071329] to-[#020712] flex items-center justify-center p-6 relative">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.015)_0%,transparent_80%)]"></div>
-          {/* Audio interface visualization mockup */}
-          <div className="w-36 h-26 rounded-xl border border-white/10 bg-black/75 p-3 flex flex-col justify-between shadow-lg group-hover:scale-105 transition-transform duration-500 z-10">
-            <div className="flex justify-between items-center">
-              <span className="text-[5px] font-mono text-white/40 uppercase font-bold tracking-widest">FLUX MUSIC PLAYER</span>
-              <span className="w-1.5 h-1.5 rounded-full bg-red-500 shadow-[0_0_4px_#ef4444]"></span>
-            </div>
-            {/* Waveform lines */}
-            <div className="flex items-center gap-1 justify-center py-2">
-              <div className="w-1 h-3 bg-[#f60566] rounded-full shadow-[0_0_5px_#f60566]"></div>
-              <div className="w-1 h-5 bg-[#00f0ff] rounded-full shadow-[0_0_5px_#00f0ff] animate-pulse"></div>
-              <div className="w-1 h-7 bg-white rounded-full"></div>
-              <div className="w-1 h-4 bg-[#f60566] rounded-full shadow-[0_0_5px_#f60566]"></div>
-              <div className="w-1 h-2 bg-[#00f0ff] rounded-full shadow-[0_0_5px_#00f0ff]"></div>
-            </div>
-            <div className="flex justify-between items-center text-[5px] font-mono text-white/40">
-              <span>CONCEPT OS</span>
-              <span>128BPM</span>
-            </div>
-          </div>
-        </div>
-      )
-    }
   ];
 
   const closeJoinModal = () => {
@@ -304,7 +148,7 @@ function App() {
       <div className="ambient-orb orb-cherry-left"></div>
       <div className="ambient-orb orb-cherry-main"></div>
 
-      {/* Navigation Header — Floating Pill (exact reference match) */}
+      {/* Navigation Header Á¢â‚¬â€  Floating Pill (exact reference match) */}
       <nav className="fixed top-4 left-0 right-0 z-50 flex justify-center px-6 pointer-events-none">
         <div className="pointer-events-auto w-full max-w-5xl flex items-center justify-between px-5 py-2 rounded-full bg-[#111] border border-white/15 shadow-[0_4px_24px_rgba(0,0,0,0.6)]">
 
@@ -320,7 +164,7 @@ function App() {
             </span>
           </a>
 
-          {/* CENTER: Nav links — active section gets white pill */}
+          {/* CENTER: Nav links Á¢â‚¬â€  active section gets white pill */}
           <div className="hidden lg:flex items-center gap-1">
             {([
               { label: 'Inicio',           href: '#inicio',     id: 'inicio' },
@@ -500,7 +344,9 @@ function App() {
                 className="group relative flex items-center justify-between w-full sm:w-52 px-6 py-3.5 rounded-full glass-panel hover:border-[#f60566]/50 text-white font-semibold text-sm hover:scale-105 active:scale-95 transition-all duration-300"
               >
                 <span>Descubrir</span>
-                <span className="w-6 h-6 rounded-full bg-white/10 flex items-center justify-center text-xs group-hover:bg-[#f60566]/20 group-hover:text-[#f60566] transition-colors font-mono font-bold">••</span>
+                <span className="w-6 h-6 rounded-full bg-white/10 flex items-center justify-center group-hover:bg-[#f60566]/20 group-hover:text-[#f60566] transition-colors">
+                  <svg className="w-3 h-3" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
+                </span>
               </button>
 
               {/* Pill Button 2 */}
@@ -606,7 +452,7 @@ function App() {
             </p>
           </div>
 
-          {/* Services — Clean card grid */}
+          {/* Services Á¢â‚¬â€  Clean card grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {services.map((svc, idx) => (
               <div
@@ -686,317 +532,85 @@ function App() {
             </p>
           </div>
 
-          {/* Bento Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+          {/* Manifesto List */}
+          <div className="flex flex-col divide-y divide-white/8">
             
-            {/* CARD 1: Atención directa (col-span-1) */}
-            <div className="bento-card group p-8 flex flex-col justify-between min-h-[320px] reveal-on-scroll reveal-delay-100">
-              <div className="bento-card-glow-pink -top-10 -left-10 group-hover:scale-125"></div>
-              
-              <div className="space-y-6 relative z-10">
-                {/* Upper row: icon and status indicator */}
-                <div className="flex justify-between items-start">
-                  <div className="w-12 h-12 rounded-2xl bg-[#f60566]/15 border border-[#f60566]/30 flex items-center justify-center group-hover:bg-[#f60566] group-hover:scale-110 transition-all duration-500 shadow-[0_0_15px_rgba(246,5,102,0.15)]">
-                    <svg className="w-6 h-6 text-[#f60566] group-hover:text-white transition-colors" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M15.182 15.182a4.5 4.5 0 01-6.364 0M21 12a9 9 0 11-18 0 9 9 0 0118 0zM9.75 9.75c0 .414-.168.75-.375.75S9 10.164 9 9.75 9.168 9 9.375 9s.375.336.375.75zm-.375 0h.008v.015h-.008V9.75zm5.625 0c0 .414-.168.75-.375.75s-.375-.336-.375-.75.168-.75.375-.75.375.336.375.75zm-.375 0h.008v.015h-.008V9.75z" />
-                    </svg>
-                  </div>
-                  <div className="flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-3 py-1 shadow-[0_0_10px_rgba(255,255,255,0.05)]">
-                    <span className="w-2 h-2 rounded-full bg-[#00f0ff] animate-ping shadow-[0_0_8px_#00f0ff]"></span>
-                    <span className="text-[9px] font-mono tracking-widest text-white/70 uppercase">CANAL DIRECTO</span>
-                  </div>
-                </div>
-
-                {/* Text Content */}
-                <div className="space-y-2">
-                  <h3 className="text-xl font-bold text-white tracking-wide group-hover:text-[#f60566] transition-colors duration-300">
-                    Atención directa
-                  </h3>
-                  <p className="text-xs sm:text-sm text-white/90 font-medium leading-relaxed group-hover:text-white transition-colors duration-300">
-                    Hablas directamente con quienes crean tu proyecto.
-                  </p>
-                </div>
+            {/* ITEM 1 */}
+            <div className="group flex flex-col md:flex-row items-start md:items-center gap-6 py-10 md:py-12 reveal-on-scroll reveal-delay-100 cursor-default">
+              <span className="text-[80px] md:text-[100px] font-extrabold leading-none text-white/5 group-hover:text-[#f60566]/20 transition-colors duration-500 select-none font-outfit shrink-0 w-full md:w-36 text-center md:text-left">01</span>
+              <div className="flex-1 space-y-3">
+                <h3 className="text-2xl md:text-3xl font-bold text-white tracking-tight group-hover:text-[#f60566] transition-colors duration-300">
+                  Hablas con quien hace el trabajo
+                </h3>
+                <p className="text-sm md:text-base text-white/55 font-light leading-relaxed max-w-2xl">
+                  Sin intermediarios, sin cuentas. Te comunicás directamente con el CM, el diseñador o el dev que está trabajando en tu proyecto. Las decisiones llegan rápido y los cambios también.
+                </p>
               </div>
-
-              {/* Graphical Visual Element in Card */}
-              <div className="relative h-20 w-full flex items-center justify-center bg-black/50 rounded-2xl border border-white/10 overflow-hidden group-hover:border-[#f60566]/40 transition-colors duration-500 shadow-inner">
-                <div className="absolute inset-0 bg-gradient-to-r from-[#f60566]/10 via-transparent to-[#00f0ff]/10"></div>
-                <div className="flex items-center gap-6 z-10">
-                  <div className="flex flex-col items-center">
-                    <span className="text-[10px] font-mono text-[#f60566] font-extrabold tracking-wider">TÚ</span>
-                    <div className="w-8 h-8 rounded-full bg-[#f60566]/30 border border-[#f60566]/50 flex items-center justify-center text-xs text-white font-extrabold shadow-[0_0_10px_rgba(246,5,102,0.2)]">U</div>
-                  </div>
-                  <div className="flex items-center relative w-16">
-                    <div className="w-full h-[1.5px] bg-gradient-to-r from-[#f60566] to-[#00f0ff] relative shadow-[0_0_8px_#f60566]">
-                      <div className="absolute -top-1 w-2.5 h-2.5 rounded-full bg-[#00f0ff] shadow-[0_0_10px_#00f0ff] animate-[marquee-scroll_3s_linear_infinite] left-0"></div>
-                    </div>
-                  </div>
-                  <div className="flex flex-col items-center">
-                    <span className="text-[10px] font-mono text-[#00f0ff] font-extrabold tracking-wider">EQUIPO</span>
-                    <div className="w-8 h-8 rounded-full bg-[#00f0ff]/30 border border-[#00f0ff]/50 flex items-center justify-center text-xs text-white font-extrabold shadow-[0_0_10px_rgba(0,240,255,0.2)]">GC</div>
-                  </div>
-                </div>
+              <div className="shrink-0 w-8 h-8 rounded-full border border-white/15 flex items-center justify-center group-hover:border-[#f60566]/50 group-hover:bg-[#f60566]/10 transition-all duration-300 hidden md:flex">
+                <svg className="w-3.5 h-3.5 text-white/30 group-hover:text-[#f60566] transition-colors" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                </svg>
               </div>
             </div>
 
-            {/* CARD 2: Diseño con intención (col-span-1 lg:col-span-2) */}
-            <div className="bento-card group p-8 flex flex-col justify-between min-h-[320px] lg:col-span-2 reveal-on-scroll reveal-delay-200">
-              <div className="bento-card-glow-pink top-10 right-10 group-hover:scale-125"></div>
-              
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center flex-grow">
-                {/* Text Content */}
-                <div className="space-y-4 lg:col-span-7 z-10">
-                  <div className="inline-block px-2.5 py-1 rounded-full bg-[#f60566]/15 border border-[#f60566]/30 text-[9px] font-mono tracking-widest text-[#f60566] uppercase shadow-[0_0_10px_rgba(246,5,102,0.15)]">
-                    100% PERSONALIZADO
-                  </div>
-                  <div className="space-y-2">
-                    <h3 className="text-2xl font-bold text-white tracking-wide group-hover:text-[#f60566] transition-colors duration-300">
-                      Diseño con intención
-                    </h3>
-                    <p className="text-xs sm:text-sm text-white/90 font-medium leading-relaxed group-hover:text-white transition-colors duration-300">
-                      No hacemos contenido genérico ni plantillas aburridas.
-                    </p>
-                  </div>
-                </div>
-
-                {/* High-Impact Visual Graphic Element */}
-                <div className="lg:col-span-5 relative w-full h-[180px] bg-black/50 rounded-[24px] border border-white/10 overflow-hidden flex items-center justify-center group-hover:border-[#f60566]/40 transition-all duration-500 shadow-inner">
-                  {/* Subtle Grid behind layouts */}
-                  <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:14px_24px]"></div>
-                  
-                  {/* Visual card stack representation */}
-                  <div className="relative w-full max-w-[200px] h-[120px] flex items-center justify-center">
-                    {/* Fake Generic Template Card - Behind, dull, crossed out */}
-                    <div className="absolute w-[130px] h-[80px] rounded-xl bg-[#1a1115]/95 border border-white/15 opacity-40 -translate-x-8 -translate-y-4 -rotate-6 flex flex-col justify-between p-2 select-none pointer-events-none shadow-md">
-                      <div className="w-8 h-2 bg-white/30 rounded"></div>
-                      <div className="space-y-1">
-                        <div className="w-16 h-1.5 bg-white/20 rounded"></div>
-                        <div className="w-12 h-1.5 bg-white/20 rounded"></div>
-                      </div>
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <span className="text-3xl text-red-500 font-extrabold drop-shadow-[0_0_6px_rgba(239,68,68,0.5)]">✕</span>
-                      </div>
-                    </div>
-
-                    {/* Godinez Premium Card - Foreground, vibrant, floating */}
-                    <div className="absolute w-[150px] h-[95px] rounded-xl bg-gradient-to-br from-[#3d031e] to-[#15020a] border border-[#f60566]/70 shadow-[0_12px_35px_rgba(246,5,102,0.45)] translate-x-4 translate-y-2 rotate-3 flex flex-col justify-between p-3 transition-transform duration-500 group-hover:translate-y-0 group-hover:scale-105 floating-gentle z-10">
-                      <div className="flex justify-between items-center">
-                        <div className="w-10 h-2 bg-[#f60566]/60 rounded shadow-[0_0_5px_#f60566]"></div>
-                        <div className="w-3.5 h-3.5 rounded-full bg-[#00f0ff] shadow-[0_0_10px_#00f0ff]"></div>
-                      </div>
-                      <div className="space-y-1.5">
-                        <div className="w-20 h-2 bg-white/80 rounded"></div>
-                        <div className="w-16 h-1.5 bg-white/45 rounded"></div>
-                      </div>
-                      <div className="flex justify-between items-center text-[8px] font-mono text-white/50 font-bold">
-                        <span>ESTÉTICA PRO</span>
-                        <svg className="w-4 h-4 text-[#f60566] animate-pulse shadow-[0_0_8px_#f60566]" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M11.48 3.499c-.191-.397-.736-.397-.927 0l-2.184 4.545-5.008.083c-.442.007-.62.556-.292.848l3.61 3.197-1.12 4.963c-.098.435.374.777.756.54l4.475-2.793 4.475 2.793c.382.237.854-.105.756-.54l-1.12-4.963 3.61-3.197c.328-.292.15-.841-.292-.848l-5.008-.083L11.48 3.5z" />
-                        </svg>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+            {/* ITEM 2 */}
+            <div className="group flex flex-col md:flex-row items-start md:items-center gap-6 py-10 md:py-12 reveal-on-scroll reveal-delay-200 cursor-default">
+              <span className="text-[80px] md:text-[100px] font-extrabold leading-none text-white/5 group-hover:text-[#f60566]/20 transition-colors duration-500 select-none font-outfit shrink-0 w-full md:w-36 text-center md:text-left">02</span>
+              <div className="flex-1 space-y-3">
+                <h3 className="text-2xl md:text-3xl font-bold text-white tracking-tight group-hover:text-[#f60566] transition-colors duration-300">
+                  Diseño que no se ve a la segunda
+                </h3>
+                <p className="text-sm md:text-base text-white/55 font-light leading-relaxed max-w-2xl">
+                  No usamos plantillas de Canva del montón ni estilos que ya viste en tres marcas distintas. Cada pieza que creamos empieza desde cero, pensada específicamente para tu negocio y tu audiencia.
+                </p>
+              </div>
+              <div className="shrink-0 w-8 h-8 rounded-full border border-white/15 flex items-center justify-center group-hover:border-[#f60566]/50 group-hover:bg-[#f60566]/10 transition-all duration-300 hidden md:flex">
+                <svg className="w-3.5 h-3.5 text-white/30 group-hover:text-[#f60566] transition-colors" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                </svg>
               </div>
             </div>
 
-            {/* CARD 3: Desarrollo moderno (col-span-1 lg:col-span-2) */}
-            <div className="bento-card group p-8 flex flex-col justify-between min-h-[320px] lg:col-span-2 reveal-on-scroll reveal-delay-300">
-              <div className="bento-card-glow-cyan top-10 left-10 group-hover:scale-125"></div>
-              
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center flex-grow">
-                {/* High-Impact Visual Graphic Element */}
-                <div className="lg:col-span-5 relative w-full h-[180px] bg-[#0c0107]/95 rounded-[24px] border border-[#00f0ff]/30 overflow-hidden flex flex-col p-4 justify-between group-hover:border-[#00f0ff]/50 transition-all duration-500 order-last lg:order-first shadow-lg">
-                  {/* Console Header */}
-                  <div className="flex items-center justify-between border-b border-white/10 pb-2">
-                    <div className="flex items-center gap-1.5">
-                      <span className="w-2.5 h-2.5 rounded-full bg-red-500 shadow-[0_0_5px_rgba(239,68,68,0.5)]"></span>
-                      <span className="w-2.5 h-2.5 rounded-full bg-yellow-500 shadow-[0_0_5px_rgba(234,179,8,0.5)]"></span>
-                      <span className="w-2.5 h-2.5 rounded-full bg-green-500 shadow-[0_0_5px_rgba(34,197,94,0.5)]"></span>
-                    </div>
-                    <span className="text-[8px] font-mono text-white/50 uppercase tracking-widest font-extrabold">VITE TERMINAL</span>
-                  </div>
-
-                  {/* Highlights code visualization */}
-                  <div className="console-code select-none pointer-events-none mt-2">
-                    <span className="comment">// Optimizando carga web</span><br />
-                    <span className="keyword">import</span> &#123; speed &#125; <span className="keyword">from</span> <span className="string">"godinez"</span>;<br />
-                    <span className="keyword">const</span> performance = <span className="function">load</span>(); <br />
-                    <span className="keyword">if</span> (performance === <span className="string">"slow"</span>) &#123; <span className="function">destroy</span>(); &#125;
-                  </div>
-
-                  {/* Metrics Row */}
-                  <div className="flex justify-between items-center pt-2 border-t border-white/10 mt-2">
-                    <span className="text-[10px] font-mono text-[#00f0ff] font-extrabold drop-shadow-[0_0_8px_rgba(0,240,255,0.5)]">SPEED: 99/100</span>
-                    <span className="text-[10px] font-mono text-[#10b981] font-extrabold drop-shadow-[0_0_8px_rgba(16,185,129,0.5)]">SEO ACTIVE</span>
-                  </div>
-                </div>
-
-                {/* Text Content */}
-                <div className="space-y-4 lg:col-span-7 z-10">
-                  <div className="inline-block px-2.5 py-1 rounded-full bg-[#00f0ff]/15 border border-[#00f0ff]/30 text-[9px] font-mono tracking-widest text-[#00f0ff] uppercase shadow-[0_0_10px_rgba(0,240,255,0.15)]">
-                    RENDIMIENTO Y SEO
-                  </div>
-                  <div className="space-y-2">
-                    <h3 className="text-2xl font-bold text-white tracking-wide group-hover:text-[#00f0ff] transition-colors duration-300">
-                      Desarrollo moderno
-                    </h3>
-                    <p className="text-xs sm:text-sm text-white/90 font-medium leading-relaxed group-hover:text-white transition-colors duration-300">
-                      Sitios rápidos, visuales y diseñados para convertir.
-                    </p>
-                  </div>
-                </div>
+            {/* ITEM 3 */}
+            <div className="group flex flex-col md:flex-row items-start md:items-center gap-6 py-10 md:py-12 reveal-on-scroll reveal-delay-300 cursor-default">
+              <span className="text-[80px] md:text-[100px] font-extrabold leading-none text-white/5 group-hover:text-[#f60566]/20 transition-colors duration-500 select-none font-outfit shrink-0 w-full md:w-36 text-center md:text-left">03</span>
+              <div className="flex-1 space-y-3">
+                <h3 className="text-2xl md:text-3xl font-bold text-white tracking-tight group-hover:text-[#f60566] transition-colors duration-300">
+                  Tres disciplinas, un solo equipo
+                </h3>
+                <p className="text-sm md:text-base text-white/55 font-light leading-relaxed max-w-2xl">
+                  CM, diseñador y desarrollador web trabajando juntos desde el día uno. No contratamos por separado, no coordinamos freelancers. Todo está integrado para que tu marca se vea y funcione de manera consistente.
+                </p>
+              </div>
+              <div className="shrink-0 w-8 h-8 rounded-full border border-white/15 flex items-center justify-center group-hover:border-[#f60566]/50 group-hover:bg-[#f60566]/10 transition-all duration-300 hidden md:flex">
+                <svg className="w-3.5 h-3.5 text-white/30 group-hover:text-[#f60566] transition-colors" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                </svg>
               </div>
             </div>
 
-            {/* CARD 4: Ideas frescas (col-span-1) */}
-            <div className="bento-card group p-8 flex flex-col justify-between min-h-[320px] reveal-on-scroll reveal-delay-400">
-              <div className="bento-card-glow-pink -top-10 -right-10 group-hover:scale-125"></div>
-              
-              <div className="space-y-6 relative z-10">
-                {/* Upper row: icon and date badge */}
-                <div className="flex justify-between items-start">
-                  <div className="w-12 h-12 rounded-2xl bg-[#f60566]/15 border border-[#f60566]/30 flex items-center justify-center group-hover:bg-[#f60566] group-hover:scale-110 transition-all duration-500 shadow-[0_0_15px_rgba(246,5,102,0.15)]">
-                    <svg className="w-6 h-6 text-[#f60566] group-hover:text-white transition-colors" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
-                    </svg>
-                  </div>
-                  <div className="inline-block px-2.5 py-1 rounded-full bg-white/10 border border-white/20 text-[9px] font-mono tracking-widest text-white/70 uppercase">
-                    MINDSET ACTIVO
-                  </div>
-                </div>
-
-                {/* Text Content */}
-                <div className="space-y-2">
-                  <h3 className="text-xl font-bold text-white tracking-wide group-hover:text-[#f60566] transition-colors duration-300">
-                    Ideas frescas
-                  </h3>
-                  <p className="text-xs sm:text-sm text-white/90 font-medium leading-relaxed group-hover:text-white transition-colors duration-300">
-                    Somos una agencia nueva con mentalidad actual.
-                  </p>
-                </div>
+            {/* ITEM 4 */}
+            <div className="group flex flex-col md:flex-row items-start md:items-center gap-6 py-10 md:py-12 reveal-on-scroll reveal-delay-400 cursor-default">
+              <span className="text-[80px] md:text-[100px] font-extrabold leading-none text-white/5 group-hover:text-[#f60566]/20 transition-colors duration-500 select-none font-outfit shrink-0 w-full md:w-36 text-center md:text-left">04</span>
+              <div className="flex-1 space-y-3">
+                <h3 className="text-2xl md:text-3xl font-bold text-white tracking-tight group-hover:text-[#f60566] transition-colors duration-300">
+                  Nuevos, sí. Pero bien preparados
+                </h3>
+                <p className="text-sm md:text-base text-white/55 font-light leading-relaxed max-w-2xl">
+                  Somos una agencia joven con ganas de demostrar lo que sabemos. Eso significa que traemos energía, atención y dedicación que las agencias grandes ya no dan. Cada cliente importa, porque cada cliente cuenta.
+                </p>
               </div>
-
-              {/* Graphic element representing freshness */}
-              <div className="relative h-20 w-full flex items-center justify-center bg-black/50 rounded-2xl border border-white/10 overflow-hidden group-hover:border-[#f60566]/30 transition-all duration-500">
-                <div className="absolute inset-0 bg-gradient-to-t from-[#f60566]/15 to-transparent"></div>
-                <span className="text-3xl font-extrabold tracking-widest text-white/30 select-none group-hover:text-[#f60566]/40 group-hover:scale-105 transition-all duration-500 font-mono">EST. 2026</span>
-                <div className="absolute bottom-2 flex items-center gap-1.5 text-[8px] font-mono text-white/60">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#f60566] shadow-[0_0_5px_#f60566]"></span>
-                  <span>CONEXIÓN CON TENDENCIAS ACTUALES</span>
-                </div>
+              <div className="shrink-0 w-8 h-8 rounded-full border border-white/15 flex items-center justify-center group-hover:border-[#f60566]/50 group-hover:bg-[#f60566]/10 transition-all duration-300 hidden md:flex">
+                <svg className="w-3.5 h-3.5 text-white/30 group-hover:text-[#f60566] transition-colors" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                </svg>
               </div>
             </div>
 
-            {/* CARD 5: Estrategia + creatividad (col-span-1) */}
-            <div className="bento-card group p-8 flex flex-col justify-between min-h-[320px] reveal-on-scroll reveal-delay-100">
-              <div className="bento-card-glow-pink -bottom-10 -right-10 group-hover:scale-125"></div>
-              
-              <div className="space-y-6 relative z-10">
-                {/* Upper row: icon and status indicator */}
-                <div className="flex justify-between items-start">
-                  <div className="w-12 h-12 rounded-2xl bg-[#f60566]/15 border border-[#f60566]/30 flex items-center justify-center group-hover:bg-[#f60566] group-hover:scale-110 transition-all duration-500 shadow-[0_0_15px_rgba(246,5,102,0.15)]">
-                    <svg className="w-6 h-6 text-[#f60566] group-hover:text-white transition-colors" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 6a7.5 7.5 0 107.5 7.5h-7.5V6z" />
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 10.5H21A7.5 7.5 0 0013.5 3v7.5z" />
-                    </svg>
-                  </div>
-                  <div className="inline-block px-2.5 py-1 rounded-full bg-white/10 border border-white/20 text-[9px] font-mono tracking-widest text-white/70 uppercase">
-                    DISEÑO CON PROPÓSITO
-                  </div>
-                </div>
-
-                {/* Text Content */}
-                <div className="space-y-2">
-                  <h3 className="text-xl font-bold text-white tracking-wide group-hover:text-[#f60566] transition-colors duration-300">
-                    Estrategia + creatividad
-                  </h3>
-                  <p className="text-xs sm:text-sm text-white/90 font-medium leading-relaxed group-hover:text-white transition-colors duration-300">
-                    No solo hacemos que se vea bien; hacemos que funcione.
-                  </p>
-                </div>
-              </div>
-
-              {/* Graphic element representing integration of strategy and creativity */}
-              <div className="relative h-20 w-full flex items-center justify-around bg-black/50 rounded-2xl border border-white/10 overflow-hidden group-hover:border-[#f60566]/30 transition-all duration-500 px-4 shadow-inner">
-                <div className="flex flex-col items-center gap-1">
-                  <span className="text-[8px] font-mono text-white/50 font-bold">ESTRATEGIA</span>
-                  <div className="w-8 h-8 rounded-lg bg-white/10 border border-white/25 flex items-center justify-center text-[#00f0ff] group-hover:rotate-90 transition-transform duration-700 shadow-md">
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.43l-1.003.828c-.293.241-.438.613-.43.992a7.723 7.723 0 010 .255c-.008.378.137.75.43.99l1.004.831a1.125 1.125 0 01.26 1.43l-1.297 2.247a1.125 1.125 0 01-1.37.491l-1.216-.456c-.356-.133-.751-.072-1.076.124a6.57 6.57 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.94-1.11.94h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.43l1.004-.83c.292-.24.437-.613.43-.992a6.932 6.932 0 010-.255c.007-.378-.138-.75-.43-.99l-1.004-.831a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.645-.869l.214-1.28z" />
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                    </svg>
-                  </div>
-                </div>
-                <div className="h-[1.5px] bg-gradient-to-r from-[#00f0ff] to-[#f60566] w-12 relative shadow-[0_0_8px_#f60566]">
-                  <div className="absolute -top-1 left-5 w-2.5 h-2.5 rounded-full bg-white shadow-[0_0_8px_#ffffff] animate-ping"></div>
-                </div>
-                <div className="flex flex-col items-center gap-1">
-                  <span className="text-[8px] font-mono text-white/50 font-bold">CREATIVIDAD</span>
-                  <div className="w-8 h-8 rounded-lg bg-white/10 border border-white/25 flex items-center justify-center text-[#f60566] group-hover:scale-110 transition-transform duration-500 shadow-md">
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 21l5.096-.813a2 2 0 001.414-.586l6.096-6.096a2 2 0 00-.707-3.414l-5.096-.813a2 2 0 00-1.414.586L9.227 15.904a2 2 0 00-.586 1.414z" />
-                    </svg>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* CARD 6: Equipo multidisciplinario (col-span-1 lg:col-span-2) */}
-            <div className="bento-card group p-8 flex flex-col justify-between min-h-[320px] lg:col-span-2 reveal-on-scroll reveal-delay-200">
-              <div className="bento-card-glow-cyan top-10 right-10 group-hover:scale-125"></div>
-              
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center flex-grow">
-                {/* Text Content */}
-                <div className="space-y-4 lg:col-span-7 z-10">
-                  <div className="inline-block px-2.5 py-1 rounded-full bg-[#00f0ff]/15 border border-[#00f0ff]/30 text-[9px] font-mono tracking-widest text-[#00f0ff] uppercase shadow-[0_0_10px_rgba(0,240,255,0.15)]">
-                    3 ESPECIALIDADES
-                  </div>
-                  <div className="space-y-2">
-                    <h3 className="text-2xl font-bold text-white tracking-wide group-hover:text-[#f60566] transition-colors duration-300">
-                      Equipo multidisciplinario
-                    </h3>
-                    <p className="text-xs sm:text-sm text-white/90 font-medium leading-relaxed group-hover:text-white transition-colors duration-300">
-                      Diseño, contenido y desarrollo trabajando juntos.
-                    </p>
-                  </div>
-                </div>
-
-                {/* High-Impact Visual Graphic Element showing three intersecting disciplines */}
-                <div className="lg:col-span-5 relative w-full h-[180px] bg-black/50 rounded-[24px] border border-white/10 overflow-hidden flex items-center justify-center group-hover:border-[#00f0ff]/40 transition-all duration-500 shadow-inner">
-                  <div className="relative w-[150px] h-[150px] flex items-center justify-center">
-                    
-                    {/* Ring Path Overlay */}
-                    <div className="absolute w-[110px] h-[110px] rounded-full border border-white/10 animate-spin-3d opacity-30"></div>
-
-                    {/* Circle 1: CM (Cherry) */}
-                    <div className="absolute w-[52px] h-[52px] rounded-full bg-[#f60566]/25 border-2 border-[#f60566]/60 flex flex-col items-center justify-center -translate-y-6 transition-all duration-500 group-hover:-translate-y-8 z-10 shadow-[0_0_20px_rgba(246,5,102,0.3)]">
-                      <span className="text-[9px] font-extrabold text-white font-mono">CM</span>
-                      <span className="text-[6px] text-white/80 font-bold">CONTENIDO</span>
-                    </div>
-
-                    {/* Circle 2: Diseñador (White) */}
-                    <div className="absolute w-[52px] h-[52px] rounded-full bg-white/10 border-2 border-white/45 flex flex-col items-center justify-center -translate-x-6 translate-y-4 transition-all duration-500 group-hover:-translate-x-8 group-hover:translate-y-6 shadow-[0_0_20px_rgba(255,255,255,0.2)]">
-                      <span className="text-[9px] font-extrabold text-white font-mono">ART</span>
-                      <span className="text-[6px] text-white/80 font-bold">DISEÑO</span>
-                    </div>
-
-                    {/* Circle 3: Programador (Cyan) */}
-                    <div className="absolute w-[52px] h-[52px] rounded-full bg-[#00f0ff]/20 border-2 border-[#00f0ff]/50 flex flex-col items-center justify-center translate-x-6 translate-y-4 transition-all duration-500 group-hover:translate-x-8 group-hover:translate-y-6 shadow-[0_0_20px_rgba(0,240,255,0.25)]">
-                      <span className="text-[9px] font-extrabold text-white font-mono">DEV</span>
-                      <span className="text-[6px] text-white/80 font-bold">CÓDIGO</span>
-                    </div>
-
-                    {/* Connection indicators */}
-                    <div className="absolute w-2.5 h-2.5 rounded-full bg-white shadow-[0_0_12px_#ffffff] z-20 animate-pulse"></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-          </div>
+        </div>
         </div>
       </section>
+
 
       {/* SECTION: Portafolio / Proyectos */}
       <section
@@ -1038,40 +652,51 @@ function App() {
             ))}
           </div>
 
-          {/* Dynamic Grid Layout (2-column editorial grid for large screens, 1-column on mobile) */}
+          {/* Portfolio Grid â€” real project images */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
             {projects
               .filter(p => activeCategory === 'Todos' || p.category === activeCategory)
               .map((proj, idx) => (
                 <div
                   key={proj.title}
-                  onClick={() => openJoinModal(`Interés en portafolio: ${proj.title} (${proj.category})`)}
+                  onClick={() => setImageModal({ project: proj.title, images: (proj as any).images, index: 0 })}
                   className="portfolio-card group flex flex-col justify-between cursor-pointer reveal-on-scroll"
                   style={{ animationDelay: `${0.1 + (idx % 3) * 0.08}s` }}
                 >
-                  {/* Mockup visual wrapper */}
-                  <div className="portfolio-image-wrapper border-b border-white/5">
-                    <div className="portfolio-vector-content w-full h-full">
-                      {proj.mockup}
-                    </div>
-                    {/* Hover Overlay Button */}
-                    <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-400 flex items-center justify-center gap-2">
-                      <span className="text-[10px] font-mono tracking-widest text-[#00f0ff] uppercase font-bold translate-y-2 group-hover:translate-y-0 transition-transform duration-500">VER DETALLES</span>
+                  {/* Real image preview */}
+                  <div className="portfolio-image-wrapper border-b border-white/5 relative overflow-hidden">
+                    <img
+                      src={(proj as any).preview}
+                      alt={proj.title}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                    />
+                    {/* Image count badge */}
+                    {(proj as any).images?.length > 1 && (
+                      <div className="absolute top-3 right-3 flex items-center gap-1 bg-black/60 backdrop-blur-sm border border-white/15 rounded-full px-2.5 py-1">
+                        <svg className="w-3 h-3 text-white/70" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
+                        </svg>
+                        <span className="text-[9px] font-mono text-white/70">{(proj as any).images.length}</span>
+                      </div>
+                    )}
+                    {/* Hover overlay */}
+                    <div className="absolute inset-0 bg-black/55 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-2">
+                      <span className="text-[10px] font-mono tracking-widest text-[#00f0ff] uppercase font-bold translate-y-2 group-hover:translate-y-0 transition-transform duration-500">VER GALERÍA</span>
                       <div className="w-8 h-8 rounded-full bg-[#00f0ff]/20 border border-[#00f0ff]/40 text-[#00f0ff] flex items-center justify-center group-hover:rotate-45 transition-transform duration-500">
-                        <svg className="w-4.5 h-4.5" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
                         </svg>
                       </div>
                     </div>
                   </div>
 
-                  {/* Description / Content row */}
+                  {/* Card info */}
                   <div className="p-6 space-y-3 relative z-10 bg-black/10">
                     <div className="flex justify-between items-center">
                       <span className="text-[9px] font-mono tracking-widest text-[#f60566] uppercase font-bold px-2 py-0.5 rounded-full bg-[#f60566]/10 border border-[#f60566]/20">
                         {proj.category}
                       </span>
-                      <span className="text-[9px] font-mono text-white/40 tracking-wider">MOCKUP CONCEPT</span>
+                      <span className="text-[9px] font-mono text-[#00f0ff] tracking-wider">PROYECTO REAL</span>
                     </div>
                     <div className="space-y-1">
                       <h3 className="text-xl font-bold text-white tracking-wide group-hover:text-[#f60566] transition-colors duration-300">
@@ -1089,8 +714,92 @@ function App() {
         </div>
       </section>
 
+      {/* Image Lightbox Modal */}
+      {imageModal && (
+        <div
+          className="fixed inset-0 bg-black/95 backdrop-blur-[20px] z-50 flex items-center justify-center"
+          onClick={() => setImageModal(null)}
+        >
+          {/* Modal content */}
+          <div
+            className="relative w-full max-w-4xl mx-4 flex flex-col items-center gap-4"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Header */}
+            <div className="w-full flex items-center justify-between px-2">
+              <div className="flex items-center gap-3">
+                <div className="w-2 h-2 rounded-full bg-[#f60566] shadow-[0_0_8px_#f60566]"></div>
+                <span className="text-sm font-bold text-white">{imageModal.project}</span>
+                <span className="text-[9px] font-mono text-white/40">
+                  {imageModal.index + 1} / {imageModal.images.length}
+                </span>
+              </div>
+              <button
+                onClick={() => setImageModal(null)}
+                className="w-9 h-9 rounded-full bg-white/5 border border-white/15 flex items-center justify-center text-white/60 hover:text-[#f60566] hover:border-[#f60566]/40 transition-all"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+
+            {/* Main image */}
+            <div className="relative w-full rounded-2xl overflow-hidden border border-white/10 shadow-[0_0_60px_rgba(246,5,102,0.12)]">
+              <img
+                src={imageModal.images[imageModal.index]}
+                alt={`${imageModal.project} - imagen ${imageModal.index + 1}`}
+                className="w-full h-auto max-h-[75vh] object-contain bg-black"
+              />
+
+              {/* Prev arrow */}
+              {imageModal.images.length > 1 && (
+                <>
+                  <button
+                    onClick={() => setImageModal(m => m ? { ...m, index: (m.index - 1 + m.images.length) % m.images.length } : null)}
+                    className="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/60 border border-white/15 flex items-center justify-center text-white hover:bg-[#f60566] hover:border-[#f60566] transition-all duration-200"
+                  >
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                    </svg>
+                  </button>
+                  <button
+                    onClick={() => setImageModal(m => m ? { ...m, index: (m.index + 1) % m.images.length } : null)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/60 border border-white/15 flex items-center justify-center text-white hover:bg-[#f60566] hover:border-[#f60566] transition-all duration-200"
+                  >
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                    </svg>
+                  </button>
+                </>
+              )}
+            </div>
+
+            {/* Thumbnail strip */}
+            {imageModal.images.length > 1 && (
+              <div className="flex gap-3">
+                {imageModal.images.map((img, i) => (
+                  <button
+                    key={i}
+                    onClick={() => setImageModal(m => m ? { ...m, index: i } : null)}
+                    className={`w-16 h-16 rounded-xl overflow-hidden border-2 transition-all duration-200 ${
+                      i === imageModal.index
+                        ? 'border-[#f60566] shadow-[0_0_12px_rgba(246,5,102,0.4)]'
+                        : 'border-white/15 opacity-50 hover:opacity-80'
+                    }`}
+                  >
+                    <img src={img} alt={`thumb ${i + 1}`} className="w-full h-full object-cover" />
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
       {/* Dynamic Interaction Overlay: Lead Capture Modal Form */}
       {isModalOpen && (
+
         <div className="fixed inset-0 bg-black/85 backdrop-blur-[16px] z-50 flex items-center justify-center p-4">
           <div className="glass-panel p-6 sm:p-8 rounded-[32px] w-full max-w-md relative border border-[#f60566]/30 shadow-[0_0_50px_rgba(230,31,100,0.25)] overflow-hidden">
             {/* Close Button */}
