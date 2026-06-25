@@ -655,36 +655,7 @@ function App() {
             ))}
           </div>
 
-          {/* Premium Call to Action Banner */}
-          <div className="mt-16 md:mt-24 glass-panel border border-[#f60566]/15 hover:border-[#f60566]/35 p-8 md:p-12 rounded-[32px] flex flex-col md:flex-row items-center justify-between gap-8 transition-all duration-500 relative overflow-hidden bg-gradient-to-r from-[#15020a]/80 to-[#0c0106]/90 group shadow-[0_0_35px_rgba(246,5,102,0.04)] hover:shadow-[0_0_50px_rgba(246,5,102,0.15)]">
-            {/* Soft decorative neon glow underlay */}
-            <div className="absolute top-0 left-1/4 w-[250px] h-[250px] rounded-full bg-[#f60566]/5 blur-3xl pointer-events-none group-hover:bg-[#f60566]/10 transition-all duration-700"></div>
-            <div className="absolute bottom-0 right-1/4 w-[250px] h-[250px] rounded-full bg-[#00f0ff]/5 blur-3xl pointer-events-none group-hover:bg-[#00f0ff]/10 transition-all duration-700"></div>
 
-            <div className="space-y-3.5 text-center md:text-left z-10 relative">
-              <div className="inline-block px-3 py-1 rounded-full bg-white/5 border border-white/10 text-[9px] font-mono tracking-widest text-[#00f0ff] uppercase">
-                PROYECTOS CON PROPÓSITO
-              </div>
-              <h3 className="text-2xl md:text-3xl font-extrabold text-white tracking-tight leading-tight">
-                ¿Listo para crear algo <span className="text-gradient-cherry">legendario</span>?
-              </h3>
-              <p className="text-xs sm:text-sm text-white/60 font-light max-w-xl leading-relaxed">
-                Nuestro colectivo digital de CM, Diseñador y Desarrollador hackea la forma de hacer marketing para entregar resultados comerciales exponenciales.
-              </p>
-            </div>
-
-            <button
-              onClick={openJoinModal}
-              className="z-10 group/btn flex items-center justify-between w-full md:w-60 px-7 py-4.5 rounded-full bg-gradient-to-r from-[#f60566] to-[#ff0068] text-white font-bold text-sm tracking-widest hover:scale-105 active:scale-95 transition-all duration-300 shadow-[0_0_20px_rgba(246,5,102,0.3)] hover:shadow-[0_0_35px_rgba(246,5,102,0.5)] shrink-0 border border-white/10 uppercase"
-            >
-              <span>TRABAJAR JUNTOS</span>
-              <div className="w-7 h-7 rounded-full bg-white/15 flex items-center justify-center text-xs group-hover/btn:translate-x-1 transition-transform">
-                <svg className="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-                </svg>
-              </div>
-            </button>
-          </div>
         </div>
       </section>
 
