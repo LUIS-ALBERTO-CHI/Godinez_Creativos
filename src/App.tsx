@@ -11,7 +11,6 @@ function App() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState('Todos');
   const [activeSection, setActiveSection] = useState('inicio');
-  const [behanceModal, setBehanceModal] = useState<{ title: string; embed: string } | null>(null);
   const [imageModal, setImageModal] = useState<{ project: string; images: string[]; index: number } | null>(null);
 
   // Sound chime synthesizer for micro-interactions (disabled)
