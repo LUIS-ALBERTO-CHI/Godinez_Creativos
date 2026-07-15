@@ -184,7 +184,7 @@ function App() {
       setClientName('');
       setContactInfo('');
       setSalesHurdle('');
-      triggerToast('🎉 ¡Listo! Se abrió tu correo con los datos. Envíalo y te respondemos en menos de 24 horas.');
+      triggerToast('¡Listo! Se abrió tu correo con los datos. Envíalo y te respondemos en menos de 24 horas.');
     }, 2500);
   };
 
@@ -903,8 +903,9 @@ function App() {
               <form onSubmit={handleModalSubmit} className="flex flex-col gap-5 pt-2">
                 {/* Form Header */}
                 <div className="text-center space-y-2">
-                  <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#f60566]/15 border border-[#f60566]/40 text-[9px] font-mono tracking-widest text-white font-semibold uppercase animate-pulse shadow-[0_0_15px_rgba(246,5,102,0.25)]">
-                    🚀 HACKEA TU OFICINA
+                  <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#f60566]/15 border border-[#f60566]/40 text-[9px] font-mono tracking-widest text-white font-semibold uppercase shadow-[0_0_15px_rgba(246,5,102,0.25)]">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#f60566] inline-block shadow-[0_0_8px_#f60566]"></span>
+                    Propuesta sin costo
                   </div>
                   <h3 className="text-2xl font-bold text-white tracking-tight leading-none uppercase font-outfit">
                     Inicia tu <span className="text-[#f60566]">Proyecto</span>
