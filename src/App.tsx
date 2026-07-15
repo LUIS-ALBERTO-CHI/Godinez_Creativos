@@ -18,19 +18,6 @@ function App() {
   const [imageModal, setImageModal] = useState<{ project: string; images: string[]; index: number } | null>(null);
 
   useEffect(() => {
-    // Scroll-reveal observer
-    const revealOptions = { root: null, rootMargin: '0px -5% -5% 0px', threshold: 0.1 };
-    const revealObserver = new IntersectionObserver((entries, obs) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('revealed');
-          obs.unobserve(entry.target);
-        }
-      });
-    }, revealOptions);
-    const revealEls = document.querySelectorAll('.reveal-on-scroll');
-    revealEls.forEach((el) => revealObserver.observe(el));
-
     // Active section observer — tracks which section is in viewport
     const sectionIds = ['inicio', 'servicios', 'diferencia', 'portafolio'];
     const sectionObserver = new IntersectionObserver(
@@ -48,11 +35,28 @@ function App() {
       if (el) sectionObserver.observe(el);
     });
 
-    return () => {
-      revealEls.forEach((el) => revealObserver.unobserve(el));
-      sectionObserver.disconnect();
-    };
+    return () => sectionObserver.disconnect();
   }, []);
+
+  // Scroll-reveal observer — re-escanea cuando cambia el contenido visible
+  // (p. ej. al filtrar el portafolio, que remonta tarjetas nuevas)
+  useEffect(() => {
+    const revealObserver = new IntersectionObserver(
+      (entries, obs) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('revealed');
+            obs.unobserve(entry.target);
+          }
+        });
+      },
+      { root: null, rootMargin: '0px -5% -5% 0px', threshold: 0.1 }
+    );
+    document
+      .querySelectorAll('.reveal-on-scroll:not(.revealed)')
+      .forEach((el) => revealObserver.observe(el));
+    return () => revealObserver.disconnect();
+  }, [activeCategory]);
 
   const closeJoinModal = () => {
     setIsModalOpen(false);
