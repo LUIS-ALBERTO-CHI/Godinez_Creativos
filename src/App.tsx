@@ -248,6 +248,10 @@ function App() {
       '',
       'Enviado desde godinezcreativos.qzz.io',
     ].join('\n');
+    // Conversión para Meta Pixel (solo dispara si el píxel está configurado)
+    const w = window as unknown as { fbq?: (...args: unknown[]) => void };
+    w.fbq?.('track', 'Lead');
+
     window.location.assign(
       `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
     );
@@ -718,6 +722,70 @@ function App() {
                 </div>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+
+      {/* SECTION: Cómo trabajamos / Proceso */}
+      <section
+        id="proceso"
+        className="relative z-10 py-20 md:py-32 px-6 md:px-16 border-t border-white/5 bg-black/35 backdrop-blur-sm overflow-hidden"
+      >
+        <div className="absolute top-1/4 left-0 w-[400px] h-[400px] rounded-full bg-[#f60566]/5 blur-3xl pointer-events-none"></div>
+        <div className="absolute bottom-1/4 right-0 w-[350px] h-[350px] rounded-full bg-[#00f0ff]/5 blur-3xl pointer-events-none"></div>
+
+        <div className="max-w-7xl mx-auto relative z-10">
+          {/* Header */}
+          <div className="flex flex-col items-center text-center mb-16 md:mb-20 space-y-5 reveal-on-scroll">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-[#f60566]/40 bg-[#f60566]/15 text-[10px] font-mono tracking-[0.25em] text-white font-semibold uppercase shadow-[0_0_15px_rgba(246,5,102,0.25)]">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#f60566] inline-block shadow-[0_0_8px_#f60566]"></span>
+              Nuestro Proceso
+            </div>
+            <h2 className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-white font-outfit uppercase">
+              Cómo <span className="text-[#f60566]">trabajamos</span>
+            </h2>
+            <p className="text-xs sm:text-sm md:text-base text-white/70 leading-relaxed font-light max-w-2xl">
+              Un proceso simple y transparente, de la primera charla a la entrega final. Siempre sabes en qué paso vamos.
+            </p>
+          </div>
+
+          {/* Steps */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 md:gap-6">
+            {[
+              { n: '01', title: 'Contacto', desc: 'Nos cuentas tu idea y objetivos. Escuchamos qué necesita tu marca para crecer.' },
+              { n: '02', title: 'Propuesta', desc: 'Diseñamos una estrategia y presupuesto a tu medida, sin costo y sin compromiso.' },
+              { n: '03', title: 'Diseño', desc: 'Manos a la obra: creamos y te compartimos avances para ajustar juntos cada detalle.' },
+              { n: '04', title: 'Entrega', desc: 'Recibes todo listo para usar, y seguimos cerca para acompañar el lanzamiento.' },
+            ].map((step, idx) => (
+              <div
+                key={step.n}
+                className="group relative rounded-2xl border border-white/10 bg-white/[0.03] p-7 hover:border-[#f60566]/40 hover:bg-white/[0.05] hover:-translate-y-1 transition-all duration-300 reveal-on-scroll"
+                style={{ transitionDelay: `${idx * 80}ms` }}
+              >
+                <div className="flex items-center justify-between mb-4">
+                  <span className="text-4xl font-extrabold text-[#f60566]/90 font-outfit leading-none">{step.n}</span>
+                  <span className="w-9 h-9 rounded-full border border-white/10 bg-[#f60566]/10 flex items-center justify-center text-[#f60566] text-xs font-mono">
+                    {idx + 1}/4
+                  </span>
+                </div>
+                <h3 className="text-lg font-bold text-white tracking-tight mb-2 group-hover:text-[#f60566] transition-colors">{step.title}</h3>
+                <p className="text-sm text-white/70 font-light leading-relaxed">{step.desc}</p>
+              </div>
+            ))}
+          </div>
+
+          {/* CTA */}
+          <div className="flex justify-center mt-12 md:mt-14">
+            <button
+              onClick={() => openJoinModal()}
+              className="group flex items-center gap-2.5 px-7 py-3.5 rounded-full bg-[#f60566] text-white font-bold text-sm tracking-wide hover:bg-[#ff0068] hover:scale-[1.03] active:scale-[0.97] transition-all duration-300 shadow-[0_0_25px_rgba(246,5,102,0.35)]"
+            >
+              <span>Empecemos por el paso 1</span>
+              <svg className="w-4 h-4 group-hover:translate-x-0.5 transition-transform duration-200" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+              </svg>
+            </button>
           </div>
         </div>
       </section>
