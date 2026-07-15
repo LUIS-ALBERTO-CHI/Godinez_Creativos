@@ -1,6 +1,9 @@
-/* Landing Page CSS System for Godínez Creativos - Futuristic Cherry/Neon Theme */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap');
+/* Landing Page CSS System for Godínez Creativos - Futuristic Cherry/Neon Theme */
+/* Nota: las fuentes (Montserrat / JetBrains Mono) se cargan en index.html */
 
 :root {
   --bg-color: #0d0308;
@@ -19,6 +22,36 @@
 
 html {
   scroll-behavior: smooth;
+}
+
+/* Foco visible accesible para navegación con teclado */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid #f60566;
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+/* Respeta a quien prefiere menos movimiento (accesibilidad vestibular) */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .reveal-on-scroll {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+  }
 }
 
 body {

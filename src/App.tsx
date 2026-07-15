@@ -1,6 +1,10 @@
 import { useState, useEffect } from 'react';
 import { Share2, Sparkles, PenTool, Code2, Clapperboard, Target } from 'lucide-react';
 
+// Correo destino de los leads del formulario.
+// TODO: confirma/cambia por el correo real del negocio.
+const CONTACT_EMAIL = 'godinezcreativoss@gmail.com';
+
 function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [clientName, setClientName] = useState('');
@@ -12,11 +16,6 @@ function App() {
   const [activeCategory, setActiveCategory] = useState('Todos');
   const [activeSection, setActiveSection] = useState('inicio');
   const [imageModal, setImageModal] = useState<{ project: string; images: string[]; index: number } | null>(null);
-
-  // Sound chime synthesizer for micro-interactions (disabled)
-  const playChime = (type: 'success' | 'click' | 'close') => {
-    void type;
-  };
 
   useEffect(() => {
     // Scroll-reveal observer
@@ -32,7 +31,7 @@ function App() {
     const revealEls = document.querySelectorAll('.reveal-on-scroll');
     revealEls.forEach((el) => revealObserver.observe(el));
 
-    // Active section observer Á¢â‚¬â€ tracks which section is in viewport
+    // Active section observer — tracks which section is in viewport
     const sectionIds = ['inicio', 'servicios', 'diferencia', 'portafolio'];
     const sectionObserver = new IntersectionObserver(
       (entries) => {
@@ -54,6 +53,44 @@ function App() {
       sectionObserver.disconnect();
     };
   }, []);
+
+  const closeJoinModal = () => {
+    setIsModalOpen(false);
+    setIsSubmitted(false);
+    setClientName('');
+    setContactInfo('');
+    setSalesHurdle('');
+  };
+
+  // Teclado (Escape/flechas) y bloqueo de scroll cuando hay una capa abierta
+  useEffect(() => {
+    const anyOpen = isModalOpen || isMobileMenuOpen || imageModal !== null;
+    if (!anyOpen) return;
+
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        if (imageModal) setImageModal(null);
+        else if (isModalOpen) closeJoinModal();
+        else if (isMobileMenuOpen) setIsMobileMenuOpen(false);
+        return;
+      }
+      if (imageModal && imageModal.images.length > 1) {
+        if (e.key === 'ArrowLeft') {
+          setImageModal((m) => (m ? { ...m, index: (m.index - 1 + m.images.length) % m.images.length } : null));
+        } else if (e.key === 'ArrowRight') {
+          setImageModal((m) => (m ? { ...m, index: (m.index + 1) % m.images.length } : null));
+        }
+      }
+    };
+
+    document.addEventListener('keydown', onKeyDown);
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.removeEventListener('keydown', onKeyDown);
+      document.body.style.overflow = prevOverflow;
+    };
+  }, [isModalOpen, isMobileMenuOpen, imageModal]);
 
   const openJoinModal = (initialService?: string | React.MouseEvent) => {
     if (initialService && typeof initialService === 'string') {
@@ -103,7 +140,13 @@ function App() {
     }
   ];
 
-  const projects = [
+  const projects: {
+    title: string;
+    category: string;
+    desc: string;
+    preview: string;
+    images: string[];
+  }[] = [
     {
       title: "MVZ. Joaquín Fernández Vera",
       category: "Branding",
@@ -113,26 +156,32 @@ function App() {
     },
   ];
 
-  const closeJoinModal = () => {
-    playChime('close');
-    setIsModalOpen(false);
-    setClientName('');
-    setContactInfo('');
-    setSalesHurdle('');
-  };
-
   const handleModalSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!clientName || !contactInfo) return;
-    playChime('success');
+
+    // Abre el cliente de correo del visitante con el lead prellenado hacia el negocio.
+    const subject = `Nuevo proyecto — ${clientName}`;
+    const body = [
+      `Nombre o empresa: ${clientName}`,
+      `Contacto (WhatsApp/correo): ${contactInfo}`,
+      `Objetivo: ${salesHurdle || 'No especificado'}`,
+      '',
+      'Enviado desde godinezcreativos.qzz.io',
+    ].join('\n');
+    window.location.assign(
+      `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
+    );
+
     setIsSubmitted(true);
     setTimeout(() => {
       setIsModalOpen(false);
+      setIsSubmitted(false);
       setClientName('');
       setContactInfo('');
       setSalesHurdle('');
-      triggerToast('🎉 ¡Campaña agendada! Nos pondremos en contacto contigo en menos de 24 horas.');
-    }, 2000);
+      triggerToast('🎉 ¡Listo! Se abrió tu correo con los datos. Envíalo y te respondemos en menos de 24 horas.');
+    }, 2500);
   };
 
   const triggerToast = (msg: string) => {
@@ -140,14 +189,18 @@ function App() {
     setTimeout(() => setToastMessage(null), 5000);
   };
 
+  const filteredProjects = projects.filter(
+    (p) => activeCategory === 'Todos' || p.category === activeCategory
+  );
+
   return (
-    <div className="relative min-h-screen overflow-x-hidden bg-black select-none">
+    <div className="relative min-h-screen overflow-x-hidden bg-black">
       {/* Grid Overlay & Ambient Lights */}
       <div className="mesh-grid"></div>
       <div className="ambient-orb orb-cherry-left"></div>
       <div className="ambient-orb orb-cherry-main"></div>
 
-      {/* Navigation Header Á¢â‚¬â€  Floating Pill (exact reference match) */}
+      {/* Navigation Header — Floating Pill (exact reference match) */}
       <nav className="fixed top-4 left-0 right-0 z-50 flex justify-center px-6 pointer-events-none">
         <div className="pointer-events-auto w-full max-w-5xl flex items-center justify-between px-5 py-2 rounded-full bg-[#111] border border-white/15 shadow-[0_4px_24px_rgba(0,0,0,0.6)]">
 
@@ -163,7 +216,7 @@ function App() {
             </span>
           </a>
 
-          {/* CENTER: Nav links Á¢â‚¬â€  active section gets white pill */}
+          {/* CENTER: Nav links — active section gets white pill */}
           <div className="hidden lg:flex items-center gap-1">
             {([
               { label: 'Inicio',           href: '#inicio',     id: 'inicio' },
@@ -185,11 +238,7 @@ function App() {
             ))}
             <button
               onClick={(e) => { e.preventDefault(); openJoinModal(); }}
-              className={`px-4 py-1.5 rounded-full text-xs font-medium transition-all duration-200 ${
-                activeSection === 'contacto'
-                  ? 'bg-white text-black font-bold'
-                  : 'text-white/65 hover:text-white'
-              }`}
+              className="px-4 py-1.5 rounded-full text-xs font-medium transition-all duration-200 text-white/65 hover:text-white"
             >
               Contacto
             </button>
@@ -206,7 +255,7 @@ function App() {
 
             {/* Mobile hamburger */}
             <button
-              onClick={() => { playChime('click'); setIsMobileMenuOpen(!isMobileMenuOpen); }}
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className="lg:hidden flex items-center justify-center w-8 h-8 rounded-full border border-white/15 text-white active:scale-95 transition-all duration-150"
               aria-label="Toggle Menu"
             >
@@ -240,7 +289,7 @@ function App() {
             />
           </div>
           <button
-            onClick={() => { playChime('close'); setIsMobileMenuOpen(false); }}
+            onClick={() => setIsMobileMenuOpen(false)}
             className="flex items-center justify-center w-10 h-10 rounded-full glass-panel border border-[#f60566]/30 text-white hover:border-[#f60566] active:scale-95 transition-all duration-300"
             aria-label="Cerrar Menú"
           >
@@ -305,7 +354,7 @@ function App() {
                 <path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5C10 7.57 11.57 6 13.5 6H16v3h-2c-.55 0-1 .45-1 1v2h3v3h-3v6.95c4.56-.93 8-4.96 8-9.75z" />
               </svg>
             </a>
-            <a href="#" className="w-9 h-9 rounded-full glass-panel flex items-center justify-center text-white/50 hover:text-[#f60566] hover:border-[#f60566]/40 transition-all active:scale-90" aria-label="Contacto">
+            <a href={`mailto:${CONTACT_EMAIL}`} className="w-9 h-9 rounded-full glass-panel flex items-center justify-center text-white/50 hover:text-[#f60566] hover:border-[#f60566]/40 transition-all active:scale-90" aria-label="Enviar correo">
               <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
               </svg>
@@ -451,7 +500,7 @@ function App() {
             </p>
           </div>
 
-          {/* Services Á¢â‚¬â€  Clean card grid */}
+          {/* Services — Clean card grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {services.map((svc, idx) => (
               <div
@@ -480,7 +529,7 @@ function App() {
 
                 {/* Description */}
                 <p className={`text-sm leading-relaxed flex-1 ${
-                  idx === 0 ? 'text-white/80' : 'text-white/60'
+                  idx === 0 ? 'text-white/85' : 'text-white/70'
                 }`}>
                   {svc.desc}
                 </p>
@@ -541,8 +590,8 @@ function App() {
                 <h3 className="text-2xl md:text-3xl font-bold text-white tracking-tight group-hover:text-[#f60566] transition-colors duration-300">
                   Hablas con quien hace el trabajo
                 </h3>
-                <p className="text-sm md:text-base text-white/55 font-light leading-relaxed max-w-2xl">
-                  Sin intermediarios, sin cuentas. Te comunicás directamente con el CM, el diseñador o el dev que está trabajando en tu proyecto. Las decisiones llegan rápido y los cambios también.
+                <p className="text-sm md:text-base text-white/70 font-light leading-relaxed max-w-2xl">
+                  Sin intermediarios, sin cuentas. Te comunicas directamente con el CM, el diseñador o el dev que está trabajando en tu proyecto. Las decisiones llegan rápido y los cambios también.
                 </p>
               </div>
               <div className="shrink-0 w-8 h-8 rounded-full border border-white/15 flex items-center justify-center group-hover:border-[#f60566]/50 group-hover:bg-[#f60566]/10 transition-all duration-300 hidden md:flex">
@@ -559,7 +608,7 @@ function App() {
                 <h3 className="text-2xl md:text-3xl font-bold text-white tracking-tight group-hover:text-[#f60566] transition-colors duration-300">
                   Diseño que no se ve a la segunda
                 </h3>
-                <p className="text-sm md:text-base text-white/55 font-light leading-relaxed max-w-2xl">
+                <p className="text-sm md:text-base text-white/70 font-light leading-relaxed max-w-2xl">
                   No usamos plantillas de Canva del montón ni estilos que ya viste en tres marcas distintas. Cada pieza que creamos empieza desde cero, pensada específicamente para tu negocio y tu audiencia.
                 </p>
               </div>
@@ -577,7 +626,7 @@ function App() {
                 <h3 className="text-2xl md:text-3xl font-bold text-white tracking-tight group-hover:text-[#f60566] transition-colors duration-300">
                   Tres disciplinas, un solo equipo
                 </h3>
-                <p className="text-sm md:text-base text-white/55 font-light leading-relaxed max-w-2xl">
+                <p className="text-sm md:text-base text-white/70 font-light leading-relaxed max-w-2xl">
                   CM, diseñador y desarrollador web trabajando juntos desde el día uno. No contratamos por separado, no coordinamos freelancers. Todo está integrado para que tu marca se vea y funcione de manera consistente.
                 </p>
               </div>
@@ -595,7 +644,7 @@ function App() {
                 <h3 className="text-2xl md:text-3xl font-bold text-white tracking-tight group-hover:text-[#f60566] transition-colors duration-300">
                   Nuevos, sí. Pero bien preparados
                 </h3>
-                <p className="text-sm md:text-base text-white/55 font-light leading-relaxed max-w-2xl">
+                <p className="text-sm md:text-base text-white/70 font-light leading-relaxed max-w-2xl">
                   Somos una agencia joven con ganas de demostrar lo que sabemos. Eso significa que traemos energía, atención y dedicación que las agencias grandes ya no dan. Cada cliente importa, porque cada cliente cuenta.
                 </p>
               </div>
@@ -643,7 +692,7 @@ function App() {
             {['Todos', 'Branding', 'Social Media', 'Web Design', 'Desarrollo Web', 'Contenido Creativo', 'Concept Projects'].map((cat) => (
               <button
                 key={cat}
-                onClick={() => { playChime('click'); setActiveCategory(cat); }}
+                onClick={() => setActiveCategory(cat)}
                 className={`category-filter-btn ${activeCategory === cat ? 'active-category' : ''}`}
               >
                 {cat}
@@ -651,31 +700,49 @@ function App() {
             ))}
           </div>
 
-          {/* Portfolio Grid â€” real project images */}
+          {/* Portfolio Grid — real project images */}
+          {filteredProjects.length === 0 ? (
+            <div className="flex flex-col items-center justify-center text-center py-20 gap-4">
+              <div className="w-14 h-14 rounded-full border border-white/10 bg-white/[0.03] flex items-center justify-center">
+                <svg className="w-6 h-6 text-[#f60566]" fill="none" stroke="currentColor" strokeWidth="1.75" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5z" />
+                </svg>
+              </div>
+              <p className="text-base font-semibold text-white">Muy pronto, nuevos proyectos aquí</p>
+              <p className="text-sm text-white/60 max-w-sm">
+                Estamos preparando trabajos de <span className="text-[#f60566] font-medium">{activeCategory}</span>. Mientras tanto, escríbenos y cuéntanos tu idea.
+              </p>
+              <button
+                onClick={() => openJoinModal()}
+                className="mt-2 px-5 py-2.5 rounded-full bg-[#f60566] text-white text-xs font-bold tracking-wide hover:bg-[#ff0068] active:scale-95 transition-all"
+              >
+                Iniciar mi proyecto
+              </button>
+            </div>
+          ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
-            {projects
-              .filter(p => activeCategory === 'Todos' || p.category === activeCategory)
+            {filteredProjects
               .map((proj, idx) => (
                 <div
                   key={proj.title}
-                  onClick={() => setImageModal({ project: proj.title, images: (proj as any).images, index: 0 })}
+                  onClick={() => setImageModal({ project: proj.title, images: proj.images, index: 0 })}
                   className="portfolio-card group flex flex-col justify-between cursor-pointer reveal-on-scroll"
                   style={{ animationDelay: `${0.1 + (idx % 3) * 0.08}s` }}
                 >
                   {/* Real image preview */}
                   <div className="portfolio-image-wrapper border-b border-white/5 relative overflow-hidden">
                     <img
-                      src={(proj as any).preview}
+                      src={proj.preview}
                       alt={proj.title}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                     />
                     {/* Image count badge */}
-                    {(proj as any).images?.length > 1 && (
+                    {proj.images?.length > 1 && (
                       <div className="absolute top-3 right-3 flex items-center gap-1 bg-black/60 backdrop-blur-sm border border-white/15 rounded-full px-2.5 py-1">
                         <svg className="w-3 h-3 text-white/70" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
                         </svg>
-                        <span className="text-[9px] font-mono text-white/70">{(proj as any).images.length}</span>
+                        <span className="text-[9px] font-mono text-white/70">{proj.images.length}</span>
                       </div>
                     )}
                     {/* Hover overlay */}
@@ -709,6 +776,7 @@ function App() {
                 </div>
               ))}
           </div>
+          )}
 
         </div>
       </section>
@@ -718,6 +786,9 @@ function App() {
         <div
           className="fixed inset-0 bg-black/95 backdrop-blur-[20px] z-50 flex items-center justify-center"
           onClick={() => setImageModal(null)}
+          role="dialog"
+          aria-modal="true"
+          aria-label={`Galería del proyecto ${imageModal.project}`}
         >
           {/* Modal content */}
           <div
@@ -799,8 +870,17 @@ function App() {
       {/* Dynamic Interaction Overlay: Lead Capture Modal Form */}
       {isModalOpen && (
 
-        <div className="fixed inset-0 bg-black/85 backdrop-blur-[16px] z-50 flex items-center justify-center p-4">
-          <div className="glass-panel p-6 sm:p-8 rounded-[32px] w-full max-w-md relative border border-[#f60566]/30 shadow-[0_0_50px_rgba(230,31,100,0.25)] overflow-hidden">
+        <div
+          className="fixed inset-0 bg-black/85 backdrop-blur-[16px] z-50 flex items-center justify-center p-4"
+          onClick={closeJoinModal}
+          role="dialog"
+          aria-modal="true"
+          aria-label="Formulario de contacto"
+        >
+          <div
+            className="glass-panel p-6 sm:p-8 rounded-[32px] w-full max-w-md relative border border-[#f60566]/30 shadow-[0_0_50px_rgba(230,31,100,0.25)] overflow-hidden"
+            onClick={(e) => e.stopPropagation()}
+          >
             {/* Close Button */}
             <button
               onClick={closeJoinModal}
@@ -895,7 +975,7 @@ function App() {
                 {/* Submit button */}
                 <button
                   type="submit"
-                  className="mt-2 group/submit flex items-center justify-center gap-2.5 w-full py-4 rounded-full bg-gradient-to-r from-[#f60566] to-[#ff0068] text-white font-bold text-sm tracking-widest uppercase hover:scale-102 active:scale-97 transition-all duration-300 shadow-[0_0_20px_rgba(246,5,102,0.3)] hover:shadow-[0_0_35px_rgba(246,5,102,0.5)] border border-white/10"
+                  className="mt-2 group/submit flex items-center justify-center gap-2.5 w-full py-4 rounded-full bg-gradient-to-r from-[#f60566] to-[#ff0068] text-white font-bold text-sm tracking-widest uppercase hover:scale-[1.02] active:scale-[0.97] transition-all duration-300 shadow-[0_0_20px_rgba(246,5,102,0.3)] hover:shadow-[0_0_35px_rgba(246,5,102,0.5)] border border-white/10"
                 >
                   <span>Enviar Información</span>
                   <svg className="w-4 h-4 text-white group-hover/submit:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
