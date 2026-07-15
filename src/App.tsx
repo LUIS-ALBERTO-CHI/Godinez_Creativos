@@ -198,44 +198,44 @@ function App() {
       title: "Chill & Grill",
       category: "Branding",
       desc: "Identidad visual y campaña de lanzamiento para marca de parrilla: logotipo, mockups y aplicaciones de marca.",
-      preview: "/chill-grill-cover.webp",
-      images: ["/chill-grill-cover.webp", "/chill-grill-mockup.webp", "/chill-grill-identity.webp"],
+      preview: "/img/portfolio/chill-grill-cover.webp",
+      images: ["/img/portfolio/chill-grill-cover.webp", "/img/portfolio/chill-grill-mockup.webp", "/img/portfolio/chill-grill-identity.webp"],
     },
     {
       title: "Piano Bar",
       category: "Branding",
       desc: "Diseño de identidad de marca para piano bar: logotipo, sistema visual y aplicaciones con un estilo elegante.",
-      preview: "/piano-bar.webp",
-      images: ["/piano-bar.webp"],
+      preview: "/img/portfolio/piano-bar.webp",
+      images: ["/img/portfolio/piano-bar.webp"],
     },
     {
       title: "Xibalba",
       category: "Branding",
       desc: "Identidad de marca para dark kitchen. Abre la guía de identidad completa en PDF.",
-      preview: "/xibalba1.png",
+      preview: "/img/portfolio/xibalba1.png",
       images: [],
-      pdf: "/guia-identidad-xibalba.pdf",
+      pdf: "/docs/guia-identidad-xibalba.pdf",
     },
     {
       title: "MVZ. Joaquín Fernández Vera",
       category: "Branding",
       desc: "Diseño de tarjetas de presentación para clínica veterinaria. Identidad visual oscura con personalidad y estilo.",
-      preview: "/mockup-veterinaria.jpeg",
-      images: ["/mockup-veterinaria.jpeg", "/mockup-veterinaria-2.jpeg"],
+      preview: "/img/portfolio/mockup-veterinaria.jpeg",
+      images: ["/img/portfolio/mockup-veterinaria.jpeg", "/img/portfolio/mockup-veterinaria-2.jpeg"],
     },
     {
       title: "Don Mariano",
       category: "Logo",
       desc: "Diseño de logotipo para taquería chilanga, con un estilo clásico y apetitoso.",
-      preview: "/don-mariano-logo.png",
-      images: ["/don-mariano-logo.png"],
+      preview: "/img/portfolio/don-mariano-logo.png",
+      images: ["/img/portfolio/don-mariano-logo.png"],
     },
     {
       title: "Logofolio",
       category: "Logo",
       desc: "Selección de logotipos creados para distintas marcas y proyectos.",
-      preview: "/logofolio.webp",
-      images: ["/logofolio.webp"],
+      preview: "/img/portfolio/logofolio.webp",
+      images: ["/img/portfolio/logofolio.webp"],
     },
   ];
 
@@ -299,7 +299,7 @@ function App() {
           {/* LEFT: Logo */}
           <a href="#" className="flex items-center gap-2.5 shrink-0">
             <img
-              src="/icon.jpeg"
+              src="/img/brand/icon.jpeg"
               alt="Godínez Creativos"
               className="h-7 w-7 rounded-full object-cover border border-white/20"
             />
@@ -375,7 +375,7 @@ function App() {
         <div className="absolute top-0 left-0 w-full px-6 py-6 flex justify-between items-center z-20">
           <div className="flex items-center text-sm font-semibold tracking-wide text-white/90">
             <img
-              src="/icon.jpeg"
+              src="/img/brand/icon.jpeg"
               alt="Godínez Creativos"
               className="h-8 w-8 rounded-full object-cover border border-white/10"
             />
@@ -514,7 +514,7 @@ function App() {
             {/* Mascot Image Container with Cybernetic Visor - Giant & Borderless */}
             <div className="relative w-full h-[25vh] sm:h-[35vh] md:h-[50vh] lg:h-[85vh] max-h-[220px] sm:max-h-[300px] md:max-h-[500px] lg:max-h-[850px] flex items-end justify-center lg:justify-end transition-all duration-500 floating-subtle">
               <img
-                src="mascota.webp"
+                src="/img/brand/mascota.webp"
                 alt="Mascota de Godínez Creativos"
                 fetchPriority="high"
                 decoding="async"
@@ -530,11 +530,11 @@ function App() {
             {/* The double content creates the infinite looping effect */}
             <div className="marquee-content animate-marquee">
               {[
-                { name: 'Illustrator', src: '/adobe-illustrator-seeklogo.svg', alt: 'Adobe Illustrator' },
-                { name: 'After Effects', src: '/adobe-after-effects-seeklogo.png', alt: 'Adobe After Effects' },
-                { name: 'Canva', src: '/canva-seeklogo.svg', alt: 'Canva' },
-                { name: 'Meta Ads', src: '/meta-icon-new-facebook-2021-seeklogo.svg', alt: 'Meta Ads' },
-                { name: 'CapCut', src: '/capcut-seeklogo-2.svg', alt: 'CapCut' }
+                { name: 'Illustrator', src: '/img/tech/adobe-illustrator-seeklogo.svg', alt: 'Adobe Illustrator' },
+                { name: 'After Effects', src: '/img/tech/adobe-after-effects-seeklogo.png', alt: 'Adobe After Effects' },
+                { name: 'Canva', src: '/img/tech/canva-seeklogo.svg', alt: 'Canva' },
+                { name: 'Meta Ads', src: '/img/tech/meta-icon-new-facebook-2021-seeklogo.svg', alt: 'Meta Ads' },
+                { name: 'CapCut', src: '/img/tech/capcut-seeklogo-2.svg', alt: 'CapCut' }
               ].map((logo, idx) => (
                 <div key={`${logo.name}-1-${idx}`} className="group flex items-center gap-1.5 md:gap-2.5 select-none cursor-default hover:scale-[1.03] transition-transform duration-300 shrink-0">
                   <img
@@ -549,11 +549,11 @@ function App() {
               ))}
               {/* Duplicate the array to allow infinite seamless marquee scroll */}
               {[
-                { name: 'Illustrator', src: '/adobe-illustrator-seeklogo.svg', alt: 'Adobe Illustrator' },
-                { name: 'After Effects', src: '/adobe-after-effects-seeklogo.png', alt: 'Adobe After Effects' },
-                { name: 'Canva', src: '/canva-seeklogo.svg', alt: 'Canva' },
-                { name: 'Meta Ads', src: '/meta-icon-new-facebook-2021-seeklogo.svg', alt: 'Meta Ads' },
-                { name: 'CapCut', src: '/capcut-seeklogo-2.svg', alt: 'CapCut' }
+                { name: 'Illustrator', src: '/img/tech/adobe-illustrator-seeklogo.svg', alt: 'Adobe Illustrator' },
+                { name: 'After Effects', src: '/img/tech/adobe-after-effects-seeklogo.png', alt: 'Adobe After Effects' },
+                { name: 'Canva', src: '/img/tech/canva-seeklogo.svg', alt: 'Canva' },
+                { name: 'Meta Ads', src: '/img/tech/meta-icon-new-facebook-2021-seeklogo.svg', alt: 'Meta Ads' },
+                { name: 'CapCut', src: '/img/tech/capcut-seeklogo-2.svg', alt: 'CapCut' }
               ].map((logo, idx) => (
                 <div key={`${logo.name}-2-${idx}`} className="group flex items-center gap-1.5 md:gap-2.5 select-none cursor-default hover:scale-[1.03] transition-transform duration-300 shrink-0">
                   <img
@@ -963,7 +963,7 @@ function App() {
                 role: 'Marketing & Contenido',
                 accent: '#f60566',
                 desc: 'La voz creativa detrás de tu marca: redes, diseño, fotografía y video que conectan y convierten.',
-                photo: '/foto-maria-julia.jpg',
+                photo: '/img/team/foto-maria-julia.jpg',
                 instagram: 'https://www.instagram.com/hobishinee_/',
                 linkedin: 'https://www.linkedin.com/in/maria-julia-valdez-navarro-42696828a/',
                 portfolio: 'https://majuvaldez.qzz.io/',
@@ -1099,7 +1099,7 @@ function App() {
           {/* Marca */}
           <div className="space-y-4">
             <a href="#inicio" className="flex items-center gap-2.5">
-              <img src="/icon.jpeg" alt="Godínez Creativos" className="h-8 w-8 rounded-full object-cover border border-white/20" />
+              <img src="/img/brand/icon.jpeg" alt="Godínez Creativos" className="h-8 w-8 rounded-full object-cover border border-white/20" />
               <span className="text-white font-extrabold tracking-wider uppercase text-sm">
                 Godínez <span className="text-[#f60566]">Creativos</span>
               </span>
