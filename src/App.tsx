@@ -587,82 +587,52 @@ function App() {
             </p>
           </div>
 
-          {/* Manifesto List */}
-          <div className="flex flex-col divide-y divide-white/8">
-            
-            {/* ITEM 1 */}
-            <div className="group flex flex-col md:flex-row items-start md:items-center gap-6 py-10 md:py-12 reveal-on-scroll reveal-delay-100 cursor-default">
-              <span className="text-[80px] md:text-[100px] font-extrabold leading-none text-white/5 group-hover:text-[#f60566]/20 transition-colors duration-500 select-none font-outfit shrink-0 w-full md:w-36 text-center md:text-left">01</span>
-              <div className="flex-1 space-y-3">
-                <h3 className="text-2xl md:text-3xl font-bold text-white tracking-tight group-hover:text-[#f60566] transition-colors duration-300">
-                  Hablas con quien hace el trabajo
-                </h3>
-                <p className="text-sm md:text-base text-white/70 font-light leading-relaxed max-w-2xl">
-                  Sin intermediarios, sin cuentas. Te comunicas directamente con el CM, el diseñador o el dev que está trabajando en tu proyecto. Las decisiones llegan rápido y los cambios también.
-                </p>
-              </div>
-              <div className="shrink-0 w-8 h-8 rounded-full border border-white/15 flex items-center justify-center group-hover:border-[#f60566]/50 group-hover:bg-[#f60566]/10 transition-all duration-300 hidden md:flex">
-                <svg className="w-3.5 h-3.5 text-white/30 group-hover:text-[#f60566] transition-colors" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-                </svg>
-              </div>
-            </div>
+          {/* Diferenciadores — grid de tarjetas */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6">
+            {[
+              {
+                n: '01',
+                title: 'Hablas con quien hace el trabajo',
+                desc: 'Sin intermediarios, sin cuentas. Te comunicas directamente con el CM, el diseñador o el dev que está trabajando en tu proyecto. Las decisiones llegan rápido y los cambios también.',
+              },
+              {
+                n: '02',
+                title: 'Diseño que no se ve a la segunda',
+                desc: 'No usamos plantillas de Canva del montón ni estilos que ya viste en tres marcas distintas. Cada pieza que creamos empieza desde cero, pensada específicamente para tu negocio y tu audiencia.',
+              },
+              {
+                n: '03',
+                title: 'Tres disciplinas, un solo equipo',
+                desc: 'CM, diseñador y desarrollador web trabajando juntos desde el día uno. No contratamos por separado, no coordinamos freelancers. Todo está integrado para que tu marca se vea y funcione de manera consistente.',
+              },
+              {
+                n: '04',
+                title: 'Nuevos, sí. Pero bien preparados',
+                desc: 'Somos una agencia joven con ganas de demostrar lo que sabemos. Eso significa que traemos energía, atención y dedicación que las agencias grandes ya no dan. Cada cliente importa, porque cada cliente cuenta.',
+              },
+            ].map((item, idx) => (
+              <div
+                key={item.n}
+                className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] p-7 md:p-8 hover:border-[#f60566]/40 hover:bg-white/[0.05] hover:-translate-y-1 transition-all duration-300 reveal-on-scroll"
+                style={{ transitionDelay: `${idx * 80}ms` }}
+              >
+                {/* Número watermark */}
+                <span className="pointer-events-none absolute -top-4 -right-2 text-[110px] font-extrabold leading-none text-white/[0.04] group-hover:text-[#f60566]/10 transition-colors duration-500 select-none font-outfit">
+                  {item.n}
+                </span>
 
-            {/* ITEM 2 */}
-            <div className="group flex flex-col md:flex-row items-start md:items-center gap-6 py-10 md:py-12 reveal-on-scroll reveal-delay-200 cursor-default">
-              <span className="text-[80px] md:text-[100px] font-extrabold leading-none text-white/5 group-hover:text-[#f60566]/20 transition-colors duration-500 select-none font-outfit shrink-0 w-full md:w-36 text-center md:text-left">02</span>
-              <div className="flex-1 space-y-3">
-                <h3 className="text-2xl md:text-3xl font-bold text-white tracking-tight group-hover:text-[#f60566] transition-colors duration-300">
-                  Diseño que no se ve a la segunda
-                </h3>
-                <p className="text-sm md:text-base text-white/70 font-light leading-relaxed max-w-2xl">
-                  No usamos plantillas de Canva del montón ni estilos que ya viste en tres marcas distintas. Cada pieza que creamos empieza desde cero, pensada específicamente para tu negocio y tu audiencia.
-                </p>
+                <div className="relative flex flex-col gap-3">
+                  <span className="text-xs font-mono font-bold tracking-widest text-[#f60566]">{item.n}</span>
+                  <h3 className="text-xl md:text-2xl font-bold text-white tracking-tight group-hover:text-[#f60566] transition-colors duration-300">
+                    {item.title}
+                  </h3>
+                  <p className="text-sm md:text-base text-white/70 font-light leading-relaxed">
+                    {item.desc}
+                  </p>
+                </div>
               </div>
-              <div className="shrink-0 w-8 h-8 rounded-full border border-white/15 flex items-center justify-center group-hover:border-[#f60566]/50 group-hover:bg-[#f60566]/10 transition-all duration-300 hidden md:flex">
-                <svg className="w-3.5 h-3.5 text-white/30 group-hover:text-[#f60566] transition-colors" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-                </svg>
-              </div>
-            </div>
-
-            {/* ITEM 3 */}
-            <div className="group flex flex-col md:flex-row items-start md:items-center gap-6 py-10 md:py-12 reveal-on-scroll reveal-delay-300 cursor-default">
-              <span className="text-[80px] md:text-[100px] font-extrabold leading-none text-white/5 group-hover:text-[#f60566]/20 transition-colors duration-500 select-none font-outfit shrink-0 w-full md:w-36 text-center md:text-left">03</span>
-              <div className="flex-1 space-y-3">
-                <h3 className="text-2xl md:text-3xl font-bold text-white tracking-tight group-hover:text-[#f60566] transition-colors duration-300">
-                  Tres disciplinas, un solo equipo
-                </h3>
-                <p className="text-sm md:text-base text-white/70 font-light leading-relaxed max-w-2xl">
-                  CM, diseñador y desarrollador web trabajando juntos desde el día uno. No contratamos por separado, no coordinamos freelancers. Todo está integrado para que tu marca se vea y funcione de manera consistente.
-                </p>
-              </div>
-              <div className="shrink-0 w-8 h-8 rounded-full border border-white/15 flex items-center justify-center group-hover:border-[#f60566]/50 group-hover:bg-[#f60566]/10 transition-all duration-300 hidden md:flex">
-                <svg className="w-3.5 h-3.5 text-white/30 group-hover:text-[#f60566] transition-colors" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-                </svg>
-              </div>
-            </div>
-
-            {/* ITEM 4 */}
-            <div className="group flex flex-col md:flex-row items-start md:items-center gap-6 py-10 md:py-12 reveal-on-scroll reveal-delay-400 cursor-default">
-              <span className="text-[80px] md:text-[100px] font-extrabold leading-none text-white/5 group-hover:text-[#f60566]/20 transition-colors duration-500 select-none font-outfit shrink-0 w-full md:w-36 text-center md:text-left">04</span>
-              <div className="flex-1 space-y-3">
-                <h3 className="text-2xl md:text-3xl font-bold text-white tracking-tight group-hover:text-[#f60566] transition-colors duration-300">
-                  Nuevos, sí. Pero bien preparados
-                </h3>
-                <p className="text-sm md:text-base text-white/70 font-light leading-relaxed max-w-2xl">
-                  Somos una agencia joven con ganas de demostrar lo que sabemos. Eso significa que traemos energía, atención y dedicación que las agencias grandes ya no dan. Cada cliente importa, porque cada cliente cuenta.
-                </p>
-              </div>
-              <div className="shrink-0 w-8 h-8 rounded-full border border-white/15 flex items-center justify-center group-hover:border-[#f60566]/50 group-hover:bg-[#f60566]/10 transition-all duration-300 hidden md:flex">
-                <svg className="w-3.5 h-3.5 text-white/30 group-hover:text-[#f60566] transition-colors" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-                </svg>
-              </div>
-            </div>
-
-        </div>
+            ))}
+          </div>
         </div>
       </section>
 
