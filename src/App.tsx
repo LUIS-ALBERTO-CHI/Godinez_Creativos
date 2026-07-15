@@ -599,14 +599,14 @@ function App() {
             {services.map((svc, idx) => (
               <div
                 key={idx}
-                className={`group relative flex flex-col gap-4 p-7 rounded-2xl border transition-all duration-300 hover:-translate-y-1 ${
+                className={`group dyn-card relative flex flex-col gap-4 p-7 rounded-2xl border transition-all duration-300 hover:-translate-y-1 ${
                   idx === 0
                     ? 'bg-[#f60566] border-[#f60566] shadow-[0_0_40px_rgba(246,5,102,0.3)]'
                     : 'bg-white/[0.04] border-white/10 hover:border-white/20 hover:bg-white/[0.07]'
                 }`}
               >
                 {/* Icon */}
-                <div className={`w-10 h-10 rounded-xl flex items-center justify-center [&>svg]:w-5 [&>svg]:h-5 ${
+                <div className={`w-10 h-10 rounded-xl flex items-center justify-center [&>svg]:w-5 [&>svg]:h-5 transition-transform duration-300 group-hover:scale-110 group-hover:-rotate-6 ${
                   idx === 0
                     ? 'bg-white/20 [&>svg]:text-white'
                     : 'bg-[#f60566]/10 border border-[#f60566]/20 [&>svg]:text-[#f60566]'
@@ -703,7 +703,7 @@ function App() {
             ].map((item, idx) => (
               <div
                 key={item.n}
-                className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] p-7 md:p-8 hover:border-[#f60566]/40 hover:bg-white/[0.05] hover:-translate-y-1 transition-all duration-300 reveal-on-scroll"
+                className="group dyn-card relative rounded-2xl border border-white/10 bg-white/[0.03] p-7 md:p-8 hover:border-[#f60566]/40 hover:bg-white/[0.05] hover:-translate-y-1 transition-all duration-300 reveal-on-scroll"
                 style={{ transitionDelay: `${idx * 80}ms` }}
               >
                 {/* Número watermark */}
@@ -760,7 +760,7 @@ function App() {
             ].map((step, idx) => (
               <div
                 key={step.n}
-                className="group relative rounded-2xl border border-white/10 bg-white/[0.03] p-7 hover:border-[#f60566]/40 hover:bg-white/[0.05] hover:-translate-y-1 transition-all duration-300 reveal-on-scroll"
+                className="group dyn-card relative rounded-2xl border border-white/10 bg-white/[0.03] p-7 hover:border-[#f60566]/40 hover:bg-white/[0.05] hover:-translate-y-1 transition-all duration-300 reveal-on-scroll"
                 style={{ transitionDelay: `${idx * 80}ms` }}
               >
                 <div className="flex items-center justify-between mb-4">
@@ -963,7 +963,7 @@ function App() {
             ].map((m, idx) => (
               <div
                 key={m.role}
-                className="group relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-b from-white/[0.05] to-white/[0.02] p-8 flex flex-col items-center text-center hover:-translate-y-1.5 transition-all duration-500 reveal-on-scroll"
+                className="group dyn-card relative rounded-3xl border border-white/10 bg-gradient-to-b from-white/[0.05] to-white/[0.02] p-8 flex flex-col items-center text-center hover:-translate-y-1.5 transition-all duration-500 reveal-on-scroll"
                 style={{ transitionDelay: `${idx * 100}ms` }}
               >
                 {/* Glow superior */}
@@ -1052,7 +1052,7 @@ function App() {
                     </svg>
                   </span>
                 </summary>
-                <p className="px-5 md:px-6 pb-5 md:pb-6 -mt-1 text-sm text-white/70 font-light leading-relaxed">
+                <p className="faq-answer px-5 md:px-6 pb-5 md:pb-6 -mt-1 text-sm text-white/70 font-light leading-relaxed">
                   {item.a}
                 </p>
               </details>

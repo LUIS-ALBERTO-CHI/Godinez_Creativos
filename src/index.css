@@ -633,6 +633,36 @@ body {
     0 0 30px rgba(0, 240, 255, 0.05);
 }
 
+/* Tarjetas dinámicas: barrido de brillo al hover */
+.dyn-card {
+  position: relative;
+  overflow: hidden;
+}
+.dyn-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, transparent 30%, rgba(255, 255, 255, 0.07) 50%, transparent 70%);
+  transform: translateX(-120%);
+  pointer-events: none;
+  z-index: 1;
+}
+.dyn-card:hover::after {
+  animation: cardShine 0.9s ease;
+}
+@keyframes cardShine {
+  to { transform: translateX(120%); }
+}
+
+/* Acordeón (FAQ): apertura animada */
+@keyframes faqOpen {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+details[open] .faq-answer {
+  animation: faqOpen 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
 /* Fade rápido al aparecer/filtrar el portafolio (sustituye al reveal-on-scroll para el grid) */
 @keyframes portfolioFadeIn {
   from { opacity: 0; transform: translateY(16px); }
