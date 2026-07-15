@@ -37,8 +37,24 @@
     href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap"
     rel="stylesheet" />
 
-  <script type="module" crossorigin src="/assets/index-_cPeg7kK.js"></script>
-  <link rel="stylesheet" crossorigin href="/assets/index-gX--YYDJ.css">
+  <!-- Meta Pixel -->
+  <!-- 1) Reemplaza TU_PIXEL_ID por el ID de tu píxel (Meta Events Manager). -->
+  <!-- 2) Mientras diga TU_PIXEL_ID, el píxel NO se activa (no envía datos). -->
+  <script>
+    !function (f, b, e, v, n, t, s) {
+      if (f.fbq) return; n = f.fbq = function () { n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments) };
+      if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = '2.0'; n.queue = [];
+      t = b.createElement(e); t.async = !0; t.src = v; s = b.getElementsByTagName(e)[0]; s.parentNode.insertBefore(t, s)
+    }(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
+    window.FB_PIXEL_ID = '120240759561270347';
+    if (window.FB_PIXEL_ID && window.FB_PIXEL_ID !== 'TU_PIXEL_ID') {
+      fbq('init', window.FB_PIXEL_ID);
+      fbq('track', 'PageView');
+    }
+  </script>
+
+  <script type="module" crossorigin src="/assets/index-DbUgX_EV.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/index-B_jOJmDm.css">
 </head>
 
 <body class="font-body-md selection:bg-primary/30">
