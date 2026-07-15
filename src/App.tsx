@@ -537,22 +537,25 @@ function App() {
                 }`}>
                   {svc.desc}
                 </p>
-
-                {/* Link */}
-                <div className={`flex items-center gap-1.5 text-xs font-semibold tracking-wide transition-colors duration-200 ${
-                  idx === 0
-                    ? 'text-white/90 group-hover:text-white'
-                    : 'text-white/35 group-hover:text-[#f60566]'
-                }`}>
-                  <span>Comenzar</span>
-                  <svg className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform duration-200" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-                  </svg>
-                </div>
               </div>
             ))}
           </div>
 
+          {/* CTA único de la sección */}
+          <div className="flex flex-col items-center text-center gap-4 mt-14 md:mt-16">
+            <p className="text-sm md:text-base text-white/70 font-light">
+              ¿No sabes por dónde empezar? Cuéntanos tu idea y armamos el plan por ti.
+            </p>
+            <button
+              onClick={() => openJoinModal()}
+              className="group flex items-center gap-2.5 px-7 py-3.5 rounded-full bg-[#f60566] text-white font-bold text-sm tracking-wide hover:bg-[#ff0068] hover:scale-[1.03] active:scale-[0.97] transition-all duration-300 shadow-[0_0_25px_rgba(246,5,102,0.35)]"
+            >
+              <span>Hablemos de tu proyecto</span>
+              <svg className="w-4 h-4 group-hover:translate-x-0.5 transition-transform duration-200" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+              </svg>
+            </button>
+          </div>
 
         </div>
       </section>
