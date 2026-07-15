@@ -193,6 +193,8 @@ function App() {
     setTimeout(() => setToastMessage(null), 5000);
   };
 
+  const categories = ['Todos', ...Array.from(new Set(projects.map((p) => p.category)))];
+
   const filteredProjects = projects.filter(
     (p) => activeCategory === 'Todos' || p.category === activeCategory
   );
@@ -664,18 +666,20 @@ function App() {
             </p>
           </div>
 
-          {/* Category Filter Tabs */}
-          <div className="flex flex-wrap justify-center gap-3 mb-16 reveal-on-scroll reveal-delay-100">
-            {['Todos', 'Branding', 'Social Media', 'Web Design', 'Desarrollo Web', 'Contenido Creativo', 'Concept Projects'].map((cat) => (
-              <button
-                key={cat}
-                onClick={() => setActiveCategory(cat)}
-                className={`category-filter-btn ${activeCategory === cat ? 'active-category' : ''}`}
-              >
-                {cat}
-              </button>
-            ))}
-          </div>
+          {/* Category Filter Tabs — solo se muestran cuando hay variedad real de proyectos */}
+          {categories.length > 2 && (
+            <div className="flex flex-wrap justify-center gap-3 mb-16 reveal-on-scroll reveal-delay-100">
+              {categories.map((cat) => (
+                <button
+                  key={cat}
+                  onClick={() => setActiveCategory(cat)}
+                  className={`category-filter-btn ${activeCategory === cat ? 'active-category' : ''}`}
+                >
+                  {cat}
+                </button>
+              ))}
+            </div>
+          )}
 
           {/* Portfolio Grid — real project images */}
           {filteredProjects.length === 0 ? (
@@ -697,13 +701,13 @@ function App() {
               </button>
             </div>
           ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
+          <div className={`gap-8 lg:gap-10 ${filteredProjects.length >= 3 ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3' : 'flex flex-wrap justify-center'}`}>
             {filteredProjects
               .map((proj, idx) => (
                 <div
                   key={proj.title}
                   onClick={() => setImageModal({ project: proj.title, images: proj.images, index: 0 })}
-                  className="portfolio-card group flex flex-col justify-between cursor-pointer reveal-on-scroll"
+                  className={`portfolio-card group flex flex-col justify-between cursor-pointer reveal-on-scroll ${filteredProjects.length >= 3 ? '' : 'w-full sm:w-[400px]'}`}
                   style={{ animationDelay: `${0.1 + (idx % 3) * 0.08}s` }}
                 >
                   {/* Real image preview */}
