@@ -570,7 +570,7 @@ function App() {
       {/* SECTION: ¿Qué hacemos? */}
       <section
         id="servicios"
-        className="relative z-10 py-20 md:py-32 px-6 md:px-16 border-t border-white/5 bg-black/35 backdrop-blur-sm overflow-hidden"
+        className="relative z-10 py-16 md:py-24 px-6 md:px-16 border-t border-white/5 bg-black/35 backdrop-blur-sm overflow-hidden"
       >
         {/* Ambient background light orbs for orbital neon depth */}
         <div className="absolute top-1/2 left-0 w-[400px] h-[400px] rounded-full bg-[#f60566]/5 blur-3xl pointer-events-none -translate-y-1/2"></div>
@@ -653,7 +653,7 @@ function App() {
       {/* SECTION: No somos una agencia tradicional */}
       <section
         id="diferencia"
-        className="relative z-10 py-20 md:py-32 px-6 md:px-16 border-t border-white/5 bg-black/25 backdrop-blur-sm overflow-hidden"
+        className="relative z-10 py-16 md:py-24 px-6 md:px-16 border-t border-white/5 bg-black/25 backdrop-blur-sm overflow-hidden"
       >
         {/* Ambient background light orbs for depth */}
         <div className="absolute top-1/4 right-0 w-[400px] h-[400px] rounded-full bg-[#00f0ff]/5 blur-3xl pointer-events-none"></div>
@@ -697,8 +697,8 @@ function App() {
               },
               {
                 n: '04',
-                title: 'Nuevos, sí. Pero bien preparados',
-                desc: 'Somos una agencia joven con ganas de demostrar lo que sabemos. Eso significa que traemos energía, atención y dedicación que las agencias grandes ya no dan. Cada cliente importa, porque cada cliente cuenta.',
+                title: 'Cada cliente importa de verdad',
+                desc: 'Ponemos energía, atención y dedicación en cada proyecto, con el trato cercano que las agencias grandes ya no dan. Aquí no eres un número: cada cliente cuenta.',
               },
             ].map((item, idx) => (
               <div
@@ -730,7 +730,7 @@ function App() {
       {/* SECTION: Cómo trabajamos / Proceso */}
       <section
         id="proceso"
-        className="relative z-10 py-20 md:py-32 px-6 md:px-16 border-t border-white/5 bg-black/35 backdrop-blur-sm overflow-hidden"
+        className="relative z-10 py-16 md:py-24 px-6 md:px-16 border-t border-white/5 bg-black/35 backdrop-blur-sm overflow-hidden"
       >
         <div className="absolute top-1/4 left-0 w-[400px] h-[400px] rounded-full bg-[#f60566]/5 blur-3xl pointer-events-none"></div>
         <div className="absolute bottom-1/4 right-0 w-[350px] h-[350px] rounded-full bg-[#00f0ff]/5 blur-3xl pointer-events-none"></div>
@@ -794,7 +794,7 @@ function App() {
       {/* SECTION: Portafolio / Proyectos */}
       <section
         id="portafolio"
-        className="relative z-10 py-20 md:py-32 px-6 md:px-16 border-t border-white/5 bg-black/35 backdrop-blur-sm overflow-hidden"
+        className="relative z-10 py-16 md:py-24 px-6 md:px-16 border-t border-white/5 bg-black/35 backdrop-blur-sm overflow-hidden"
       >
         {/* Ambient background light orbs for aesthetic glow depth */}
         <div className="absolute top-1/3 left-0 w-[450px] h-[450px] rounded-full bg-[#f60566]/5 blur-3xl pointer-events-none"></div>
@@ -910,6 +910,168 @@ function App() {
           </div>
           )}
 
+        </div>
+      </section>
+
+
+      {/* SECTION: Quiénes somos / Equipo */}
+      <section
+        id="equipo"
+        className="relative z-10 py-16 md:py-24 px-6 md:px-16 border-t border-white/5 bg-black/25 backdrop-blur-sm overflow-hidden"
+      >
+        <div className="absolute top-1/4 right-0 w-[400px] h-[400px] rounded-full bg-[#00f0ff]/5 blur-3xl pointer-events-none"></div>
+        <div className="absolute bottom-1/4 left-0 w-[350px] h-[350px] rounded-full bg-[#f60566]/5 blur-3xl pointer-events-none"></div>
+
+        <div className="max-w-7xl mx-auto relative z-10">
+          {/* Header */}
+          <div className="flex flex-col items-center text-center mb-16 md:mb-20 space-y-5 reveal-on-scroll">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-[#00f0ff]/40 bg-[#00f0ff]/15 text-[10px] font-mono tracking-[0.25em] text-white font-semibold uppercase shadow-[0_0_15px_rgba(0,240,255,0.25)]">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#00f0ff] inline-block shadow-[0_0_8px_#00f0ff]"></span>
+              Quiénes Somos
+            </div>
+            <h2 className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-white font-outfit uppercase">
+              El equipo detrás de <span className="text-[#f60566]">tu marca</span>
+            </h2>
+            <p className="text-xs sm:text-sm md:text-base text-white/70 leading-relaxed font-light max-w-2xl">
+              Somos un equipo directo. Con nosotros hablas con quien realmente hace el trabajo, sin intermediarios.
+            </p>
+          </div>
+
+          {/* Team cards */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-3xl mx-auto">
+            {[
+              {
+                name: 'María Julia Valdez',
+                role: 'Marketing & Contenido',
+                accent: '#f60566',
+                desc: 'La voz creativa detrás de tu marca: redes, diseño, fotografía y video que conectan y convierten.',
+                photo: '/foto-maria-julia.jpg',
+                instagram: 'https://www.instagram.com/hobishinee_/',
+                linkedin: 'https://www.linkedin.com/in/maria-julia-valdez-navarro-42696828a/',
+                portfolio: 'https://majuvaldez.qzz.io/',
+              },
+              {
+                name: 'Luis Alberto Chi',
+                role: 'Desarrollador Full Stack',
+                accent: '#00f0ff',
+                desc: 'El arquitecto de tu presencia digital: sitios rápidos, modernos y listos para vender.',
+                photo: '',
+                instagram: 'https://www.instagram.com/blues_luiss/',
+                linkedin: 'https://www.linkedin.com/in/luis-alberto-chi-casanova-1056aa271/',
+                portfolio: '',
+              },
+            ].map((m, idx) => (
+              <div
+                key={m.role}
+                className="group relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-b from-white/[0.05] to-white/[0.02] p-8 flex flex-col items-center text-center hover:-translate-y-1.5 transition-all duration-500 reveal-on-scroll"
+                style={{ transitionDelay: `${idx * 100}ms` }}
+              >
+                {/* Glow superior */}
+                <div className="pointer-events-none absolute -top-20 left-1/2 -translate-x-1/2 w-56 h-56 rounded-full blur-3xl opacity-20 group-hover:opacity-40 transition-opacity duration-500" style={{ background: m.accent }}></div>
+
+                {/* Avatar grande con aro glow */}
+                <div className="relative mb-5">
+                  <div className="absolute -inset-1.5 rounded-full blur opacity-50 group-hover:opacity-90 transition-opacity duration-500" style={{ background: m.accent }}></div>
+                  {m.photo ? (
+                    <img src={m.photo} alt={m.name} loading="lazy" decoding="async" className="relative w-32 h-32 rounded-full object-cover border-2 border-white/20" />
+                  ) : (
+                    <div className="relative w-32 h-32 rounded-full flex items-center justify-center border-2 border-white/20 bg-[#0e0e0e]">
+                      <span className="text-5xl font-extrabold font-outfit" style={{ color: m.accent }}>{m.name.charAt(0)}</span>
+                    </div>
+                  )}
+                </div>
+
+                <h3 className="text-xl font-bold text-white tracking-tight">{m.name}</h3>
+                <p className="text-sm font-semibold mb-3 tracking-wide" style={{ color: m.accent }}>{m.role}</p>
+                <p className="text-sm text-white/70 font-light leading-relaxed max-w-xs mb-6">{m.desc}</p>
+
+                {/* Redes */}
+                <div className="flex items-center gap-3 mt-auto">
+                  {m.instagram && (
+                    <a href={m.instagram} target="_blank" rel="noopener noreferrer" aria-label={`Instagram de ${m.name}`} className="w-9 h-9 rounded-full border border-white/15 flex items-center justify-center text-white/60 hover:text-white hover:border-white/40 hover:scale-110 transition-all active:scale-90">
+                      <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+                    </a>
+                  )}
+                  {m.linkedin && (
+                    <a href={m.linkedin} target="_blank" rel="noopener noreferrer" aria-label={`LinkedIn de ${m.name}`} className="w-9 h-9 rounded-full border border-white/15 flex items-center justify-center text-white/60 hover:text-white hover:border-white/40 hover:scale-110 transition-all active:scale-90">
+                      <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                    </a>
+                  )}
+                  {m.portfolio && (
+                    <a href={m.portfolio} target="_blank" rel="noopener noreferrer" aria-label={`Portafolio de ${m.name}`} className="w-9 h-9 rounded-full border border-white/15 flex items-center justify-center text-white/60 hover:text-white hover:border-white/40 hover:scale-110 transition-all active:scale-90">
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" /><path strokeLinecap="round" d="M3 12h18M12 3c2.5 2.7 2.5 15.3 0 18M12 3c-2.5 2.7-2.5 15.3 0 18" /></svg>
+                    </a>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+
+      {/* SECTION: FAQ */}
+      <section
+        id="faq"
+        className="relative z-10 py-16 md:py-24 px-6 md:px-16 border-t border-white/5 bg-black/35 backdrop-blur-sm overflow-hidden"
+      >
+        <div className="absolute top-1/3 left-0 w-[400px] h-[400px] rounded-full bg-[#f60566]/5 blur-3xl pointer-events-none"></div>
+
+        <div className="max-w-3xl mx-auto relative z-10">
+          {/* Header */}
+          <div className="flex flex-col items-center text-center mb-14 md:mb-16 space-y-5 reveal-on-scroll">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-[#f60566]/40 bg-[#f60566]/15 text-[10px] font-mono tracking-[0.25em] text-white font-semibold uppercase shadow-[0_0_15px_rgba(246,5,102,0.25)]">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#f60566] inline-block shadow-[0_0_8px_#f60566]"></span>
+              Preguntas Frecuentes
+            </div>
+            <h2 className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-white font-outfit uppercase">
+              Dudas <span className="text-[#f60566]">comunes</span>
+            </h2>
+          </div>
+
+          {/* FAQ list (accordion accesible con <details>) */}
+          <div className="flex flex-col gap-3">
+            {[
+              { q: '¿Cuánto cuesta trabajar con ustedes?', a: 'Depende de lo que tu marca necesite. Por eso el primer paso es una propuesta a tu medida, sin costo ni compromiso: nos cuentas tu objetivo y te damos un presupuesto claro.' },
+              { q: '¿En cuánto tiempo entregan?', a: 'Varía según el alcance del proyecto, pero desde la propuesta te damos fechas concretas y te mantenemos al tanto en cada paso. Sin sorpresas.' },
+              { q: '¿Puedo contratar un solo servicio?', a: 'Claro. Puedes tomar un servicio suelto (por ejemplo solo branding o solo redes) o combinarlos. Nos adaptamos a lo que tu negocio necesita hoy.' },
+              { q: '¿Trabajan con negocios de cualquier giro?', a: 'Sí. Nos especializamos en pequeños y medianos negocios que quieren verse más grandes y profesionales, sin importar el rubro.' },
+              { q: '¿Atienden fuera de mi ciudad?', a: 'Trabajamos 100% en línea, así que podemos colaborar con tu marca estés donde estés. La distancia no es problema.' },
+              { q: '¿Cómo empiezo?', a: 'Muy fácil: escríbenos por WhatsApp o llena el formulario. Agendamos una charla, entendemos tu proyecto y te enviamos una propuesta en menos de 24 horas.' },
+            ].map((item, idx) => (
+              <details
+                key={idx}
+                className="group rounded-2xl border border-white/10 bg-white/[0.03] hover:border-[#f60566]/30 transition-colors duration-300 reveal-on-scroll"
+                style={{ transitionDelay: `${idx * 60}ms` }}
+              >
+                <summary className="flex items-center justify-between gap-4 cursor-pointer list-none p-5 md:p-6 text-white font-semibold text-sm md:text-base">
+                  <span>{item.q}</span>
+                  <span className="shrink-0 w-6 h-6 rounded-full border border-white/20 flex items-center justify-center text-[#f60566] transition-transform duration-300 group-open:rotate-45">
+                    <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 5v14M5 12h14" />
+                    </svg>
+                  </span>
+                </summary>
+                <p className="px-5 md:px-6 pb-5 md:pb-6 -mt-1 text-sm text-white/70 font-light leading-relaxed">
+                  {item.a}
+                </p>
+              </details>
+            ))}
+          </div>
+
+          {/* CTA */}
+          <div className="flex flex-col items-center text-center gap-4 mt-12">
+            <p className="text-sm text-white/60 font-light">¿Tienes otra duda? Escríbenos y te respondemos rápido.</p>
+            <a
+              href={WHATSAPP_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group flex items-center gap-2.5 px-6 py-3 rounded-full border border-[#f60566]/40 bg-[#f60566]/10 text-white font-semibold text-sm hover:bg-[#f60566] hover:scale-[1.03] active:scale-[0.97] transition-all duration-300"
+            >
+              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51l-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.71.306 1.263.489 1.694.625.712.227 1.36.195 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+              <span>Preguntar por WhatsApp</span>
+            </a>
+          </div>
         </div>
       </section>
 
