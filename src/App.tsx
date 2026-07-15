@@ -51,7 +51,8 @@ function App() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState('Todos');
   const [activeSection, setActiveSection] = useState('inicio');
-  const [imageModal, setImageModal] = useState<{ project: string; images: string[]; index: number } | null>(null);
+  const [imageModal, setImageModal] = useState<{ project: string; images: string[]; index: number; pdf?: string } | null>(null);
+  const [pdfUrl, setPdfUrl] = useState<string | null>(null);
   // Nivel de zoom del lightbox (1 = ajustado a pantalla). Personalizable con ZOOM_*.
   const [zoom, setZoom] = useState(1);
 
@@ -106,17 +107,18 @@ function App() {
 
   // Teclado (Escape/flechas) y bloqueo de scroll cuando hay una capa abierta
   useEffect(() => {
-    const anyOpen = isModalOpen || isMobileMenuOpen || imageModal !== null;
+    const anyOpen = isModalOpen || isMobileMenuOpen || imageModal !== null || pdfUrl !== null;
     if (!anyOpen) return;
 
     const onKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
-        if (imageModal) { setZoom(1); setImageModal(null); }
+        if (pdfUrl) setPdfUrl(null);
+        else if (imageModal) { setZoom(1); setImageModal(null); }
         else if (isModalOpen) closeJoinModal();
         else if (isMobileMenuOpen) setIsMobileMenuOpen(false);
         return;
       }
-      if (imageModal && imageModal.images.length > 1) {
+      if (!pdfUrl && imageModal && imageModal.images.length > 1) {
         if (e.key === 'ArrowLeft') {
           setZoom(1);
           setImageModal((m) => (m ? { ...m, index: (m.index - 1 + m.images.length) % m.images.length } : null));
@@ -134,7 +136,7 @@ function App() {
       document.removeEventListener('keydown', onKeyDown);
       document.body.style.overflow = prevOverflow;
     };
-  }, [isModalOpen, isMobileMenuOpen, imageModal]);
+  }, [isModalOpen, isMobileMenuOpen, imageModal, pdfUrl]);
 
   const openJoinModal = (initialService?: string | React.MouseEvent) => {
     if (initialService && typeof initialService === 'string') {
@@ -190,6 +192,7 @@ function App() {
     desc: string;
     preview: string;
     images: string[];
+    pdf?: string;
   }[] = [
     {
       title: "Chill & Grill",
@@ -208,9 +211,10 @@ function App() {
     {
       title: "Xibalba",
       category: "Branding",
-      desc: "Identidad de marca para dark kitchen: logotipo y sistema visual con una estética oscura y misteriosa.",
+      desc: "Identidad de marca para dark kitchen. Abre la guía de identidad completa en PDF.",
       preview: "/xibalba1.png",
-      images: ["/xibalba1.png", "/xibalba2.png"],
+      images: [],
+      pdf: "/guia-identidad-xibalba.pdf",
     },
     {
       title: "MVZ. Joaquín Fernández Vera",
@@ -861,15 +865,29 @@ function App() {
               .map((proj, idx) => (
                 <div
                   key={proj.title}
-                  onClick={() => { setZoom(1); setImageModal({ project: proj.title, images: proj.images, index: 0 }); }}
+                  onClick={() => {
+                    if (proj.images.length > 0) {
+                      setZoom(1);
+                      setImageModal({ project: proj.title, images: proj.images, index: 0, pdf: proj.pdf });
+                    } else if (proj.pdf) {
+                      setPdfUrl(proj.pdf);
+                    }
+                  }}
                   className={`portfolio-card portfolio-fade-in group flex flex-col justify-between cursor-pointer ${isMasonry ? 'break-inside-avoid mb-8 w-full' : 'w-full sm:w-[400px]'}`}
                   style={{ animationDelay: `${idx * 70}ms` }}
                 >
                   {/* Real image preview */}
                   <div className={`border-b border-white/5 relative overflow-hidden ${isMasonry ? '' : 'portfolio-image-wrapper'}`}>
                     <PortfolioImage src={proj.preview} alt={proj.title} isMasonry={isMasonry} />
-                    {/* Image count badge */}
-                    {proj.images?.length > 1 && (
+                    {/* Badge: PDF o conteo de imágenes */}
+                    {proj.images.length === 0 && proj.pdf ? (
+                      <div className="absolute top-3 right-3 flex items-center gap-1 bg-black/60 backdrop-blur-sm border border-white/15 rounded-full px-2.5 py-1">
+                        <svg className="w-3 h-3 text-[#f60566]" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
+                        </svg>
+                        <span className="text-[9px] font-mono text-white/70">PDF</span>
+                      </div>
+                    ) : proj.images?.length > 1 && (
                       <div className="absolute top-3 right-3 flex items-center gap-1 bg-black/60 backdrop-blur-sm border border-white/15 rounded-full px-2.5 py-1">
                         <svg className="w-3 h-3 text-white/70" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
@@ -879,7 +897,7 @@ function App() {
                     )}
                     {/* Hover overlay */}
                     <div className="absolute inset-0 bg-black/55 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-2">
-                      <span className="text-[10px] font-mono tracking-widest text-[#00f0ff] uppercase font-bold translate-y-2 group-hover:translate-y-0 transition-transform duration-500">VER GALERÍA</span>
+                      <span className="text-[10px] font-mono tracking-widest text-[#00f0ff] uppercase font-bold translate-y-2 group-hover:translate-y-0 transition-transform duration-500">{proj.images.length === 0 && proj.pdf ? 'VER GUÍA · PDF' : 'VER GALERÍA'}</span>
                       <div className="w-8 h-8 rounded-full bg-[#00f0ff]/20 border border-[#00f0ff]/40 text-[#00f0ff] flex items-center justify-center group-hover:rotate-45 transition-transform duration-500">
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
@@ -1266,7 +1284,63 @@ function App() {
                 ))}
               </div>
             )}
+
+            {/* Botón: ver guía de identidad en PDF */}
+            {imageModal.pdf && (
+              <button
+                onClick={() => setPdfUrl(imageModal.pdf!)}
+                className="group flex items-center gap-2.5 px-6 py-3 rounded-full bg-[#f60566] text-white font-bold text-sm tracking-wide hover:bg-[#ff0068] hover:scale-[1.03] active:scale-[0.97] transition-all duration-300 shadow-[0_0_25px_rgba(246,5,102,0.35)]"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
+                </svg>
+                <span>Ver guía de identidad</span>
+              </button>
+            )}
           </div>
+        </div>
+      )}
+
+      {/* Visor de PDF dentro de la web */}
+      {pdfUrl && (
+        <div
+          className="fixed inset-0 bg-black/95 backdrop-blur-[20px] z-[60] flex flex-col p-4 sm:p-6"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Guía de identidad en PDF"
+        >
+          <div className="flex items-center justify-between mb-3 shrink-0">
+            <div className="flex items-center gap-2.5">
+              <div className="w-2 h-2 rounded-full bg-[#f60566] shadow-[0_0_8px_#f60566]"></div>
+              <span className="text-sm font-bold text-white">Guía de Identidad</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <a
+                href={pdfUrl}
+                download
+                className="hidden sm:flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/15 text-white/70 hover:text-[#f60566] hover:border-[#f60566]/40 text-xs font-semibold transition-all"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
+                </svg>
+                Descargar
+              </a>
+              <button
+                onClick={() => setPdfUrl(null)}
+                aria-label="Cerrar"
+                className="w-9 h-9 rounded-full bg-white/5 border border-white/15 flex items-center justify-center text-white/60 hover:text-[#f60566] hover:border-[#f60566]/40 transition-all"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+          </div>
+          <iframe
+            src={pdfUrl}
+            title="Guía de Identidad"
+            className="flex-1 w-full rounded-2xl border border-white/10 bg-white"
+          />
         </div>
       )}
 
