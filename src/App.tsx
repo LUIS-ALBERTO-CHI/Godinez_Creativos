@@ -35,6 +35,16 @@ const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent
 const INSTAGRAM_URL = 'https://www.instagram.com/godinezcreativos_mid/';
 const FACEBOOK_URL = 'https://www.facebook.com/profile.php?id=61589995362529';
 
+// Valida que el contacto sea un correo o un número de WhatsApp con formato razonable
+const validateContact = (v: string): string => {
+  const val = v.trim();
+  if (!val) return 'Ingresa tu WhatsApp o correo.';
+  const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val);
+  const isPhone = val.replace(/\D/g, '').length >= 8;
+  if (!isEmail && !isPhone) return 'Escribe un correo válido o un WhatsApp (mín. 8 dígitos).';
+  return '';
+};
+
 // Zoom del lightbox — personaliza aquí los niveles (1 = ajustado a pantalla)
 const ZOOM_MIN = 1;      // nivel mínimo (fit)
 const ZOOM_MAX = 3;      // nivel máximo (300%)
@@ -53,12 +63,14 @@ function App() {
   const [activeSection, setActiveSection] = useState('inicio');
   const [imageModal, setImageModal] = useState<{ project: string; images: string[]; index: number; pdf?: string } | null>(null);
   const [pdfUrl, setPdfUrl] = useState<string | null>(null);
+  const [showScrollTop, setShowScrollTop] = useState(false);
+  const [errors, setErrors] = useState<{ name?: string; contact?: string }>({});
   // Nivel de zoom del lightbox (1 = ajustado a pantalla). Personalizable con ZOOM_*.
   const [zoom, setZoom] = useState(1);
 
   useEffect(() => {
     // Active section observer — tracks which section is in viewport
-    const sectionIds = ['inicio', 'servicios', 'diferencia', 'portafolio'];
+    const sectionIds = ['inicio', 'servicios', 'diferencia', 'proceso', 'portafolio', 'equipo', 'faq'];
     const sectionObserver = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -75,6 +87,14 @@ function App() {
     });
 
     return () => sectionObserver.disconnect();
+  }, []);
+
+  // Mostrar botón "volver arriba" tras hacer scroll
+  useEffect(() => {
+    const onScroll = () => setShowScrollTop(window.scrollY > 600);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
   // Scroll-reveal observer — re-escanea cuando cambia el contenido visible
@@ -103,6 +123,7 @@ function App() {
     setClientName('');
     setContactInfo('');
     setSalesHurdle('');
+    setErrors({});
   };
 
   // Teclado (Escape/flechas) y bloqueo de scroll cuando hay una capa abierta
@@ -241,7 +262,15 @@ function App() {
 
   const handleModalSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!clientName || !contactInfo) return;
+
+    // Validación con feedback inline
+    const nameErr = clientName.trim().length < 2 ? 'Escribe tu nombre o el de tu empresa.' : '';
+    const contactErr = validateContact(contactInfo);
+    if (nameErr || contactErr) {
+      setErrors({ name: nameErr || undefined, contact: contactErr || undefined });
+      return;
+    }
+    setErrors({});
 
     // Abre el cliente de correo del visitante con el lead prellenado hacia el negocio.
     const subject = `Nuevo proyecto — ${clientName}`;
@@ -309,17 +338,20 @@ function App() {
           </a>
 
           {/* CENTER: Nav links — active section gets white pill */}
-          <div className="hidden lg:flex items-center gap-1">
+          <div className="hidden lg:flex items-center gap-0.5">
             {([
-              { label: 'Inicio',           href: '#inicio',     id: 'inicio' },
-              { label: '¿Qué hacemos?',    href: '#servicios',  id: 'servicios' },
-              { label: '¿Por qué nosotros?', href: '#diferencia', id: 'diferencia' },
-              { label: 'Portafolio',       href: '#portafolio', id: 'portafolio' },
-            ] as const).map(({ label, href, id }) => (
+              { label: 'Inicio',     id: 'inicio' },
+              { label: 'Servicios',  id: 'servicios' },
+              { label: 'Nosotros',   id: 'diferencia' },
+              { label: 'Proceso',    id: 'proceso' },
+              { label: 'Portafolio', id: 'portafolio' },
+              { label: 'Equipo',     id: 'equipo' },
+              { label: 'FAQ',        id: 'faq' },
+            ] as const).map(({ label, id }) => (
               <a
                 key={id}
-                href={href}
-                className={`px-4 py-1.5 rounded-full text-xs font-medium transition-all duration-200 ${
+                href={`#${id}`}
+                className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-200 ${
                   activeSection === id
                     ? 'bg-white text-black font-bold'
                     : 'text-white/65 hover:text-white'
@@ -330,7 +362,7 @@ function App() {
             ))}
             <button
               onClick={(e) => { e.preventDefault(); openJoinModal(); }}
-              className="px-4 py-1.5 rounded-full text-xs font-medium transition-all duration-200 text-white/65 hover:text-white"
+              className="px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-200 text-white/65 hover:text-white"
             >
               Contacto
             </button>
@@ -397,7 +429,10 @@ function App() {
             { name: 'Inicio', desc: 'Página central / Home', href: '#' },
             { name: '¿Qué hacemos?', desc: 'Nuestros superpoderes creativos', href: '#servicios' },
             { name: '¿Por qué nosotros?', desc: 'Nuestro valor diferencial', href: '#diferencia' },
+            { name: 'Proceso', desc: 'Cómo trabajamos, paso a paso', href: '#proceso' },
             { name: 'Portafolio', desc: 'Explora nuestros proyectos', href: '#portafolio' },
+            { name: 'Equipo', desc: 'Quiénes hacen tu marca', href: '#equipo' },
+            { name: 'FAQ', desc: 'Dudas frecuentes', href: '#faq' },
             { name: 'Contacto', desc: 'Hablemos de tu proyecto', href: '#', action: openJoinModal }
           ].map((item, index) => (
             <a
@@ -1159,6 +1194,19 @@ function App() {
         </div>
       </footer>
 
+      {/* Botón volver arriba */}
+      <button
+        onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+        aria-label="Volver arriba"
+        className={`fixed bottom-24 right-5 z-40 w-11 h-11 rounded-full bg-[#181818] border border-white/15 flex items-center justify-center text-white hover:border-[#f60566]/50 hover:text-[#f60566] hover:-translate-y-0.5 transition-all duration-300 shadow-[0_4px_20px_rgba(0,0,0,0.5)] ${
+          showScrollTop ? 'opacity-100' : 'opacity-0 pointer-events-none translate-y-2'
+        }`}
+      >
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" />
+        </svg>
+      </button>
+
       {/* Botón flotante de WhatsApp */}
       <a
         href={WHATSAPP_URL}
@@ -1370,7 +1418,7 @@ function App() {
             </button>
 
             {!isSubmitted ? (
-              <form onSubmit={handleModalSubmit} className="flex flex-col gap-5 pt-2">
+              <form onSubmit={handleModalSubmit} noValidate className="flex flex-col gap-5 pt-2">
                 {/* Form Header */}
                 <div className="text-center space-y-2">
                   <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#f60566]/15 border border-[#f60566]/40 text-[9px] font-mono tracking-widest text-white font-semibold uppercase shadow-[0_0_15px_rgba(246,5,102,0.25)]">
@@ -1398,13 +1446,18 @@ function App() {
                     </span>
                     <input
                       type="text"
-                      required
                       value={clientName}
-                      onChange={(e) => setClientName(e.target.value)}
-                      className="w-full pl-11 pr-4 py-3 bg-[#11020a]/80 border border-white/10 group-focus-within:border-[#f60566] focus:border-[#f60566] focus:outline-none focus:ring-1 focus:ring-[#f60566]/30 text-white rounded-2xl text-sm transition-all placeholder:text-white/40"
+                      onChange={(e) => { setClientName(e.target.value); if (errors.name) setErrors((prev) => ({ ...prev, name: undefined })); }}
+                      aria-invalid={!!errors.name}
+                      className={`w-full pl-11 pr-4 py-3 bg-[#11020a]/80 border focus:outline-none focus:ring-1 text-white rounded-2xl text-sm transition-all placeholder:text-white/40 ${
+                        errors.name
+                          ? 'border-red-500/70 focus:border-red-500 focus:ring-red-500/30'
+                          : 'border-white/10 group-focus-within:border-[#f60566] focus:border-[#f60566] focus:ring-[#f60566]/30'
+                      }`}
                       placeholder="Ej. Carlos - Pizzería La Toscana"
                     />
                   </div>
+                  {errors.name && <p className="text-[11px] text-red-400 font-medium pl-1">{errors.name}</p>}
                 </div>
 
                 {/* Field: Contact */}
@@ -1420,13 +1473,18 @@ function App() {
                     </span>
                     <input
                       type="text"
-                      required
                       value={contactInfo}
-                      onChange={(e) => setContactInfo(e.target.value)}
-                      className="w-full pl-11 pr-4 py-3 bg-[#11020a]/80 border border-white/10 group-focus-within:border-[#f60566] focus:border-[#f60566] focus:outline-none focus:ring-1 focus:ring-[#f60566]/30 text-white rounded-2xl text-sm transition-all placeholder:text-white/40"
+                      onChange={(e) => { setContactInfo(e.target.value); if (errors.contact) setErrors((prev) => ({ ...prev, contact: undefined })); }}
+                      aria-invalid={!!errors.contact}
+                      className={`w-full pl-11 pr-4 py-3 bg-[#11020a]/80 border focus:outline-none focus:ring-1 text-white rounded-2xl text-sm transition-all placeholder:text-white/40 ${
+                        errors.contact
+                          ? 'border-red-500/70 focus:border-red-500 focus:ring-red-500/30'
+                          : 'border-white/10 group-focus-within:border-[#f60566] focus:border-[#f60566] focus:ring-[#f60566]/30'
+                      }`}
                       placeholder="Ej. hola@empresa.com o +52 ..."
                     />
                   </div>
+                  {errors.contact && <p className="text-[11px] text-red-400 font-medium pl-1">{errors.contact}</p>}
                 </div>
 
                 {/* Field: Sales Hurdle */}
