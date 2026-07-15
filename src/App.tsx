@@ -1,9 +1,42 @@
 import { useState, useEffect } from 'react';
 import { Share2, Sparkles, PenTool, Code2, Clapperboard, Target } from 'lucide-react';
+import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
+
+// Imagen del portafolio con skeleton mientras carga
+function PortfolioImage({ src, alt, isMasonry }: { src: string; alt: string; isMasonry: boolean }) {
+  const [loaded, setLoaded] = useState(false);
+  return (
+    <SkeletonTheme baseColor="#1a1a1a" highlightColor="#2d2d2d">
+      {!loaded && (
+        <Skeleton height={isMasonry ? 340 : 240} width="100%" borderRadius={0} style={{ display: 'block', lineHeight: 0 }} />
+      )}
+      <img
+        src={src}
+        alt={alt}
+        loading="lazy"
+        decoding="async"
+        onLoad={() => setLoaded(true)}
+        onError={() => setLoaded(true)}
+        className={
+          loaded
+            ? `block w-full object-cover object-top group-hover:scale-105 transition-transform duration-700 ${isMasonry ? 'h-auto max-h-[560px]' : 'h-full'}`
+            : 'absolute inset-0 w-full h-full object-cover opacity-0 pointer-events-none'
+        }
+      />
+    </SkeletonTheme>
+  );
+}
 
 // Correo destino de los leads del formulario.
 // TODO: confirma/cambia por el correo real del negocio.
 const CONTACT_EMAIL = 'godinezcreativoss@gmail.com';
+
+// Zoom del lightbox — personaliza aquí los niveles (1 = ajustado a pantalla)
+const ZOOM_MIN = 1;      // nivel mínimo (fit)
+const ZOOM_MAX = 3;      // nivel máximo (300%)
+const ZOOM_STEP = 0.5;   // salto por cada + / −
+const ZOOM_DEFAULT = 2;  // nivel al hacer clic en la imagen
 
 function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -16,6 +49,8 @@ function App() {
   const [activeCategory, setActiveCategory] = useState('Todos');
   const [activeSection, setActiveSection] = useState('inicio');
   const [imageModal, setImageModal] = useState<{ project: string; images: string[]; index: number } | null>(null);
+  // Nivel de zoom del lightbox (1 = ajustado a pantalla). Personalizable con ZOOM_*.
+  const [zoom, setZoom] = useState(1);
 
   useEffect(() => {
     // Active section observer — tracks which section is in viewport
@@ -73,15 +108,17 @@ function App() {
 
     const onKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
-        if (imageModal) setImageModal(null);
+        if (imageModal) { setZoom(1); setImageModal(null); }
         else if (isModalOpen) closeJoinModal();
         else if (isMobileMenuOpen) setIsMobileMenuOpen(false);
         return;
       }
       if (imageModal && imageModal.images.length > 1) {
         if (e.key === 'ArrowLeft') {
+          setZoom(1);
           setImageModal((m) => (m ? { ...m, index: (m.index - 1 + m.images.length) % m.images.length } : null));
         } else if (e.key === 'ArrowRight') {
+          setZoom(1);
           setImageModal((m) => (m ? { ...m, index: (m.index + 1) % m.images.length } : null));
         }
       }
@@ -152,11 +189,46 @@ function App() {
     images: string[];
   }[] = [
     {
+      title: "Chill & Grill",
+      category: "Branding",
+      desc: "Identidad visual y campaña de lanzamiento para marca de parrilla: logotipo, mockups y aplicaciones de marca.",
+      preview: "/chill-grill-cover.webp",
+      images: ["/chill-grill-cover.webp", "/chill-grill-mockup.webp", "/chill-grill-identity.webp"],
+    },
+    {
+      title: "Piano Bar",
+      category: "Branding",
+      desc: "Diseño de identidad de marca para piano bar: logotipo, sistema visual y aplicaciones con un estilo elegante.",
+      preview: "/piano-bar.webp",
+      images: ["/piano-bar.webp"],
+    },
+    {
+      title: "Xibalba",
+      category: "Branding",
+      desc: "Identidad de marca para dark kitchen: logotipo y sistema visual con una estética oscura y misteriosa.",
+      preview: "/xibalba1.png",
+      images: ["/xibalba1.png", "/xibalba2.png"],
+    },
+    {
       title: "MVZ. Joaquín Fernández Vera",
       category: "Branding",
       desc: "Diseño de tarjetas de presentación para clínica veterinaria. Identidad visual oscura con personalidad y estilo.",
       preview: "/mockup-veterinaria.jpeg",
       images: ["/mockup-veterinaria.jpeg", "/mockup-veterinaria-2.jpeg"],
+    },
+    {
+      title: "Don Mariano",
+      category: "Logo",
+      desc: "Diseño de logotipo para taquería chilanga, con un estilo clásico y apetitoso.",
+      preview: "/don-mariano-logo.png",
+      images: ["/don-mariano-logo.png"],
+    },
+    {
+      title: "Logofolio",
+      category: "Logo",
+      desc: "Selección de logotipos creados para distintas marcas y proyectos.",
+      preview: "/logofolio.webp",
+      images: ["/logofolio.webp"],
     },
   ];
 
@@ -431,8 +503,10 @@ function App() {
             {/* Mascot Image Container with Cybernetic Visor - Giant & Borderless */}
             <div className="relative w-full h-[25vh] sm:h-[35vh] md:h-[50vh] lg:h-[85vh] max-h-[220px] sm:max-h-[300px] md:max-h-[500px] lg:max-h-[850px] flex items-end justify-center lg:justify-end transition-all duration-500 floating-subtle">
               <img
-                src="mascota.png"
-                alt="Cyber Godínez Mascot"
+                src="mascota.webp"
+                alt="Mascota de Godínez Creativos"
+                fetchPriority="high"
+                decoding="async"
                 className="h-full w-auto object-contain object-bottom grayscale-[5%] brightness-[92%] hover:scale-[1.03] transition-transform duration-700 select-none pointer-events-none"
               />
             </div>
@@ -454,6 +528,8 @@ function App() {
                 <div key={`${logo.name}-1-${idx}`} className="group flex items-center gap-1.5 md:gap-2.5 select-none cursor-default hover:scale-[1.03] transition-transform duration-300 shrink-0">
                   <img
                     src={logo.src}
+                    loading="lazy"
+                    decoding="async"
                     alt={logo.alt}
                     className="h-5 md:h-8 w-auto grayscale brightness-[2.5] opacity-40 group-hover:grayscale-0 group-hover:brightness-100 group-hover:opacity-100 transition-all duration-300"
                   />
@@ -471,6 +547,8 @@ function App() {
                 <div key={`${logo.name}-2-${idx}`} className="group flex items-center gap-1.5 md:gap-2.5 select-none cursor-default hover:scale-[1.03] transition-transform duration-300 shrink-0">
                   <img
                     src={logo.src}
+                    loading="lazy"
+                    decoding="async"
                     alt={logo.alt}
                     className="h-5 md:h-8 w-auto grayscale brightness-[2.5] opacity-40 group-hover:grayscale-0 group-hover:brightness-100 group-hover:opacity-100 transition-all duration-300"
                   />
@@ -704,22 +782,21 @@ function App() {
               </button>
             </div>
           ) : (
-          <div className={isMasonry ? 'columns-1 sm:columns-2 lg:columns-3 gap-8' : 'flex flex-wrap justify-center gap-8 lg:gap-10'}>
+          <div
+            key={activeCategory}
+            className={isMasonry ? 'columns-1 sm:columns-2 lg:columns-3 gap-8' : 'flex flex-wrap justify-center gap-8 lg:gap-10'}
+          >
             {filteredProjects
               .map((proj, idx) => (
                 <div
                   key={proj.title}
-                  onClick={() => setImageModal({ project: proj.title, images: proj.images, index: 0 })}
-                  className={`portfolio-card group flex flex-col justify-between cursor-pointer reveal-on-scroll ${isMasonry ? 'break-inside-avoid mb-8 w-full' : 'w-full sm:w-[400px]'}`}
-                  style={{ animationDelay: `${0.1 + (idx % 3) * 0.08}s` }}
+                  onClick={() => { setZoom(1); setImageModal({ project: proj.title, images: proj.images, index: 0 }); }}
+                  className={`portfolio-card portfolio-fade-in group flex flex-col justify-between cursor-pointer ${isMasonry ? 'break-inside-avoid mb-8 w-full' : 'w-full sm:w-[400px]'}`}
+                  style={{ animationDelay: `${idx * 70}ms` }}
                 >
                   {/* Real image preview */}
                   <div className={`border-b border-white/5 relative overflow-hidden ${isMasonry ? '' : 'portfolio-image-wrapper'}`}>
-                    <img
-                      src={proj.preview}
-                      alt={proj.title}
-                      className={`w-full object-cover group-hover:scale-105 transition-transform duration-700 ${isMasonry ? 'h-auto' : 'h-full'}`}
-                    />
+                    <PortfolioImage src={proj.preview} alt={proj.title} isMasonry={isMasonry} />
                     {/* Image count badge */}
                     {proj.images?.length > 1 && (
                       <div className="absolute top-3 right-3 flex items-center gap-1 bg-black/60 backdrop-blur-sm border border-white/15 rounded-full px-2.5 py-1">
@@ -769,7 +846,7 @@ function App() {
       {imageModal && (
         <div
           className="fixed inset-0 bg-black/95 backdrop-blur-[20px] z-50 flex items-center justify-center"
-          onClick={() => setImageModal(null)}
+          onClick={() => { setZoom(1); setImageModal(null); }}
           role="dialog"
           aria-modal="true"
           aria-label={`Galería del proyecto ${imageModal.project}`}
@@ -789,7 +866,7 @@ function App() {
                 </span>
               </div>
               <button
-                onClick={() => setImageModal(null)}
+                onClick={() => { setZoom(1); setImageModal(null); }}
                 className="w-9 h-9 rounded-full bg-white/5 border border-white/15 flex items-center justify-center text-white/60 hover:text-[#f60566] hover:border-[#f60566]/40 transition-all"
               >
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
@@ -799,18 +876,49 @@ function App() {
             </div>
 
             {/* Main image */}
-            <div className="relative w-full rounded-2xl overflow-hidden border border-white/10 shadow-[0_0_60px_rgba(246,5,102,0.12)]">
+            <div className={`relative w-full rounded-2xl border border-white/10 shadow-[0_0_60px_rgba(246,5,102,0.12)] ${zoom > 1 ? 'overflow-auto max-h-[85vh]' : 'overflow-hidden'}`}>
               <img
                 src={imageModal.images[imageModal.index]}
                 alt={`${imageModal.project} - imagen ${imageModal.index + 1}`}
-                className="w-full h-auto max-h-[75vh] object-contain bg-black"
+                onClick={() => setZoom((z) => (z > 1 ? 1 : ZOOM_DEFAULT))}
+                style={zoom > 1 ? { width: `${zoom * 100}%`, maxWidth: 'none' } : undefined}
+                className={`bg-black block h-auto ${
+                  zoom > 1 ? 'cursor-zoom-out' : 'w-full max-h-[75vh] object-contain cursor-zoom-in'
+                }`}
               />
 
+              {/* Controles de zoom personalizables (− / % / +) */}
+              <div className="absolute bottom-3 right-3 flex items-center gap-1 rounded-full bg-black/70 border border-white/15 backdrop-blur-sm p-1">
+                <button
+                  onClick={() => setZoom((z) => Math.max(ZOOM_MIN, +(z - ZOOM_STEP).toFixed(2)))}
+                  disabled={zoom <= ZOOM_MIN}
+                  aria-label="Alejar"
+                  className="w-8 h-8 rounded-full flex items-center justify-center text-white hover:bg-[#f60566] disabled:opacity-30 disabled:hover:bg-transparent transition-all"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14" />
+                  </svg>
+                </button>
+                <span className="min-w-[3ch] text-center text-[11px] font-mono font-semibold text-white tabular-nums">
+                  {Math.round(zoom * 100)}%
+                </span>
+                <button
+                  onClick={() => setZoom((z) => Math.min(ZOOM_MAX, +(z + ZOOM_STEP).toFixed(2)))}
+                  disabled={zoom >= ZOOM_MAX}
+                  aria-label="Acercar"
+                  className="w-8 h-8 rounded-full flex items-center justify-center text-white hover:bg-[#f60566] disabled:opacity-30 disabled:hover:bg-transparent transition-all"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 5v14M5 12h14" />
+                  </svg>
+                </button>
+              </div>
+
               {/* Prev arrow */}
-              {imageModal.images.length > 1 && (
+              {imageModal.images.length > 1 && zoom === 1 && (
                 <>
                   <button
-                    onClick={() => setImageModal(m => m ? { ...m, index: (m.index - 1 + m.images.length) % m.images.length } : null)}
+                    onClick={() => { setZoom(1); setImageModal(m => m ? { ...m, index: (m.index - 1 + m.images.length) % m.images.length } : null); }}
                     className="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/60 border border-white/15 flex items-center justify-center text-white hover:bg-[#f60566] hover:border-[#f60566] transition-all duration-200"
                   >
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
@@ -818,7 +926,7 @@ function App() {
                     </svg>
                   </button>
                   <button
-                    onClick={() => setImageModal(m => m ? { ...m, index: (m.index + 1) % m.images.length } : null)}
+                    onClick={() => { setZoom(1); setImageModal(m => m ? { ...m, index: (m.index + 1) % m.images.length } : null); }}
                     className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/60 border border-white/15 flex items-center justify-center text-white hover:bg-[#f60566] hover:border-[#f60566] transition-all duration-200"
                   >
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
@@ -835,7 +943,7 @@ function App() {
                 {imageModal.images.map((img, i) => (
                   <button
                     key={i}
-                    onClick={() => setImageModal(m => m ? { ...m, index: i } : null)}
+                    onClick={() => { setZoom(1); setImageModal(m => m ? { ...m, index: i } : null); }}
                     className={`w-16 h-16 rounded-xl overflow-hidden border-2 transition-all duration-200 ${
                       i === imageModal.index
                         ? 'border-[#f60566] shadow-[0_0_12px_rgba(246,5,102,0.4)]'
