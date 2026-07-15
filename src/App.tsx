@@ -199,6 +199,9 @@ function App() {
     (p) => activeCategory === 'Todos' || p.category === activeCategory
   );
 
+  // Con 3+ trabajos usamos mosaico (masonry); con pocos, tarjetas centradas
+  const isMasonry = filteredProjects.length >= 3;
+
   return (
     <div className="relative min-h-screen overflow-x-hidden bg-black">
       {/* Grid Overlay & Ambient Lights */}
@@ -701,21 +704,21 @@ function App() {
               </button>
             </div>
           ) : (
-          <div className={`gap-8 lg:gap-10 ${filteredProjects.length >= 3 ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3' : 'flex flex-wrap justify-center'}`}>
+          <div className={isMasonry ? 'columns-1 sm:columns-2 lg:columns-3 gap-8' : 'flex flex-wrap justify-center gap-8 lg:gap-10'}>
             {filteredProjects
               .map((proj, idx) => (
                 <div
                   key={proj.title}
                   onClick={() => setImageModal({ project: proj.title, images: proj.images, index: 0 })}
-                  className={`portfolio-card group flex flex-col justify-between cursor-pointer reveal-on-scroll ${filteredProjects.length >= 3 ? '' : 'w-full sm:w-[400px]'}`}
+                  className={`portfolio-card group flex flex-col justify-between cursor-pointer reveal-on-scroll ${isMasonry ? 'break-inside-avoid mb-8 w-full' : 'w-full sm:w-[400px]'}`}
                   style={{ animationDelay: `${0.1 + (idx % 3) * 0.08}s` }}
                 >
                   {/* Real image preview */}
-                  <div className="portfolio-image-wrapper border-b border-white/5 relative overflow-hidden">
+                  <div className={`border-b border-white/5 relative overflow-hidden ${isMasonry ? '' : 'portfolio-image-wrapper'}`}>
                     <img
                       src={proj.preview}
                       alt={proj.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                      className={`w-full object-cover group-hover:scale-105 transition-transform duration-700 ${isMasonry ? 'h-auto' : 'h-full'}`}
                     />
                     {/* Image count badge */}
                     {proj.images?.length > 1 && (
