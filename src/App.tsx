@@ -1,5 +1,29 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import type { RefObject } from 'react';
 import { Share2, Sparkles, PenTool, Code2, Clapperboard, Target } from 'lucide-react';
+
+// Atrapa el foco del teclado dentro de un contenedor (accesibilidad de modales)
+function useFocusTrap(active: boolean, ref: RefObject<HTMLElement | null>) {
+  useEffect(() => {
+    const el = ref.current;
+    if (!active || !el) return;
+    const SEL = 'a[href], button:not([disabled]), input:not([disabled]), textarea, select, [tabindex]:not([tabindex="-1"])';
+    const getFocusables = () =>
+      Array.from(el.querySelectorAll<HTMLElement>(SEL)).filter((n) => n.offsetParent !== null);
+    const t = setTimeout(() => getFocusables()[0]?.focus(), 50);
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== 'Tab') return;
+      const f = getFocusables();
+      if (!f.length) return;
+      const first = f[0];
+      const last = f[f.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    };
+    el.addEventListener('keydown', onKey);
+    return () => { clearTimeout(t); el.removeEventListener('keydown', onKey); };
+  }, [active, ref]);
+}
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 
@@ -35,6 +59,35 @@ const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent
 const INSTAGRAM_URL = 'https://www.instagram.com/godinezcreativos_mid/';
 const FACEBOOK_URL = 'https://www.facebook.com/profile.php?id=61589995362529';
 
+// Carga Meta Pixel + Google Analytics (solo tras consentimiento de cookies)
+function initTrackers() {
+  const w = window as unknown as {
+    fbq?: (...a: unknown[]) => void;
+    FB_PIXEL_ID?: string;
+    GA_MEASUREMENT_ID?: string;
+    dataLayer?: unknown[];
+    gtag?: (...a: unknown[]) => void;
+  };
+  // Meta Pixel
+  if (w.fbq && w.FB_PIXEL_ID && w.FB_PIXEL_ID !== 'TU_PIXEL_ID') {
+    w.fbq('init', w.FB_PIXEL_ID);
+    w.fbq('track', 'PageView');
+  }
+  // Google Analytics 4
+  const gaId = w.GA_MEASUREMENT_ID;
+  if (gaId && gaId !== 'G-XXXXXXXXXX' && !document.getElementById('ga4-src')) {
+    const s = document.createElement('script');
+    s.id = 'ga4-src';
+    s.async = true;
+    s.src = `https://www.googletagmanager.com/gtag/js?id=${gaId}`;
+    document.head.appendChild(s);
+    w.dataLayer = w.dataLayer || [];
+    w.gtag = (...args: unknown[]) => { w.dataLayer!.push(args); };
+    w.gtag('js', new Date());
+    w.gtag('config', gaId);
+  }
+}
+
 // Valida que el contacto sea un correo o un número de WhatsApp con formato razonable
 const validateContact = (v: string): string => {
   const val = v.trim();
@@ -65,6 +118,21 @@ function App() {
   const [pdfUrl, setPdfUrl] = useState<string | null>(null);
   const [showScrollTop, setShowScrollTop] = useState(false);
   const [errors, setErrors] = useState<{ name?: string; contact?: string }>({});
+  const [showPrivacy, setShowPrivacy] = useState(false);
+  const [cookieConsent, setCookieConsent] = useState<'accepted' | 'rejected' | null>(() => {
+    const stored = localStorage.getItem('cookie-consent');
+    return stored === 'accepted' || stored === 'rejected' ? stored : null;
+  });
+
+  // Refs para focus-trap de modales
+  const joinModalRef = useRef<HTMLDivElement>(null);
+  const imageModalRef = useRef<HTMLDivElement>(null);
+  const pdfModalRef = useRef<HTMLDivElement>(null);
+  const privacyModalRef = useRef<HTMLDivElement>(null);
+  useFocusTrap(isModalOpen, joinModalRef);
+  useFocusTrap(imageModal !== null, imageModalRef);
+  useFocusTrap(pdfUrl !== null, pdfModalRef);
+  useFocusTrap(showPrivacy, privacyModalRef);
   // Nivel de zoom del lightbox (1 = ajustado a pantalla). Personalizable con ZOOM_*.
   const [zoom, setZoom] = useState(1);
 
@@ -97,6 +165,21 @@ function App() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
+  // Si ya se había aceptado en una visita previa, carga los trackers al montar
+  useEffect(() => {
+    if (localStorage.getItem('cookie-consent') === 'accepted') initTrackers();
+  }, []);
+
+  const acceptCookies = () => {
+    localStorage.setItem('cookie-consent', 'accepted');
+    setCookieConsent('accepted');
+    initTrackers();
+  };
+  const rejectCookies = () => {
+    localStorage.setItem('cookie-consent', 'rejected');
+    setCookieConsent('rejected');
+  };
+
   // Scroll-reveal observer — re-escanea cuando cambia el contenido visible
   // (p. ej. al filtrar el portafolio, que remonta tarjetas nuevas)
   useEffect(() => {
@@ -128,12 +211,13 @@ function App() {
 
   // Teclado (Escape/flechas) y bloqueo de scroll cuando hay una capa abierta
   useEffect(() => {
-    const anyOpen = isModalOpen || isMobileMenuOpen || imageModal !== null || pdfUrl !== null;
+    const anyOpen = isModalOpen || isMobileMenuOpen || imageModal !== null || pdfUrl !== null || showPrivacy;
     if (!anyOpen) return;
 
     const onKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
-        if (pdfUrl) setPdfUrl(null);
+        if (showPrivacy) setShowPrivacy(false);
+        else if (pdfUrl) setPdfUrl(null);
         else if (imageModal) { setZoom(1); setImageModal(null); }
         else if (isModalOpen) closeJoinModal();
         else if (isMobileMenuOpen) setIsMobileMenuOpen(false);
@@ -157,7 +241,7 @@ function App() {
       document.removeEventListener('keydown', onKeyDown);
       document.body.style.overflow = prevOverflow;
     };
-  }, [isModalOpen, isMobileMenuOpen, imageModal, pdfUrl]);
+  }, [isModalOpen, isMobileMenuOpen, imageModal, pdfUrl, showPrivacy]);
 
   const openJoinModal = (initialService?: string | React.MouseEvent) => {
     if (initialService && typeof initialService === 'string') {
@@ -260,19 +344,52 @@ function App() {
     },
   ];
 
-  const handleModalSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-
-    // Validación con feedback inline
+  const validateForm = (): boolean => {
     const nameErr = clientName.trim().length < 2 ? 'Escribe tu nombre o el de tu empresa.' : '';
     const contactErr = validateContact(contactInfo);
-    if (nameErr || contactErr) {
-      setErrors({ name: nameErr || undefined, contact: contactErr || undefined });
-      return;
-    }
-    setErrors({});
+    setErrors({ name: nameErr || undefined, contact: contactErr || undefined });
+    return !nameErr && !contactErr;
+  };
 
-    // Abre el cliente de correo del visitante con el lead prellenado hacia el negocio.
+  const trackLead = () => {
+    // Conversión para Meta Pixel (solo dispara si el píxel está activo/consentido)
+    const w = window as unknown as { fbq?: (...args: unknown[]) => void };
+    w.fbq?.('track', 'Lead');
+  };
+
+  const finishSubmit = (msg: string) => {
+    setIsSubmitted(true);
+    setTimeout(() => {
+      setIsModalOpen(false);
+      setIsSubmitted(false);
+      setClientName('');
+      setContactInfo('');
+      setSalesHurdle('');
+      setErrors({});
+      triggerToast(msg);
+    }, 2500);
+  };
+
+  // Principal: enviar por WhatsApp (más confiable, canal directo)
+  const handleModalSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!validateForm()) return;
+    trackLead();
+    const msg = [
+      'Hola Godínez Creativos, quiero información.',
+      '',
+      `Nombre o empresa: ${clientName}`,
+      `Contacto: ${contactInfo}`,
+      `Objetivo: ${salesHurdle || 'No especificado'}`,
+    ].join('\n');
+    window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`, '_blank', 'noopener,noreferrer');
+    finishSubmit('¡Listo! Se abrió WhatsApp con tus datos. Envía el mensaje y te respondemos pronto.');
+  };
+
+  // Respaldo: enviar por correo (mailto)
+  const submitByEmail = () => {
+    if (!validateForm()) return;
+    trackLead();
     const subject = `Nuevo proyecto — ${clientName}`;
     const body = [
       `Nombre o empresa: ${clientName}`,
@@ -281,23 +398,10 @@ function App() {
       '',
       'Enviado desde godinezcreativos.qzz.io',
     ].join('\n');
-    // Conversión para Meta Pixel (solo dispara si el píxel está configurado)
-    const w = window as unknown as { fbq?: (...args: unknown[]) => void };
-    w.fbq?.('track', 'Lead');
-
     window.location.assign(
       `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
     );
-
-    setIsSubmitted(true);
-    setTimeout(() => {
-      setIsModalOpen(false);
-      setIsSubmitted(false);
-      setClientName('');
-      setContactInfo('');
-      setSalesHurdle('');
-      triggerToast('¡Listo! Se abrió tu correo con los datos. Envíalo y te respondemos en menos de 24 horas.');
-    }, 2500);
+    finishSubmit('¡Listo! Se abrió tu correo con los datos. Envíalo y te respondemos pronto.');
   };
 
   const triggerToast = (msg: string) => {
@@ -1082,30 +1186,33 @@ function App() {
             </h2>
           </div>
 
-          {/* FAQ list (accordion accesible con <details>) */}
+          {/* FAQ list (acordeón accesible con <details>) */}
           <div className="flex flex-col gap-3">
             {[
               { q: '¿Cuánto cuesta trabajar con ustedes?', a: 'Depende de lo que tu marca necesite. Por eso el primer paso es una propuesta a tu medida, sin costo ni compromiso: nos cuentas tu objetivo y te damos un presupuesto claro.' },
               { q: '¿En cuánto tiempo entregan?', a: 'Varía según el alcance del proyecto, pero desde la propuesta te damos fechas concretas y te mantenemos al tanto en cada paso. Sin sorpresas.' },
               { q: '¿Puedo contratar un solo servicio?', a: 'Claro. Puedes tomar un servicio suelto (por ejemplo solo branding o solo redes) o combinarlos. Nos adaptamos a lo que tu negocio necesita hoy.' },
-              { q: '¿Trabajan con negocios de cualquier giro?', a: 'Sí. Nos especializamos en pequeños y medianos negocios que quieren verse más grandes y profesionales, sin importar el rubro.' },
+              { q: '¿Trabajan con negocios de cualquier giro?', a: 'Sí. Nos especializamos en negocios que quieren verse más grandes y profesionales, sin importar el rubro.' },
               { q: '¿Atienden fuera de mi ciudad?', a: 'Trabajamos 100% en línea, así que podemos colaborar con tu marca estés donde estés. La distancia no es problema.' },
               { q: '¿Cómo empiezo?', a: 'Muy fácil: escríbenos por WhatsApp o llena el formulario. Agendamos una charla, entendemos tu proyecto y te enviamos una propuesta en menos de 24 horas.' },
             ].map((item, idx) => (
               <details
                 key={idx}
-                className="group rounded-2xl border border-white/10 bg-white/[0.03] hover:border-[#f60566]/30 transition-colors duration-300 reveal-on-scroll"
+                className="group rounded-2xl border border-white/10 bg-white/[0.03] open:border-[#f60566]/40 open:bg-[#f60566]/[0.06] hover:border-[#f60566]/30 transition-colors duration-300 reveal-on-scroll"
                 style={{ transitionDelay: `${idx * 60}ms` }}
               >
                 <summary className="flex items-center justify-between gap-4 cursor-pointer list-none p-5 md:p-6 text-white font-semibold text-sm md:text-base">
-                  <span>{item.q}</span>
-                  <span className="shrink-0 w-6 h-6 rounded-full border border-white/20 flex items-center justify-center text-[#f60566] transition-transform duration-300 group-open:rotate-45">
+                  <span className="flex items-baseline gap-3">
+                    <span className="font-mono text-xs font-bold text-[#f60566] shrink-0">{`0${idx + 1}`}</span>
+                    <span className="group-open:text-[#f60566] transition-colors duration-300">{item.q}</span>
+                  </span>
+                  <span className="shrink-0 w-6 h-6 rounded-full border border-white/20 flex items-center justify-center text-[#f60566] group-open:bg-[#f60566] group-open:text-white group-open:border-[#f60566] transition-all duration-300 group-open:rotate-45">
                     <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M12 5v14M5 12h14" />
                     </svg>
                   </span>
                 </summary>
-                <p className="faq-answer px-5 md:px-6 pb-5 md:pb-6 -mt-1 text-sm text-white/70 font-light leading-relaxed">
+                <p className="faq-answer pl-[3.1rem] pr-5 md:pr-6 pb-5 md:pb-6 -mt-1 text-sm text-white/70 font-light leading-relaxed">
                   {item.a}
                 </p>
               </details>
@@ -1190,7 +1297,12 @@ function App() {
 
         <div className="max-w-7xl mx-auto mt-12 pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-3">
           <p className="text-[11px] font-mono tracking-widest text-white/30 uppercase">© 2026 Godínez Creativos</p>
-          <p className="text-[11px] text-white/30">Hecho con creatividad en México 🇲🇽</p>
+          <div className="flex items-center gap-4">
+            <button onClick={() => setShowPrivacy(true)} className="text-[11px] text-white/40 hover:text-[#f60566] transition-colors">
+              Aviso de privacidad
+            </button>
+            <p className="text-[11px] text-white/30">Hecho con creatividad en México 🇲🇽</p>
+          </div>
         </div>
       </footer>
 
@@ -1230,6 +1342,7 @@ function App() {
         >
           {/* Modal content */}
           <div
+            ref={imageModalRef}
             className="relative w-full max-w-4xl mx-4 flex flex-col items-center gap-4"
             onClick={(e) => e.stopPropagation()}
           >
@@ -1352,6 +1465,7 @@ function App() {
       {/* Visor de PDF dentro de la web */}
       {pdfUrl && (
         <div
+          ref={pdfModalRef}
           className="fixed inset-0 bg-black/95 backdrop-blur-[20px] z-[60] flex flex-col p-4 sm:p-6"
           role="dialog"
           aria-modal="true"
@@ -1403,6 +1517,7 @@ function App() {
           aria-label="Formulario de contacto"
         >
           <div
+            ref={joinModalRef}
             className="glass-panel p-6 sm:p-8 rounded-[32px] w-full max-w-md relative border border-[#f60566]/30 shadow-[0_0_50px_rgba(230,31,100,0.25)] overflow-hidden"
             onClick={(e) => e.stopPropagation()}
           >
@@ -1508,15 +1623,22 @@ function App() {
                   </div>
                 </div>
 
-                {/* Submit button */}
+                {/* Submit: WhatsApp (principal) */}
                 <button
                   type="submit"
                   className="mt-2 group/submit flex items-center justify-center gap-2.5 w-full py-4 rounded-full bg-gradient-to-r from-[#f60566] to-[#ff0068] text-white font-bold text-sm tracking-widest uppercase hover:scale-[1.02] active:scale-[0.97] transition-all duration-300 shadow-[0_0_20px_rgba(246,5,102,0.3)] hover:shadow-[0_0_35px_rgba(246,5,102,0.5)] border border-white/10"
                 >
-                  <span>Enviar Información</span>
-                  <svg className="w-4 h-4 text-white group-hover/submit:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
-                  </svg>
+                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51l-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.71.306 1.263.489 1.694.625.712.227 1.36.195 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                  <span>Enviar por WhatsApp</span>
+                </button>
+
+                {/* Respaldo: correo */}
+                <button
+                  type="button"
+                  onClick={submitByEmail}
+                  className="-mt-2 text-xs text-white/50 hover:text-white/80 transition-colors underline underline-offset-4 decoration-white/20"
+                >
+                  o prefiero enviarlo por correo
                 </button>
               </form>
             ) : (
@@ -1553,6 +1675,69 @@ function App() {
           }}
         >
           {toastMessage}
+        </div>
+      )}
+
+      {/* Aviso de privacidad */}
+      {showPrivacy && (
+        <div
+          className="fixed inset-0 bg-black/85 backdrop-blur-[16px] z-[70] flex items-center justify-center p-4"
+          onClick={() => setShowPrivacy(false)}
+          role="dialog"
+          aria-modal="true"
+          aria-label="Aviso de privacidad"
+        >
+          <div
+            ref={privacyModalRef}
+            className="glass-panel relative w-full max-w-lg max-h-[85vh] overflow-y-auto rounded-3xl border border-[#f60566]/30 p-6 sm:p-8"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              onClick={() => setShowPrivacy(false)}
+              aria-label="Cerrar"
+              className="absolute top-5 right-5 w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white/60 hover:text-[#f60566] hover:border-[#f60566]/40 transition-all"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+            <h3 className="text-2xl font-bold text-white font-outfit uppercase pr-8">Aviso de <span className="text-[#f60566]">privacidad</span></h3>
+            <div className="mt-4 space-y-4 text-sm text-white/70 font-light leading-relaxed">
+              <p><strong className="text-white font-semibold">Responsable.</strong> Godínez Creativos es responsable del tratamiento de tus datos personales.</p>
+              <p><strong className="text-white font-semibold">Datos que recabamos.</strong> Nombre o nombre de tu empresa, medio de contacto (WhatsApp o correo) y la información que decidas compartir sobre tu proyecto.</p>
+              <p><strong className="text-white font-semibold">Finalidad.</strong> Contactarte, elaborar una propuesta a tu medida y dar seguimiento a tu solicitud. No usamos tus datos para otros fines sin tu consentimiento.</p>
+              <p><strong className="text-white font-semibold">Cookies y analítica.</strong> Con tu consentimiento usamos Meta Pixel y Google Analytics para medir el uso del sitio y mejorar nuestros anuncios. Puedes rechazarlos en el aviso de cookies.</p>
+              <p><strong className="text-white font-semibold">Terceros.</strong> No vendemos ni compartimos tus datos, salvo con proveedores necesarios para operar (p. ej. mensajería o correo).</p>
+              <p><strong className="text-white font-semibold">Derechos ARCO.</strong> Puedes acceder, rectificar, cancelar u oponerte al uso de tus datos escribiéndonos a <a href={`mailto:${CONTACT_EMAIL}`} className="text-[#f60566] hover:underline">{CONTACT_EMAIL}</a>.</p>
+              <p className="text-white/40 text-xs">Última actualización: julio 2026.</p>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Banner de consentimiento de cookies */}
+      {cookieConsent === null && (
+        <div className="fixed bottom-0 inset-x-0 z-[65] p-4 sm:p-5">
+          <div className="max-w-3xl mx-auto glass-panel border border-white/15 rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center gap-4 shadow-[0_10px_40px_rgba(0,0,0,0.6)]">
+            <p className="text-xs sm:text-sm text-white/75 font-light leading-relaxed flex-1">
+              Usamos cookies para analítica y publicidad (Meta y Google). Puedes aceptarlas o rechazarlas. Más info en el{' '}
+              <button onClick={() => setShowPrivacy(true)} className="text-[#f60566] hover:underline">aviso de privacidad</button>.
+            </p>
+            <div className="flex items-center gap-2 shrink-0">
+              <button
+                onClick={rejectCookies}
+                className="px-4 py-2 rounded-full border border-white/15 text-white/70 text-xs font-semibold hover:text-white hover:border-white/30 transition-all"
+              >
+                Rechazar
+              </button>
+              <button
+                onClick={acceptCookies}
+                className="px-5 py-2 rounded-full bg-[#f60566] text-white text-xs font-bold hover:bg-[#ff0068] active:scale-95 transition-all"
+              >
+                Aceptar
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>
